@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 2399948655918602813}
   - component: {fileID: 643670593263006890}
   - component: {fileID: 5888186909063317742}
+  - component: {fileID: 5803540193978883524}
   - component: {fileID: 7079763918870904872}
   m_Layer: 0
   m_Name: Patriot
-  m_TagString: Untagged
+  m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,13 +47,13 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
-  m_Acceleration: 8
+  m_Speed: 0
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 500
+  m_AngularSpeed: 999
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -71,7 +72,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroController
   MainCamera: {fileID: 0}
-  Animator: {fileID: 5643677658943807902}
+  CharacterAnimator: {fileID: 5643677658943807902}
+  Hero_Config: {fileID: 11400000, guid: a3fd3a5d87a60f34d96b138f4afb5bbc, type: 2}
 --- !u!114 &5888186909063317742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +87,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroMovement
   Marker: {fileID: 1914391704676004670, guid: 4d528421a9a12fe449ff9530ccae48c2, type: 3}
+--- !u!114 &5803540193978883524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6585120819423267336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7b75d014436254c957311bd1228c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeroAttack
 --- !u!114 &7079763918870904872
 MonoBehaviour:
   m_ObjectHideFlags: 0
