@@ -7,54 +7,70 @@ public class HeroController : MonoBehaviour
     [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
 
-    private HeroMovement _heroMovement;
-    private HeroAttack _heroAttack;
-
     public HeroAttributes Hero_Attributes;
 
     private NavMeshAgent _agent;
 
-    private Ray Ray;
+    private HeroMovement _heroMovement;
+    private HeroAttack _heroAttack;
 
-    public bool IsAttackingEnemy = false;
+    private Ray Ray;
+    private RaycastHit _hit;
+
+    public GameObject CurrentTarget;
+
+    public bool inHittingRange = false;
 
     private void Start()
     {
+        Hero_Attributes = new HeroAttributes(Hero_Config);
+
         _agent = GetComponent<NavMeshAgent>();
+        _agent.updateRotation = false;
+        _agent.speed = Hero_Attributes.CurrentMoveSpeed;
 
         _heroMovement = GetComponent<HeroMovement>();
         _heroAttack = GetComponent<HeroAttack>();
-
-        Hero_Attributes = new HeroAttributes(Hero_Config);
-
-        _agent.speed = Hero_Attributes.CurrentMoveSpeed;
     }
 
     private void Update()
     {
         Ray = MainCamera.ScreenPointToRay(InputReader.Instance.MousePosition);
 
-        //TODO : Make HeroController tell what to do HeroMovement and HeroAttack
         if (InputReader.Instance.MouseRightClick)
         {
-            if (Physics.Raycast(Ray, out RaycastHit hit, 100f))
+            if (Physics.Raycast(Ray, out _hit, 100f))
             {
-                if (hit.collider.gameObject.CompareTag("Environment"))
+                if (_hit.collider.gameObject.CompareTag("Environment"))
                 {
                     Debug.Log("Hit Environment");
                 }
-                else if (hit.collider.gameObject.CompareTag("Floor"))
+                else if (_hit.collider.gameObject.CompareTag("Floor"))
                 {
-                    _heroMovement.MoveToPosition(hit.point);
+                    Debug.Log("Go to position");
+
+                    CurrentTarget = null;
+
+                    _heroMovement.Move(_hit.point);
                 }
-                else if (hit.collider.gameObject.CompareTag("Enemy"))
+                else if (_hit.collider.gameObject.CompareTag("Enemy"))
                 {
-                    Debug.Log("Hit Enemy");
+                    Debug.Log("Pursuing Enemy");
+
+                    CurrentTarget = _hit.collider.gameObject;
                 }
             }
         }
+
+        if (CurrentTarget != null)
+        {
+            bool isInRange = _heroMovement.IsInRange(CurrentTarget.transform.position, Hero_Attributes.CurrentAttackRange);
+
+            _heroAttack.GetRangeToAttack(isInRange, CurrentTarget);
+        }
     }
     
+    // NavMeshAgent :
     public float GetAgentMagnitude()
     {
         return _agent.velocity.magnitude;
@@ -65,6 +81,29 @@ public class HeroController : MonoBehaviour
         _agent.SetDestination(point);
     }
 
+    public bool GetIsAgentStop()
+    {
+        return _agent.isStopped;
+    }
+
+    public void SetAgentStop(bool stopAgent)
+    {
+        if (stopAgent)
+        {
+            _agent.isStopped = true;
+        }
+        else
+        {
+            _agent.isStopped = false;
+        }
+    }
+
+    public void ResetAgentPath()
+    {
+        _agent.ResetPath();
+    }
+
+    // Animations :
     public void Play(string animationName)
     {
         CharacterAnimator.Play(animationName);
@@ -85,6 +124,7 @@ public class HeroController : MonoBehaviour
         CharacterAnimator.SetTrigger(paramName);
     }
 
+    // Ray :
     public Vector3 GetRayOrigin()
     {
         return Ray.origin;
@@ -95,6 +135,12 @@ public class HeroController : MonoBehaviour
         return Ray.direction;
     }
 
+    public Vector3 GetRayHitPoint()
+    {
+        return _hit.point;
+    }
+
+    // Rotation :
     public void ChangeAgentRotationManualy(bool manualy)
     {
         if (manualy)

@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    private HeroController _hr;
+    private HeroController _heroController;
 
     private void Start()
     {
-        _hr = GetComponent<HeroController>();
+        _heroController = GetComponent<HeroController>();
     }
 
     private void Update()
     {
-        if (_hr.GetAgentMagnitude() > 0)
+        if (_heroController.GetAgentMagnitude() > 0)
         {
-            _hr.SetBool("IsWalking", true);
+            _heroController.SetBool("IsWalking", true);
         }
         else
         {
-            _hr.SetBool("IsWalking", false);
+            _heroController.SetBool("IsWalking", false);
         }
     }
 }

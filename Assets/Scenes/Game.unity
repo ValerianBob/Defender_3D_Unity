@@ -2661,6 +2661,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5888186909063317742, guid: 5a869825aaff3ba47a15c21d8e8e8c81, type: 3}
+      propertyPath: RotationSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5888186909063317742, guid: 5a869825aaff3ba47a15c21d8e8e8c81, type: 3}
       propertyPath: Layer_Mask.m_Bits
       value: 55
       objectReference: {fileID: 0}

@@ -3,35 +3,36 @@ using UnityEngine;
 public class HeroAttack : MonoBehaviour
 {
     private HeroController _heroController;
-    private HeroMovement _heroMovement;
 
-    RaycastHit hit;
+    private float NextTimeAttack = 0f;
 
     private void Start()
     {
         _heroController = GetComponent<HeroController>();
-        _heroMovement = GetComponent<HeroMovement>();
     }
 
-    private void Update()
-    { 
-        if (InputReader.Instance.MouseRightClick)
+    public void GetRangeToAttack(bool isInRange, GameObject target)
+    {
+        if (target == null)
         {
-            if (Physics.Raycast(_heroController.GetRayOrigin(), _heroController.GetRayDirection(), out hit, 100f))
-            {
-                if (hit.collider.gameObject.CompareTag("Enemy"))
-                { 
-                    Debug.Log("Enemy was hited");
-
-                    _heroController.IsAttackingEnemy = true;
-                    _heroController.ChangeAgentRotationManualy(_heroController.IsAttackingEnemy);
-                }
-            }
+            return;
         }
 
-        if (_heroController.IsAttackingEnemy)
+        if (isInRange)
         {
-            _heroMovement.RotateCharacterTowardEnemy(hit.collider.gameObject.transform.position);
+            TryToAttack(target);
+        }
+    }
+
+    private void TryToAttack(GameObject target)
+    {
+        if (Time.time >= NextTimeAttack)
+        {
+            NextTimeAttack = Time.time + _heroController.Hero_Attributes.CurrentAttackSpeed;
+
+            _heroController.SetTrigger("Attack");
+
+            Debug.Log("Hit target");
         }
     }
 }
