@@ -74,6 +74,8 @@ MonoBehaviour:
   MainCamera: {fileID: 0}
   CharacterAnimator: {fileID: 5643677658943807902}
   Hero_Config: {fileID: 11400000, guid: a3fd3a5d87a60f34d96b138f4afb5bbc, type: 2}
+  CurrentTarget: {fileID: 0}
+  inHittingRange: 0
 --- !u!114 &5888186909063317742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7b75d014436254c957311bd1228c92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroAttack
+  text: {fileID: 0}
 --- !u!114 &7079763918870904872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3e1cf11aed8db44b720fd312e6c209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationController
+  _clips:
+  - {fileID: 7400000, guid: 042c2ad931ae46a4c8d51ad999d667ab, type: 2}
+  - {fileID: 7400000, guid: 96a7ab0acd66ede47a84f4ffccefdb4a, type: 2}
+  - {fileID: 7400000, guid: e761da185bce34549974b84049e78458, type: 2}
 --- !u!1001 &671234077875087971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,7 +128,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.009124756
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -129,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.0044784546
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -137,15 +144,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -170,6 +177,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5643677658943807902}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3216774967668393248}
   m_SourcePrefab: {fileID: 100100000, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
 --- !u!1 &401341567575299890 stripped
 GameObject:
@@ -185,7 +195,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401341567575299890}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
   m_Controller: {fileID: 9100000, guid: edd7fd07a4c64c64f96f207795e39e1b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -198,6 +208,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3216774967668393248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401341567575299890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add246469fff2d4478bce76fbb139c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrigerAnimationEvent
+  heroAttack: {fileID: 5803540193978883524}
 --- !u!4 &1070179591451889032 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}

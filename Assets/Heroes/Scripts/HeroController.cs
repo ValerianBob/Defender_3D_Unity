@@ -19,8 +19,6 @@ public class HeroController : MonoBehaviour
 
     public GameObject CurrentTarget;
 
-    public bool inHittingRange = false;
-
     private void Start()
     {
         Hero_Attributes = new HeroAttributes(Hero_Config);
@@ -122,6 +120,32 @@ public class HeroController : MonoBehaviour
     public void SetTrigger(string paramName)
     {
         CharacterAnimator.SetTrigger(paramName);
+    }
+
+    public void SetAnimatorSpeed(float speed)
+    {
+        CharacterAnimator.speed = speed;
+    }
+
+    public AnimationClip GetAnimationClip(string ClipName)
+    {
+        AnimationClip AnimClip = null;
+
+        foreach (var clip in CharacterAnimator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == ClipName)
+            {
+                AnimClip = clip;
+                break;
+            }
+        }
+
+        return AnimClip;
+    }
+
+    public bool GetAnimState(string name)
+    {
+        return CharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName(name);
     }
 
     // Ray :

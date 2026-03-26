@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroConfig
   AttackDamage: 5
   MagicDamage: 5
-  AttackRange: 3
+  AttackRange: 2
   MoveSpeed: 5
-  AttackSpeed: 1
+  AttackSpeed: 0.8
   MaxHealth: 100
   MaxMana: 50

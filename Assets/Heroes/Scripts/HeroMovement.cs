@@ -15,6 +15,7 @@ public class HeroMovement : MonoBehaviour
 
     private void Update()
     {
+        //TODO change walking animation speed to attribute speed
         if (_heroController.CurrentTarget != null)
         {
             PursuingTarget(_heroController.CurrentTarget.transform.position, _heroController.Hero_Attributes.CurrentAttackRange);
