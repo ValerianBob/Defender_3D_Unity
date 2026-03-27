@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -35,30 +34,8 @@ public class HeroAttack : MonoBehaviour
             float attackSpeed = _heroController.Hero_Attributes.CurrentAttackSpeed;
             NextTimeAttack = Time.time + attackSpeed;
 
-            AnimationClip AttackClip = _heroController.GetAnimationClip("Attack");
-            if (AttackClip != null)
-            {
-                _heroController.SetAnimatorSpeed(AttackClip.length / attackSpeed);
-                StartCoroutine(ResetAnimatorSpeed());
-            }
-
-            _heroController.SetTrigger("Attack");
+            HeroEvents.OnAttack?.Invoke();
         }
-    }
-
-    private IEnumerator ResetAnimatorSpeed()
-    {
-        //Wait one frame :
-        yield return null;
-
-        //This loop runs every frame while the attack animation is playing :
-        while (_heroController.GetAnimState("Attack"))
-        {
-            //Wait until next frame, then check again
-            yield return null;
-        }
-
-        _heroController.SetAnimatorSpeed(1f);
     }
 
     //TODO change later :

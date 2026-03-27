@@ -45,16 +45,14 @@ public class HeroController : MonoBehaviour
                 }
                 else if (_hit.collider.gameObject.CompareTag("Floor"))
                 {
-                    Debug.Log("Go to position");
-
                     CurrentTarget = null;
+
+                    _agent.speed = Hero_Attributes.CurrentMoveSpeed;
 
                     _heroMovement.Move(_hit.point);
                 }
                 else if (_hit.collider.gameObject.CompareTag("Enemy"))
                 {
-                    Debug.Log("Pursuing Enemy");
-
                     CurrentTarget = _hit.collider.gameObject;
                 }
             }
