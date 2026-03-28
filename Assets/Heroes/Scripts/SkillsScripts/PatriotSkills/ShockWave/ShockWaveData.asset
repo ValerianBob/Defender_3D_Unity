@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dfe710338998974382d8e8629b29fc9, type: 3}
-  m_Name: RageSkillData
+  m_Name: ShockWaveData
   m_EditorClassIdentifier: Assembly-CSharp::SkillConfig
-  skillName: Rage
-  type: 0
+  skillName: Shock Wave
+  type: 1
   skillIcon: {fileID: 0}
-  baseCoolDown: 10
-  baseManaCost: 10
+  baseCoolDown: 0
+  baseManaCost: 0
   baseDamage: 0

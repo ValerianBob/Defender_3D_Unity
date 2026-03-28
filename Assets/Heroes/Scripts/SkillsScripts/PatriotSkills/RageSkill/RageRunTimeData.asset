@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dfe710338998974382d8e8629b29fc9, type: 3}
-  m_Name: RageSkillData
-  m_EditorClassIdentifier: Assembly-CSharp::SkillConfig
-  skillName: Rage
-  type: 0
-  skillIcon: {fileID: 0}
-  baseCoolDown: 10
-  baseManaCost: 10
-  baseDamage: 0
+  m_Script: {fileID: 11500000, guid: 060640ebaf782f745ab6d074fa2606ad, type: 3}
+  m_Name: RageRunTimeData
+  m_EditorClassIdentifier: Assembly-CSharp::RageSkill
+  CoolDown: 0
+  ManaCost: 0
+  Damage: 0

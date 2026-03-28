@@ -1,25 +1,25 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class HeroController : MonoBehaviour
 {
     [SerializeField] private Camera MainCamera;
     [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
-
-    public HeroAttributes Hero_Attributes;
-
-    private NavMeshAgent _agent;
-
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
 
     private Ray Ray;
     private RaycastHit _hit;
 
+    public HeroAttributes Hero_Attributes;
+
+    private NavMeshAgent _agent;
+
     public GameObject CurrentTarget;
 
-    private void Start()
+    private void Awake()
     {
         Hero_Attributes = new HeroAttributes(Hero_Config);
 
@@ -64,8 +64,86 @@ public class HeroController : MonoBehaviour
 
             _heroAttack.GetRangeToAttack(isInRange, CurrentTarget);
         }
+
+        //Test delete later :
+        if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            ChangeHealth(true, 1f);
+        }
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            ChangeHealth(false, 1f);
+        }
+
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            ChagneMana(false, 1f);
+        }
+        if (Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            ChagneMana(true, 1f);
+        }
+
+        if (Keyboard.current.vKey.wasPressedThisFrame)
+        {
+            GainXp(1f);
+        }
     }
     
+    public void ChangeHealth(bool isGettingDamage, float damage)
+    {
+        if (isGettingDamage)
+        {
+            Hero_Attributes.CurrentHealth -= damage;
+        }
+        else
+        {
+            Hero_Attributes.CurrentHealth += damage;
+        }
+
+        if (Hero_Attributes.CurrentHealth < 0)
+        {
+            Hero_Attributes.CurrentHealth = 0;
+        }
+        else if (Hero_Attributes.CurrentHealth > Hero_Attributes.MaxHealth)
+        {
+            Hero_Attributes.CurrentHealth = Hero_Attributes.MaxHealth;
+        }
+
+        HeroEvents.OnHealthChange?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
+    }
+
+    public void ChagneMana(bool isGettingMana, float magaAmount)
+    {
+        if (isGettingMana)
+        {
+            Hero_Attributes.CurrentMana += magaAmount;
+        }
+        else
+        {
+            Hero_Attributes.CurrentMana -= magaAmount;
+        }
+
+        if (Hero_Attributes.CurrentMana < 0)
+        {
+            Hero_Attributes.CurrentMana = 0;
+        }
+        else if (Hero_Attributes.CurrentMana > Hero_Attributes.MaxMana)
+        {
+            Hero_Attributes.CurrentMana = Hero_Attributes.MaxMana;
+        }
+
+        HeroEvents.OnManaChange?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+    }
+
+    //TODO make that GainXp Up level and other stuff:
+    public void GainXp(float XpAmount)
+    {
+        Hero_Attributes.CurrentXP += XpAmount;
+
+        HeroEvents.OnXpGain?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
+    }
+
     // NavMeshAgent :
     public float GetAgentMagnitude()
     {
@@ -120,31 +198,31 @@ public class HeroController : MonoBehaviour
         CharacterAnimator.SetTrigger(paramName);
     }
 
-    public void SetAnimatorSpeed(float speed)
-    {
-        CharacterAnimator.speed = speed;
-    }
+    //public void SetAnimatorSpeed(float speed)
+    //{
+    //    CharacterAnimator.speed = speed;
+    //}
 
-    public AnimationClip GetAnimationClip(string ClipName)
-    {
-        AnimationClip AnimClip = null;
+    //public AnimationClip GetAnimationClip(string ClipName)
+    //{
+    //    AnimationClip AnimClip = null;
 
-        foreach (var clip in CharacterAnimator.runtimeAnimatorController.animationClips)
-        {
-            if (clip.name == ClipName)
-            {
-                AnimClip = clip;
-                break;
-            }
-        }
+    //    foreach (var clip in CharacterAnimator.runtimeAnimatorController.animationClips)
+    //    {
+    //        if (clip.name == ClipName)
+    //        {
+    //            AnimClip = clip;
+    //            break;
+    //        }
+    //    }
 
-        return AnimClip;
-    }
+    //    return AnimClip;
+    //}
 
-    public bool GetAnimState(string name)
-    {
-        return CharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName(name);
-    }
+    //public bool GetAnimState(string name)
+    //{
+    //    return CharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName(name);
+    //}
 
     // Ray :
     public Vector3 GetRayOrigin()
@@ -163,15 +241,15 @@ public class HeroController : MonoBehaviour
     }
 
     // Rotation :
-    public void ChangeAgentRotationManualy(bool manualy)
-    {
-        if (manualy)
-        {
-            _agent.updateRotation = false;
-        }
-        else
-        {
-            _agent.updateRotation = true;
-        }
-    }
+    //public void ChangeAgentRotationManualy(bool manualy)
+    //{
+    //    if (manualy)
+    //    {
+    //        _agent.updateRotation = false;
+    //    }
+    //    else
+    //    {
+    //        _agent.updateRotation = true;
+    //    }
+    //}
 }

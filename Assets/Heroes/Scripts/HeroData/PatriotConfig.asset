@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d803af5c684e84c4a886acd755d70584, type: 3}
   m_Name: PatriotConfig
   m_EditorClassIdentifier: Assembly-CSharp::HeroConfig
+  HeroName: Patriot
   AttackDamage: 5
-  MagicDamage: 5
+  MagicDamage: 0
   AttackRange: 2
-  MoveSpeed: 5
-  AttackSpeed: 0.8
+  MoveSpeed: 4
+  AttackSpeed: 1
   MaxHealth: 100
   MaxMana: 50
+  HealthGain: 3
+  ManaGain: 1
+  Lv: 1
+  CurrentXP: 0
+  XPForLevelUP: 100

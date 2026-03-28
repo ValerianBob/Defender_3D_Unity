@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class SkillsController : MonoBehaviour
 {
@@ -27,18 +26,27 @@ public class SkillsController : MonoBehaviour
 
             SkillSlots[i].Skill.Damage = Damage;
             SkillSlots[i].Skill.CoolDown = CoolDown;
-            SkillSlots[i].Skill.ManaCost = ManaCost;  
+            SkillSlots[i].Skill.ManaCost = ManaCost;
         }
     }
 
-    //TODO Make that we can use all 4 skill correctly 
     private void Update()
     { 
-        if (Keyboard.current.qKey.wasPressedThisFrame)
+        if (InputReader.Instance.QButton)
         {
             SkillSlots[0].Skill.Execute();
-
-            Debug.Log($"{SkillSlots[0].Skill.Damage} {SkillSlots[0].Skill.CoolDown} {SkillSlots[0].Skill.ManaCost}");
+        }
+        if (InputReader.Instance.WButton)
+        {
+            SkillSlots[1].Skill.Execute();
+        }
+        if (InputReader.Instance.EButton)
+        {
+            SkillSlots[2].Skill.Execute();
+        }
+        if (InputReader.Instance.RButton)
+        {
+            SkillSlots[3].Skill.Execute();
         }
     }
 }

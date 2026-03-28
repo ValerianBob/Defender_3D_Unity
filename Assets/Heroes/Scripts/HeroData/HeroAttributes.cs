@@ -1,6 +1,8 @@
 [System.Serializable]
 public class HeroAttributes
 {
+    public string HeroName;
+
     public float CurrentDamage;
     public float CurrentMagicDamage;
 
@@ -9,20 +11,42 @@ public class HeroAttributes
     public float CurrentMoveSpeed;
     public float CurrentAttackSpeed;
 
+    public float MaxHealth;
+    public float MaxMana;
+
     public float CurrentHealth;
     public float CurrentMana;
 
+    public float HealthGain;
+    public float ManaGain;
+
+    public int Lv;
+    public float CurrentXP;
+    public float XPForLevelUP;
+
     public HeroAttributes(HeroConfig heroConfig)
     {
-        CurrentDamage = heroConfig.AttackDamage;
-        CurrentMagicDamage = heroConfig.MagicDamage;
+        HeroName = heroConfig.heroName;
 
-        CurrentAttackRange = heroConfig.AttackRange;
+        CurrentDamage = heroConfig.attackDamage;
+        CurrentMagicDamage = heroConfig.magicDamage;
 
-        CurrentMoveSpeed = heroConfig.MoveSpeed;
-        CurrentAttackSpeed = heroConfig.AttackSpeed;
+        CurrentAttackRange = heroConfig.attackRange;
 
-        CurrentHealth = heroConfig.MaxHealth;
-        CurrentMana = heroConfig.MaxMana;
+        CurrentMoveSpeed = heroConfig.moveSpeed;
+        CurrentAttackSpeed = heroConfig.attackSpeed;
+
+        CurrentHealth = heroConfig.maxHealth;
+        CurrentMana = heroConfig.maxMana;
+
+        MaxHealth = heroConfig.maxHealth;
+        MaxMana = heroConfig.maxMana;
+
+        HealthGain = heroConfig.healthGain;
+        ManaGain = heroConfig.manaGain;
+
+        Lv = heroConfig.lv;
+        CurrentXP = heroConfig.currentXP;
+        XPForLevelUP = heroConfig.xPForLevelUP;
     }
 }

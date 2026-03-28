@@ -9,11 +9,42 @@ public enum SkillType
 [CreateAssetMenu(fileName = "NewSkill", menuName ="Hero/Skill")]
 public class SkillConfig : ScriptableObject
 {
-    public string SkillName { get; private set; }
-    public SkillType Type { get; private set; }
-    public Sprite SkillIcon { get; private set; }
+    [SerializeField] private string skillName;
+    [SerializeField] private SkillType type;
+    [SerializeField] private Sprite skillIcon;
 
-    public float BaseCoolDown { get; private set; }
-    public float BaseManaCost { get; private set; }
-    public float BaseDamage { get; private set; }
+    [SerializeField] private float baseCoolDown;
+    [SerializeField] private float baseManaCost;
+    [SerializeField] private float baseDamage;
+
+    // Public read access
+    public string SkillName
+    {
+        get => skillName;
+    }
+
+    public SkillType Type
+    {
+        get => type;
+    }
+    
+    public Sprite SkillIcon
+    {
+        get => skillIcon;
+    }
+    
+    public float BaseCoolDown
+    {
+        get => baseCoolDown;
+    }
+   
+    public float BaseManaCost
+    {
+        get => baseManaCost;
+    }
+
+    public float BaseDamage
+    {
+        get => baseDamage;
+    }
 }

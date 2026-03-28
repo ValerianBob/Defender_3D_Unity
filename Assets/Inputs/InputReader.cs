@@ -12,6 +12,11 @@ public class InputReader : MonoBehaviour
 
     public bool MouseRightClick { get; private set; }
 
+    public bool QButton {  get; private set; }
+    public bool WButton { get; private set; }
+    public bool EButton { get; private set; }
+    public bool RButton { get; private set; }
+
     private void Awake()
     {
         if (Instance != null)
@@ -32,6 +37,11 @@ public class InputReader : MonoBehaviour
         _playerInputs.Player.Move.performed += OnMove;
         _playerInputs.Player.Scroll.performed += OnScroll;
         _playerInputs.Player.RightClick.performed += OnRightClick;
+
+        _playerInputs.Player.Skill1.performed += OnQButton;
+        _playerInputs.Player.Skill2.performed += OnWButton;
+        _playerInputs.Player.Skill3.performed += OnEButton;
+        _playerInputs.Player.Skill4.performed += OnRButton;
     }
 
     private void OnDisable()
@@ -39,6 +49,11 @@ public class InputReader : MonoBehaviour
         _playerInputs.Player.Move.performed -= OnMove;
         _playerInputs.Player.Scroll.performed -= OnScroll;
         _playerInputs.Player.RightClick.performed -= OnRightClick;
+
+        _playerInputs.Player.Skill1.performed -= OnQButton;
+        _playerInputs.Player.Skill2.performed -= OnWButton;
+        _playerInputs.Player.Skill3.performed -= OnEButton;
+        _playerInputs.Player.Skill4.performed -= OnRButton;
 
         _playerInputs.Disable();
     }
@@ -58,10 +73,35 @@ public class InputReader : MonoBehaviour
         MouseRightClick = true;
     }
 
+    private void OnQButton(InputAction.CallbackContext context)
+    {
+        QButton = true;
+    }
+
+    private void OnWButton(InputAction.CallbackContext context)
+    {
+        WButton = true;
+    }
+
+    private void OnEButton(InputAction.CallbackContext context)
+    {
+        EButton = true;
+    }
+
+    private void OnRButton(InputAction.CallbackContext context)
+    {
+        RButton = true;
+    }
+
     private void LateUpdate()
     {
         MouseScroll = Vector2.zero;
 
         MouseRightClick = false;
+
+        QButton = false;
+        WButton = false;
+        EButton = false;
+        RButton = false;
     }
 }

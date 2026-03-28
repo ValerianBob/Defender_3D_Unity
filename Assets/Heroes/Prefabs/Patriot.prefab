@@ -125,12 +125,12 @@ MonoBehaviour:
   SkillSlots:
   - skillData: {fileID: 11400000, guid: 6b3e73593b80b8a448ce3deeeb3008f6, type: 2}
     Skill: {fileID: 11400000, guid: eca473cab1243444682045424dd72970, type: 2}
-  - skillData: {fileID: 11400000, guid: 6b3e73593b80b8a448ce3deeeb3008f6, type: 2}
-    Skill: {fileID: 11400000, guid: eca473cab1243444682045424dd72970, type: 2}
-  - skillData: {fileID: 11400000, guid: 6b3e73593b80b8a448ce3deeeb3008f6, type: 2}
-    Skill: {fileID: 11400000, guid: eca473cab1243444682045424dd72970, type: 2}
-  - skillData: {fileID: 11400000, guid: 6b3e73593b80b8a448ce3deeeb3008f6, type: 2}
-    Skill: {fileID: 11400000, guid: eca473cab1243444682045424dd72970, type: 2}
+  - skillData: {fileID: 11400000, guid: 6ecd3ae9a6beebf4580cd8c7fd811d70, type: 2}
+    Skill: {fileID: 11400000, guid: a32db63cacb1e9f4086e0f63e4b98a5d, type: 2}
+  - skillData: {fileID: 11400000, guid: dc687d36a7afeed429c1e785c87997fd, type: 2}
+    Skill: {fileID: 11400000, guid: 4d836d394afe7784590f83c7a48414d9, type: 2}
+  - skillData: {fileID: 11400000, guid: 88c35696173cdf446bce749751153381, type: 2}
+    Skill: {fileID: 11400000, guid: 6d21231d6ddd7c44a85884779b7153a3, type: 2}
 --- !u!114 &7079763918870904872
 MonoBehaviour:
   m_ObjectHideFlags: 0

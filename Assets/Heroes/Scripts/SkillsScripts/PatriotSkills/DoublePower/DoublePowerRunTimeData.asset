@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 060640ebaf782f745ab6d074fa2606ad, type: 3}
-  m_Name: Rage
-  m_EditorClassIdentifier: Assembly-CSharp::RageSkill
-  CoolDown: 10
-  ManaCost: 10
+  m_Script: {fileID: 11500000, guid: b98f6cf9fdca44645a3de5909b83561b, type: 3}
+  m_Name: DoublePowerRunTimeData
+  m_EditorClassIdentifier: Assembly-CSharp::DoublePower
+  CoolDown: 0
+  ManaCost: 0
   Damage: 0
