@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060640ebaf782f745ab6d074fa2606ad, type: 3}
   m_Name: RageRunTimeData
   m_EditorClassIdentifier: Assembly-CSharp::RageSkill
-  CoolDown: 0
-  ManaCost: 0
+  CoolDown: 10
+  ManaCost: 10
   Damage: 0
+  CurrentSkillLevel: 1

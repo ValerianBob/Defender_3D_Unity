@@ -24,6 +24,8 @@ public class HeroAttributes
     public float CurrentXP;
     public float XPForLevelUP;
 
+    public int PointsForLevelUpSckills;
+
     public HeroAttributes(HeroConfig heroConfig)
     {
         HeroName = heroConfig.heroName;

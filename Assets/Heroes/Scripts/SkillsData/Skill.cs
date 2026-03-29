@@ -7,6 +7,9 @@ public abstract class Skill : ScriptableObject
     public float ManaCost;
     public float Damage;
 
+    public static readonly int MaxSkillLevel = 4;
+    public int CurrentSkillLevel;
+
     protected Skill(SkillConfig config)
     {
         CoolDown = config.BaseCoolDown;

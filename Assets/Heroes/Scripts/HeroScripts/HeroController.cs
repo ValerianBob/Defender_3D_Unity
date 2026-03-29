@@ -9,6 +9,7 @@ public class HeroController : MonoBehaviour
     [SerializeField] private HeroConfig Hero_Config;
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
+    private HeroSkills _heroSkills;
 
     private Ray Ray;
     private RaycastHit _hit;
@@ -29,12 +30,44 @@ public class HeroController : MonoBehaviour
 
         _heroMovement = GetComponent<HeroMovement>();
         _heroAttack = GetComponent<HeroAttack>();
+        _heroSkills = GetComponent<HeroSkills>();
     }
 
     private void Update()
     {
         Ray = MainCamera.ScreenPointToRay(InputReader.Instance.MousePosition);
 
+        HandleMovementAndTargeting();
+
+        HandleHeroSkills();
+
+        //Test delete later :
+        if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            ChangeHealth(true, 10f);
+        }
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            ChangeHealth(false, 10f);
+        }
+
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            ChagneMana(false, 10f);
+        }
+        if (Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            ChagneMana(true, 10f);
+        }
+
+        if (Keyboard.current.vKey.wasPressedThisFrame)
+        {
+            GainXp(10f);
+        }
+    }
+
+    private void HandleMovementAndTargeting()
+    {
         if (InputReader.Instance.MouseRightClick)
         {
             if (Physics.Raycast(Ray, out _hit, 100f))
@@ -64,29 +97,49 @@ public class HeroController : MonoBehaviour
 
             _heroAttack.GetRangeToAttack(isInRange, CurrentTarget);
         }
+    }
 
-        //Test delete later :
-        if (Keyboard.current.dKey.wasPressedThisFrame)
+    private void HandleHeroSkills()
+    {
+        if (InputReader.Instance.QButton)
         {
-            ChangeHealth(true, 1f);
-        }
-        if (Keyboard.current.fKey.wasPressedThisFrame)
-        {
-            ChangeHealth(false, 1f);
-        }
+            if (_heroSkills.GetSkillLevel(0) == 0)
+            {
+                Debug.Log("Skill not studied");
+                return;
+            }
 
-        if (Keyboard.current.xKey.wasPressedThisFrame)
-        {
-            ChagneMana(false, 1f);
+            _heroSkills.ExecuteSkillById(0);
         }
-        if (Keyboard.current.cKey.wasPressedThisFrame)
+        if (InputReader.Instance.WButton)
         {
-            ChagneMana(true, 1f);
-        }
+            if (_heroSkills.GetSkillLevel(1) == 0)
+            {
+                Debug.Log("Skill not studied");
+                return;
+            }
 
-        if (Keyboard.current.vKey.wasPressedThisFrame)
+            _heroSkills.ExecuteSkillById(1);
+        }
+        if (InputReader.Instance.EButton)
         {
-            GainXp(1f);
+            if (_heroSkills.GetSkillLevel(2) == 0)
+            {
+                Debug.Log("Skill not studied");
+                return;
+            }
+
+            _heroSkills.ExecuteSkillById(2);
+        }
+        if (InputReader.Instance.RButton)
+        {
+            if (_heroSkills.GetSkillLevel(3) == 0)
+            {
+                Debug.Log("Skill not studied");
+                return;
+            }
+
+            _heroSkills.ExecuteSkillById(3);
         }
     }
     
@@ -136,12 +189,39 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnManaChange?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
     }
 
-    //TODO make that GainXp Up level and other stuff:
     public void GainXp(float XpAmount)
     {
         Hero_Attributes.CurrentXP += XpAmount;
 
+        if (Hero_Attributes.CurrentXP >= Hero_Attributes.XPForLevelUP)
+        {
+            Hero_Attributes.XPForLevelUP *= 1.5f;
+
+            Hero_Attributes.CurrentXP = 0f;
+
+            LevelUp();
+        }
+
         HeroEvents.OnXpGain?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
+    }
+
+    public void LevelUp()
+    {
+        Hero_Attributes.Lv += 1;
+
+        // Change Later : 
+        Hero_Attributes.MaxHealth += 50f;
+        Hero_Attributes.MaxMana += 10f;
+        Hero_Attributes.CurrentDamage += 20f;
+        Hero_Attributes.CurrentMagicDamage += 20f;
+
+        Hero_Attributes.PointsForLevelUpSckills += 1;
+
+        HeroEvents.OnLevelUp?.Invoke(Hero_Attributes.Lv, 
+            _heroSkills.GetSkillLevel(0), 
+            _heroSkills.GetSkillLevel(1), 
+            _heroSkills.GetSkillLevel(2), 
+            _heroSkills.GetSkillLevel(3));
     }
 
     // NavMeshAgent :
@@ -198,32 +278,6 @@ public class HeroController : MonoBehaviour
         CharacterAnimator.SetTrigger(paramName);
     }
 
-    //public void SetAnimatorSpeed(float speed)
-    //{
-    //    CharacterAnimator.speed = speed;
-    //}
-
-    //public AnimationClip GetAnimationClip(string ClipName)
-    //{
-    //    AnimationClip AnimClip = null;
-
-    //    foreach (var clip in CharacterAnimator.runtimeAnimatorController.animationClips)
-    //    {
-    //        if (clip.name == ClipName)
-    //        {
-    //            AnimClip = clip;
-    //            break;
-    //        }
-    //    }
-
-    //    return AnimClip;
-    //}
-
-    //public bool GetAnimState(string name)
-    //{
-    //    return CharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName(name);
-    //}
-
     // Ray :
     public Vector3 GetRayOrigin()
     {
@@ -239,17 +293,4 @@ public class HeroController : MonoBehaviour
     {
         return _hit.point;
     }
-
-    // Rotation :
-    //public void ChangeAgentRotationManualy(bool manualy)
-    //{
-    //    if (manualy)
-    //    {
-    //        _agent.updateRotation = false;
-    //    }
-    //    else
-    //    {
-    //        _agent.updateRotation = true;
-    //    }
-    //}
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkillsController : MonoBehaviour
+public class HeroSkills : MonoBehaviour
 {
     private const int MaxSkillsQuantity = 4;
 
@@ -27,26 +27,28 @@ public class SkillsController : MonoBehaviour
             SkillSlots[i].Skill.Damage = Damage;
             SkillSlots[i].Skill.CoolDown = CoolDown;
             SkillSlots[i].Skill.ManaCost = ManaCost;
+
+            SkillSlots[i].Skill.CurrentSkillLevel = 1;
         }
     }
 
-    private void Update()
-    { 
-        if (InputReader.Instance.QButton)
+    public void ExecuteSkillById(int id)
+    {
+        SkillSlots[id].Skill.Execute();
+    }
+
+    public void LevelUpSkillById(int id)
+    {
+        if (SkillSlots[id].Skill.CurrentSkillLevel == Skill.MaxSkillLevel)
         {
-            SkillSlots[0].Skill.Execute();
+            return;
         }
-        if (InputReader.Instance.WButton)
-        {
-            SkillSlots[1].Skill.Execute();
-        }
-        if (InputReader.Instance.EButton)
-        {
-            SkillSlots[2].Skill.Execute();
-        }
-        if (InputReader.Instance.RButton)
-        {
-            SkillSlots[3].Skill.Execute();
-        }
+
+        SkillSlots[id].Skill.CurrentSkillLevel += 1;
+    }
+
+    public int GetSkillLevel(int id)
+    {
+        return SkillSlots[id].Skill.CurrentSkillLevel;
     }
 }
