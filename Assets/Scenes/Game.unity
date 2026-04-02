@@ -244,8 +244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 4
-  skillLevelId: 2
+  skillId: 3
+  skillLevelId: 1
 --- !u!1 &63457435
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,8 +683,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 2
-  skillLevelId: 3
+  skillId: 1
+  skillLevelId: 2
 --- !u!1 &118135596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,8 +1128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 3
-  skillLevelId: 1
+  skillId: 2
+  skillLevelId: 0
 --- !u!1 &195394794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,8 +1250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 3
-  skillLevelId: 3
+  skillId: 2
+  skillLevelId: 2
 --- !u!1 &238718144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2965,8 +2965,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 2
-  skillLevelId: 1
+  skillId: 1
+  skillLevelId: 0
 --- !u!1 &412447817
 GameObject:
   m_ObjectHideFlags: 0
@@ -3169,8 +3169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 2
-  skillLevelId: 2
+  skillId: 1
+  skillLevelId: 1
 --- !u!1 &442307447
 GameObject:
   m_ObjectHideFlags: 0
@@ -3982,6 +3982,7 @@ GameObject:
   - component: {fileID: 597284282}
   - component: {fileID: 597284281}
   - component: {fileID: 597284283}
+  - component: {fileID: 597284284}
   m_Layer: 0
   m_Name: ObjectScripts
   m_TagString: Untagged
@@ -4028,7 +4029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30262a02a99a9f641b9d8a34bc4703e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
-  _heroController: {fileID: 1693825566}
   HeroNameText: {fileID: 1448774414}
   AttackDamgeText: {fileID: 959457061}
   MagicDamgeText: {fileID: 491934003}
@@ -4065,6 +4065,18 @@ MonoBehaviour:
   - {fileID: 1109878897}
   - {fileID: 169408471}
   PlusIcon: {fileID: 2800000, guid: d0642dc388236ea43b17f9d520467cc7, type: 3}
+--- !u!114 &597284284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597284280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0533d359d66534b86c58fcc0d1e6d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIEvents
 --- !u!1 &613514311
 GameObject:
   m_ObjectHideFlags: 0
@@ -5342,8 +5354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 1
-  skillLevelId: 3
+  skillId: 0
+  skillLevelId: 2
 --- !u!1 &867708359
 GameObject:
   m_ObjectHideFlags: 0
@@ -6220,8 +6232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 1
-  skillLevelId: 2
+  skillId: 0
+  skillLevelId: 1
 --- !u!1 &1032496990
 GameObject:
   m_ObjectHideFlags: 0
@@ -6519,8 +6531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 2
-  skillLevelId: 4
+  skillId: 1
+  skillLevelId: 3
 --- !u!1 &1101897882
 GameObject:
   m_ObjectHideFlags: 0
@@ -8648,8 +8660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 4
-  skillLevelId: 1
+  skillId: 3
+  skillLevelId: 0
 --- !u!1 &1554935864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8801,8 +8813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 1
-  skillLevelId: 4
+  skillId: 0
+  skillLevelId: 3
 --- !u!1 &1620665099
 GameObject:
   m_ObjectHideFlags: 0
@@ -9113,8 +9125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 4
-  skillLevelId: 4
+  skillId: 3
+  skillLevelId: 3
 --- !u!1 &1660765517
 GameObject:
   m_ObjectHideFlags: 0
@@ -9472,17 +9484,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686682454}
   m_CullTransparentMesh: 1
---- !u!114 &1693825566 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 643670593263006890, guid: 5a869825aaff3ba47a15c21d8e8e8c81, type: 3}
-  m_PrefabInstance: {fileID: 7414467169351958237}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7dd55707da8bfe4b910e0ffc9c44bf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeroController
 --- !u!1 &1701748052
 GameObject:
   m_ObjectHideFlags: 0
@@ -9889,8 +9890,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 3
-  skillLevelId: 2
+  skillId: 2
+  skillLevelId: 1
 --- !u!1 &1769314456
 GameObject:
   m_ObjectHideFlags: 0
@@ -10752,8 +10753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 4
-  skillLevelId: 3
+  skillId: 3
+  skillLevelId: 2
 --- !u!1 &2045138673
 GameObject:
   m_ObjectHideFlags: 0
@@ -11060,8 +11061,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 3
-  skillLevelId: 4
+  skillId: 2
+  skillLevelId: 3
 --- !u!1 &2090891142
 GameObject:
   m_ObjectHideFlags: 0
@@ -11376,8 +11377,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8f005e7e51cc84ba873b4bdac82f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpSkillUI
-  skillId: 1
-  skillLevelId: 1
+  skillId: 0
+  skillLevelId: 0
 --- !u!1 &2120440218
 GameObject:
   m_ObjectHideFlags: 0

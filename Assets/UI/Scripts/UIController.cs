@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    //Maybe delete later HeroController :
-    [SerializeField] private HeroController _heroController;
-
     [SerializeField] private TMP_Text HeroNameText;
 
     [SerializeField] private TMP_Text AttackDamgeText;
@@ -53,32 +50,27 @@ public class UIController : MonoBehaviour
             Skill_4_LevelUp_Icons
         };
 
-        HeroNameText.text = _heroController.Hero_Attributes.HeroName;
-
-        UpdateAttributesInfo();
-
-        ChangeHealthInfo(_heroController.Hero_Attributes.CurrentHealth, _heroController.Hero_Attributes.MaxHealth);
-        ChangeManaInfo(_heroController.Hero_Attributes.CurrentMana, _heroController.Hero_Attributes.MaxMana);
-
-        ChangeXpInfo(_heroController.Hero_Attributes.CurrentXP, _heroController.Hero_Attributes.XPForLevelUP);
-
         SetSkillsLevelUpIconsDefault();
     }
 
     private void OnEnable()
     {
-        HeroEvents.OnHealthChange += ChangeHealthInfo;
-        HeroEvents.OnManaChange += ChangeManaInfo;
-        HeroEvents.OnXpGain += ChangeXpInfo;
-        HeroEvents.OnLevelUp += ChangeLevelUp;
+        HeroEvents.OnHealthChangeHenlder += ChangeHealthInfo;
+        HeroEvents.OnManaChangeHendler += ChangeManaInfo;
+
+        HeroEvents.OnXpGainHendler += ChangeXpInfo;
+        HeroEvents.OnLevelUpHendler += ChangeLevelUpInfo;
+        HeroEvents.OnSkillLevelUpHendler += LevelUpSkill;
     }
 
     private void OnDisable()
     {
-        HeroEvents.OnHealthChange -= ChangeHealthInfo;
-        HeroEvents.OnManaChange -= ChangeManaInfo;
-        HeroEvents.OnXpGain -= ChangeXpInfo;
-        HeroEvents.OnLevelUp -= ChangeLevelUp;
+        HeroEvents.OnHealthChangeHenlder -= ChangeHealthInfo;
+        HeroEvents.OnManaChangeHendler -= ChangeManaInfo;
+
+        HeroEvents.OnXpGainHendler -= ChangeXpInfo;
+        HeroEvents.OnLevelUpHendler -= ChangeLevelUpInfo;
+        HeroEvents.OnSkillLevelUpHendler -= LevelUpSkill;
     }
 
     public void ChangeHealthInfo(float currentHealth, float maxHealth)
@@ -102,58 +94,75 @@ public class UIController : MonoBehaviour
         XPText.text = $"{currentXp} / {XpForLevelUp}";
     }
 
-    public void ChangeLevelUp(int Lv, int LevelOfSkill_1, int LevelOfSkill_2, int LevelOfSkill_3, int LevelOfSkill_4)
+    public void ChangeLevelUpInfo(int[] LevelsOfSkills, HeroAttributes CurrentHeroAttributes)
     {
-        UpdateAttributesInfo();
+        UpdateAttributesInfo(CurrentHeroAttributes);
 
-        ChangeHealthInfo(_heroController.Hero_Attributes.CurrentHealth, _heroController.Hero_Attributes.MaxHealth);
-        ChangeManaInfo(_heroController.Hero_Attributes.CurrentMana, _heroController.Hero_Attributes.MaxMana);
-
-        ChangeSkillsLevelUp(LevelOfSkill_1, LevelOfSkill_2, LevelOfSkill_3, LevelOfSkill_4);
+        if (CurrentHeroAttributes.Lv > 1)
+        {
+            ChangeSkillsLevelUp(LevelsOfSkills);
+        }
     }
 
-    //todo
-    public void ChangeSkillsLevelUp(int LevelOfSkill_1, int LevelOfSkill_2, int LevelOfSkill_3, int LevelOfSkill_4)
+    public void ChangeSkillsLevelUp(int[] LevelsOfSkills)
     {
-        int[] SkillLevels = 
-        {
-            LevelOfSkill_1,
-            LevelOfSkill_2,
-            LevelOfSkill_3,
-            LevelOfSkill_4
-        };
-
         for (int i = 0; i < Skills_LevelUp_Icons.Length; i++)
         {
-            int level = SkillLevels[i];
+            int level = LevelsOfSkills[i];
 
-            Skills_LevelUp_Icons[i][level].texture = PlusIcon;
-            Skills_LevelUp_Icons[i][level].color = UppedSkillIcon;
+            if (level < Skills_LevelUp_Icons[i].Length)
+            {
+                Skills_LevelUp_Icons[i][level].texture = PlusIcon;
+                Skills_LevelUp_Icons[i][level].color = UppedSkillIcon;
+            }
         }
     }
 
-    public void LevelUpSkill(int SkillId, int SkillLevelId)
+    public void LevelUpSkill(int SkillId, int SkillLevelId, int PointsForLevelUpSkill, int[] HeroLevelsOfSkills)
     {
-        if (SkillId == 1)
+        if (PointsForLevelUpSkill > 0)
         {
-            Skill_1_LevelUp_Icons[SkillLevelId].texture = null;
+            ChangeSkillsLevelUp(HeroLevelsOfSkills);
         }
+        else
+        {
+            ClearAllSkillsLevelUps(HeroLevelsOfSkills);
+        }
+
+        Skills_LevelUp_Icons[SkillId][SkillLevelId].texture = null;
+        Skills_LevelUp_Icons[SkillId][SkillLevelId].color = UppedSkillIcon;
     }
 
-    public void UpdateAttributesInfo()
+    public void UpdateAttributesInfo(HeroAttributes currentHeroAttributes)
     {
-        AttackDamgeText.text = _heroController.Hero_Attributes.CurrentDamage.ToString();
-        MagicDamgeText.text = _heroController.Hero_Attributes.CurrentMagicDamage.ToString();
+        HeroNameText.text = currentHeroAttributes.HeroName;
 
-        AttackRangeText.text = _heroController.Hero_Attributes.CurrentAttackRange.ToString();
+        AttackDamgeText.text = currentHeroAttributes.CurrentDamage.ToString();
+        MagicDamgeText.text = currentHeroAttributes.CurrentMagicDamage.ToString();
 
-        MoveSpeedText.text = _heroController.Hero_Attributes.CurrentMoveSpeed.ToString();
-        AttackSpeedText.text = _heroController.Hero_Attributes.CurrentAttackSpeed.ToString();
+        AttackRangeText.text = currentHeroAttributes.CurrentAttackRange.ToString();
 
-        HealthGainText.text = $"+{_heroController.Hero_Attributes.HealthGain}";
-        ManaGainText.text = $"+{_heroController.Hero_Attributes.ManaGain}";
+        MoveSpeedText.text = currentHeroAttributes.CurrentMoveSpeed.ToString();
+        AttackSpeedText.text = currentHeroAttributes.CurrentAttackSpeed.ToString();
 
-        LvText.text = $"Lv. {_heroController.Hero_Attributes.Lv}";
+        HealthGainText.text = $"+{currentHeroAttributes.HealthGain}";
+        ManaGainText.text = $"+{currentHeroAttributes.ManaGain}";
+
+        LvText.text = $"Lv. {currentHeroAttributes.Lv}";
+    }
+
+    public void ClearAllSkillsLevelUps(int[] HeroLevelsOfSkills)
+    {
+        for (int i = 0; i < Skills_LevelUp_Icons.Length; i++)
+        {
+            for (int j = HeroLevelsOfSkills[i]; j < Skills_LevelUp_Icons[i].Length; j++)
+            {
+                Skills_LevelUp_Icons[i][j].texture = null;
+                Skills_LevelUp_Icons[i][j].color = EmptySkillIcon;
+            }
+        }
+
+        Debug.Log("Skills level up ui was cleaned");
     }
 
     public void SetSkillsLevelUpIconsDefault()

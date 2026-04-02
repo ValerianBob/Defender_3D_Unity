@@ -8,9 +8,9 @@ public class HeroMovement : MonoBehaviour
 
     private float RotationSpeed = 20f;
 
-    private void Start()
+    public void Init(HeroController heroController)
     {
-        _heroController = GetComponent<HeroController>();
+        _heroController = heroController;
     }
 
     private void Update()

@@ -18,6 +18,8 @@ public class LevelUpSkillUI : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"Skill {skillId}, Level {skillLevelId}");
+        Debug.Log($"You trying to improve Skill :{skillId + 1} to Level :{skillLevelId + 1}");
+
+        UIEvents.OnLevelUpUIHenlder?.Invoke(skillId, skillLevelId);
     }
 }

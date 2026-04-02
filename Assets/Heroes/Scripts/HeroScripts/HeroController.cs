@@ -7,6 +7,7 @@ public class HeroController : MonoBehaviour
     [SerializeField] private Camera MainCamera;
     [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
+
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
     private HeroSkills _heroSkills;
@@ -31,6 +32,30 @@ public class HeroController : MonoBehaviour
         _heroMovement = GetComponent<HeroMovement>();
         _heroAttack = GetComponent<HeroAttack>();
         _heroSkills = GetComponent<HeroSkills>();
+
+        _heroMovement.Init(this);
+        _heroAttack.Init(this);
+        _heroSkills.Init(this);
+    }
+
+    private void Start()
+    {
+        // Maybe change later :
+
+        //Update UI
+        int[] heroLevelOfSkills = {
+            _heroSkills.GetSkillLevel(0),
+            _heroSkills.GetSkillLevel(1),
+            _heroSkills.GetSkillLevel(2),
+            _heroSkills.GetSkillLevel(3)
+        };
+
+        HeroEvents.OnLevelUpHendler?.Invoke(heroLevelOfSkills, Hero_Attributes);
+
+        HeroEvents.OnXpGainHendler?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
+
+        HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
+        HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
     }
 
     private void Update()
@@ -44,25 +69,26 @@ public class HeroController : MonoBehaviour
         //Test delete later :
         if (Keyboard.current.dKey.wasPressedThisFrame)
         {
-            ChangeHealth(true, 10f);
+            ChangeHealth(true, 20f);
         }
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {
-            ChangeHealth(false, 10f);
+            ChangeHealth(false, 20f);
         }
 
         if (Keyboard.current.xKey.wasPressedThisFrame)
         {
-            ChagneMana(false, 10f);
+            ChagneMana(false, 20f);
         }
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
-            ChagneMana(true, 10f);
+            ChagneMana(true, 20f);
         }
 
         if (Keyboard.current.vKey.wasPressedThisFrame)
         {
-            GainXp(10f);
+            GainXp(50f);
+            Debug.Log($"{_heroSkills.GetSkillLevel(0)},{_heroSkills.GetSkillLevel(1)},{_heroSkills.GetSkillLevel(2)},{_heroSkills.GetSkillLevel(3)}");
         }
     }
 
@@ -163,7 +189,7 @@ public class HeroController : MonoBehaviour
             Hero_Attributes.CurrentHealth = Hero_Attributes.MaxHealth;
         }
 
-        HeroEvents.OnHealthChange?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
+        HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
     }
 
     public void ChagneMana(bool isGettingMana, float magaAmount)
@@ -186,7 +212,7 @@ public class HeroController : MonoBehaviour
             Hero_Attributes.CurrentMana = Hero_Attributes.MaxMana;
         }
 
-        HeroEvents.OnManaChange?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+        HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
     }
 
     public void GainXp(float XpAmount)
@@ -196,13 +222,14 @@ public class HeroController : MonoBehaviour
         if (Hero_Attributes.CurrentXP >= Hero_Attributes.XPForLevelUP)
         {
             Hero_Attributes.XPForLevelUP *= 1.5f;
+            Hero_Attributes.XPForLevelUP = Mathf.Round(Hero_Attributes.XPForLevelUP * 10f) / 10f;
 
             Hero_Attributes.CurrentXP = 0f;
 
             LevelUp();
         }
 
-        HeroEvents.OnXpGain?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
+        HeroEvents.OnXpGainHendler?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
     }
 
     public void LevelUp()
@@ -217,11 +244,17 @@ public class HeroController : MonoBehaviour
 
         Hero_Attributes.PointsForLevelUpSckills += 1;
 
-        HeroEvents.OnLevelUp?.Invoke(Hero_Attributes.Lv, 
-            _heroSkills.GetSkillLevel(0), 
-            _heroSkills.GetSkillLevel(1), 
-            _heroSkills.GetSkillLevel(2), 
-            _heroSkills.GetSkillLevel(3));
+        int[] heroLevelOfSkills = {
+            _heroSkills.GetSkillLevel(0),
+            _heroSkills.GetSkillLevel(1),
+            _heroSkills.GetSkillLevel(2),
+            _heroSkills.GetSkillLevel(3)
+        };
+
+        HeroEvents.OnLevelUpHendler?.Invoke(heroLevelOfSkills, Hero_Attributes);
+
+        HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
+        HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
     }
 
     // NavMeshAgent :

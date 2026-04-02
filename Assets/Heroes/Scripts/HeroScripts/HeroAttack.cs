@@ -9,9 +9,9 @@ public class HeroAttack : MonoBehaviour
 
     public TMP_Text text;
 
-    private void Start()
+    public void Init(HeroController heroController)
     {
-        _heroController = GetComponent<HeroController>();
+        _heroController = heroController;
     }
 
     public void GetRangeToAttack(bool isInRange, GameObject target)
