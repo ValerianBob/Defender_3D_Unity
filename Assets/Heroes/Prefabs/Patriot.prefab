@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5888186909063317742}
   - component: {fileID: 5803540193978883524}
   - component: {fileID: 8368142984591927038}
+  - component: {fileID: 7381859825512352936}
   - component: {fileID: 7079763918870904872}
   m_Layer: 0
   m_Name: Patriot
@@ -76,13 +77,22 @@ MonoBehaviour:
   CharacterAnimator: {fileID: 5643677658943807902}
   Hero_Config: {fileID: 11400000, guid: a3fd3a5d87a60f34d96b138f4afb5bbc, type: 2}
   Hero_Attributes:
+    HeroName: 
     CurrentDamage: 0
     CurrentMagicDamage: 0
     CurrentAttackRange: 0
     CurrentMoveSpeed: 0
     CurrentAttackSpeed: 0
+    MaxHealth: 0
+    MaxMana: 0
     CurrentHealth: 0
     CurrentMana: 0
+    HealthGain: 0
+    ManaGain: 0
+    Lv: 0
+    CurrentXP: 0
+    XPForLevelUP: 0
+    PointsForLevelUpSckills: 0
   CurrentTarget: {fileID: 0}
 --- !u!114 &5888186909063317742
 MonoBehaviour:
@@ -131,6 +141,18 @@ MonoBehaviour:
     Skill: {fileID: 11400000, guid: 4d836d394afe7784590f83c7a48414d9, type: 2}
   - skillData: {fileID: 11400000, guid: 88c35696173cdf446bce749751153381, type: 2}
     Skill: {fileID: 11400000, guid: 6d21231d6ddd7c44a85884779b7153a3, type: 2}
+--- !u!114 &7381859825512352936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6585120819423267336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff0263503b5e1b4a9250cb6d3128580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeroInventory
 --- !u!114 &7079763918870904872
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class HeroController : MonoBehaviour
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
     private HeroSkills _heroSkills;
+    private HeroInventory _heroInventory;
 
     private Ray Ray;
     private RaycastHit _hit;
@@ -32,10 +33,12 @@ public class HeroController : MonoBehaviour
         _heroMovement = GetComponent<HeroMovement>();
         _heroAttack = GetComponent<HeroAttack>();
         _heroSkills = GetComponent<HeroSkills>();
+        _heroInventory = GetComponent<HeroInventory>();
 
         _heroMovement.Init(this);
         _heroAttack.Init(this);
         _heroSkills.Init(this);
+        _heroInventory.Init(this);
     }
 
     private void Start()
@@ -56,6 +59,8 @@ public class HeroController : MonoBehaviour
 
         HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
         HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+
+        HeroEvents.OnHeroSpawnHendler?.Invoke(_heroSkills.GetAllSkillsData());
     }
 
     private void Update()
@@ -113,6 +118,22 @@ public class HeroController : MonoBehaviour
                 else if (_hit.collider.gameObject.CompareTag("Enemy"))
                 {
                     CurrentTarget = _hit.collider.gameObject;
+                }
+                else if (_hit.collider.gameObject.CompareTag("Item"))
+                {
+                    // TODO :
+                    GameObject CurrentItem = _hit.collider.gameObject;
+
+                    if (CurrentItem != null)
+                    {
+                        ItemController itemController = CurrentItem.GetComponent<ItemController>();
+
+                        if (itemController != null)
+                        {
+                            ItemConfig itemData = itemController.GetItemData();
+                            _heroInventory.AddItemInInventory(itemData);
+                        }
+                    }
                 }
             }
         }

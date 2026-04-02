@@ -28,6 +28,31 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private Slider XpSlider;
 
+    [System.Serializable]
+    private struct SkillPanel
+    {
+        [SerializeField] private RawImage skillIcon;
+        [SerializeField] private GameObject keyPanel;
+
+        public Texture SkillTexture
+        {
+            set
+            {
+                if (skillIcon != null)
+                {
+                    skillIcon.texture = value;
+                }
+            }
+        }
+
+        public void SetKeyPanelActive(bool isEnable)
+        {
+            keyPanel.SetActive(isEnable);
+        }
+    }
+
+    [SerializeField] private SkillPanel[] SkillsPanels;
+
     [SerializeField] private RawImage[] Skill_1_LevelUp_Icons;
     [SerializeField] private RawImage[] Skill_2_LevelUp_Icons;
     [SerializeField] private RawImage[] Skill_3_LevelUp_Icons;
@@ -49,8 +74,6 @@ public class UIController : MonoBehaviour
             Skill_3_LevelUp_Icons,
             Skill_4_LevelUp_Icons
         };
-
-        SetSkillsLevelUpIconsDefault();
     }
 
     private void OnEnable()
@@ -61,6 +84,8 @@ public class UIController : MonoBehaviour
         HeroEvents.OnXpGainHendler += ChangeXpInfo;
         HeroEvents.OnLevelUpHendler += ChangeLevelUpInfo;
         HeroEvents.OnSkillLevelUpHendler += LevelUpSkill;
+
+        HeroEvents.OnHeroSpawnHendler += SetSkillsPanels;
     }
 
     private void OnDisable()
@@ -71,6 +96,8 @@ public class UIController : MonoBehaviour
         HeroEvents.OnXpGainHendler -= ChangeXpInfo;
         HeroEvents.OnLevelUpHendler -= ChangeLevelUpInfo;
         HeroEvents.OnSkillLevelUpHendler -= LevelUpSkill;
+
+        HeroEvents.OnHeroSpawnHendler -= SetSkillsPanels;
     }
 
     public void ChangeHealthInfo(float currentHealth, float maxHealth)
@@ -151,6 +178,19 @@ public class UIController : MonoBehaviour
         LvText.text = $"Lv. {currentHeroAttributes.Lv}";
     }
 
+    public void SetSkillsPanels(SkillConfig[] SkillsData)
+    {
+        for (int i = 0; i < SkillsPanels.Length; i++)
+        {
+            SkillsPanels[i].SkillTexture = SkillsData[i].SkillIcon.texture;
+            
+            if (SkillsData[i].Type == SkillType.Passive)
+            {
+                SkillsPanels[i].SetKeyPanelActive(false);
+            }
+        }
+    }
+
     public void ClearAllSkillsLevelUps(int[] HeroLevelsOfSkills)
     {
         for (int i = 0; i < Skills_LevelUp_Icons.Length; i++)
@@ -161,27 +201,5 @@ public class UIController : MonoBehaviour
                 Skills_LevelUp_Icons[i][j].color = EmptySkillIcon;
             }
         }
-
-        Debug.Log("Skills level up ui was cleaned");
     }
-
-    public void SetSkillsLevelUpIconsDefault()
-    {
-        foreach(var icon in Skill_1_LevelUp_Icons)
-        {
-            icon.color = EmptySkillIcon;
-        }
-        foreach (var icon in Skill_2_LevelUp_Icons)
-        {
-            icon.color = EmptySkillIcon;
-        }
-        foreach (var icon in Skill_3_LevelUp_Icons)
-        {
-            icon.color = EmptySkillIcon;
-        }
-        foreach (var icon in Skill_4_LevelUp_Icons)
-        {
-            icon.color = EmptySkillIcon;
-        }
-    }   
 }

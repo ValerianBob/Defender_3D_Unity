@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dfe710338998974382d8e8629b29fc9, type: 3}
-  m_Name: EnergyStealData
+  m_Name: DoublePowerData
   m_EditorClassIdentifier: Assembly-CSharp::SkillConfig
-  skillName: Energy Steal
-  type: 1
-  skillIcon: {fileID: 0}
-  baseCoolDown: 0
-  baseManaCost: 0
+  skillName: Double Power
+  type: 0
+  skillIcon: {fileID: 21300000, guid: bc323c3e76c1d264d8cfa9f611e68d4f, type: 3}
+  baseCoolDown: 30
+  baseManaCost: 50
   baseDamage: 0

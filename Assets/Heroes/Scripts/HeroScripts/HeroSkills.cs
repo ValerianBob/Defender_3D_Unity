@@ -82,6 +82,18 @@ public class HeroSkills : MonoBehaviour
         return SkillSlots[id].Skill.CurrentSkillLevel;
     }
 
+    public SkillConfig[] GetAllSkillsData()
+    {
+        SkillConfig[] SkillDataToSend = new SkillConfig[MaxSkillsQuantity];
+
+        for (int i = 0; i < MaxSkillsQuantity; i++)
+        {
+            SkillDataToSend[i] = SkillSlots[i].SkillData;
+        }
+
+        return SkillDataToSend;
+    }
+
     private void OnEnable()
     {
         UIEvents.OnLevelUpUIHenlder += LevelUpSkillById;

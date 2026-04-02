@@ -4,6 +4,9 @@ public static class HeroEvents
 {
     public static Action OnAttack;
 
+    public delegate void OnHeroSpawn(SkillConfig[] SkillsData);
+    public static OnHeroSpawn OnHeroSpawnHendler;
+
     public delegate void OnHealthChange(float CurrentHealth, float MaxHealth);
     public static OnHealthChange OnHealthChangeHenlder;
 
