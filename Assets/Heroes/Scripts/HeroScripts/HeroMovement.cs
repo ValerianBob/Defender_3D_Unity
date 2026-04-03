@@ -53,11 +53,6 @@ public class HeroMovement : MonoBehaviour
             _heroController.SetAgentStop(false);
         }
 
-        if (_heroController.CurrentTarget == null)
-        {
-            Instantiate(Marker, target, Marker.transform.rotation);
-        }
-
         _heroController.SetAgentDestination(target);
     }
 

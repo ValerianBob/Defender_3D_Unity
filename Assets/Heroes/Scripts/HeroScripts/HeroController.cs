@@ -8,6 +8,8 @@ public class HeroController : MonoBehaviour
     [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
 
+    [SerializeField] private GameObject Marker;
+
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
     private HeroSkills _heroSkills;
@@ -53,14 +55,16 @@ public class HeroController : MonoBehaviour
             _heroSkills.GetSkillLevel(3)
         };
 
-        HeroEvents.OnLevelUpHendler?.Invoke(heroLevelOfSkills, Hero_Attributes);
+        HeroEvents.OnHeroSelectHendler?.Invoke(_heroSkills.GetAllSkillsData(), heroLevelOfSkills, Hero_Attributes, _heroInventory);
 
-        HeroEvents.OnXpGainHendler?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
+        //HeroEvents.OnLevelUpHendler?.Invoke(heroLevelOfSkills, Hero_Attributes);
 
-        HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
-        HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+        //HeroEvents.OnXpGainHendler?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
 
-        HeroEvents.OnHeroSpawnHendler?.Invoke(_heroSkills.GetAllSkillsData());
+        //HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
+        //HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+
+        //HeroEvents.OnHeroSpawnHendler?.Invoke(_heroSkills.GetAllSkillsData());
     }
 
     private void Update()
@@ -95,6 +99,13 @@ public class HeroController : MonoBehaviour
             GainXp(50f);
             Debug.Log($"{_heroSkills.GetSkillLevel(0)},{_heroSkills.GetSkillLevel(1)},{_heroSkills.GetSkillLevel(2)},{_heroSkills.GetSkillLevel(3)}");
         }
+
+        if (Keyboard.current.zKey.wasPressedThisFrame)
+        {
+            _heroInventory.SetGold(true, 100);
+
+            HeroEvents.OnGoldGainHendler?.Invoke(_heroInventory.GetGold());
+        }
     }
 
     private void HandleMovementAndTargeting()
@@ -114,26 +125,22 @@ public class HeroController : MonoBehaviour
                     _agent.speed = Hero_Attributes.CurrentMoveSpeed;
 
                     _heroMovement.Move(_hit.point);
+
+                    Instantiate(Marker, _hit.point, Marker.transform.rotation);
                 }
                 else if (_hit.collider.gameObject.CompareTag("Enemy"))
                 {
+                    _agent.speed = Hero_Attributes.CurrentMoveSpeed;
+
                     CurrentTarget = _hit.collider.gameObject;
                 }
                 else if (_hit.collider.gameObject.CompareTag("Item"))
                 {
-                    // TODO :
-                    GameObject CurrentItem = _hit.collider.gameObject;
+                    CurrentTarget = null;
 
-                    if (CurrentItem != null)
-                    {
-                        ItemController itemController = CurrentItem.GetComponent<ItemController>();
+                    _agent.speed = Hero_Attributes.CurrentMoveSpeed;
 
-                        if (itemController != null)
-                        {
-                            ItemConfig itemData = itemController.GetItemData();
-                            _heroInventory.AddItemInInventory(itemData);
-                        }
-                    }
+                    _heroMovement.Move(_hit.point);
                 }
             }
         }
@@ -277,7 +284,7 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
         HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
     }
-
+    
     // NavMeshAgent :
     public float GetAgentMagnitude()
     {
@@ -346,5 +353,28 @@ public class HeroController : MonoBehaviour
     public Vector3 GetRayHitPoint()
     {
         return _hit.point;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            ItemController item = other.GetComponent<ItemController>();
+
+            int ItemsCountInInventory = _heroInventory.GetItemsCount();
+
+            if (item != null && ItemsCountInInventory < _heroInventory.GetMaxItemsInInventory())
+            {
+                _heroInventory.AddItemInInventory(item.GetItemData());
+
+                item.DeleteItem();
+
+                HeroEvents.OnItemTakeHendler?.Invoke(_heroInventory.GetItems());
+            }
+            else
+            {
+                Debug.Log("Can't take item because Inventory is full");
+            }
+        }
     }
 }

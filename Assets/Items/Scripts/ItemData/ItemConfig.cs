@@ -24,4 +24,14 @@ public class ItemConfig : ScriptableObject
 
     [SerializeField] private float HealthGain;
     [SerializeField] private float ManaGain;
+
+    public string GetItemName()
+    {
+        return itemName;
+    }
+
+    public Sprite GetItemIcon()
+    {
+        return itemIcon;
+    }
 }

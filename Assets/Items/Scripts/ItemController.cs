@@ -8,4 +8,9 @@ public class ItemController : MonoBehaviour
     {
         return ItemData;
     }
+
+    public void DeleteItem()
+    {
+        Destroy(gameObject);
+    }
 }
