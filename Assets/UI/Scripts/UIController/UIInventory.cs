@@ -9,14 +9,17 @@ public class UIInventory : MonoBehaviour
     [SerializeField] private TMP_Text GoldText;
 
     private Color SeeIconColor = new Color(255, 255, 255, 255);
+    private Color EmptyIconColor = new Color(0, 0, 0, 0);
 
-    public void SetGold(int gold)
+    private void SetGold(HeroEventsArgs HeroArgs)
     {
-        GoldText.text = gold.ToString();
+        GoldText.text = HeroArgs.CurrentHeroInventory.GetGold().ToString();
     }
 
-    public void SetItemsIcons(ItemConfig[] items)
+    private void SetItemsIcons(HeroEventsArgs HeroArgs)
     {
+        ItemConfig[] items = HeroArgs.CurrentHeroInventory.GetItems();
+
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] != null)
@@ -24,26 +27,39 @@ public class UIInventory : MonoBehaviour
                 ItemIcons[i].color = SeeIconColor;
                 ItemIcons[i].texture = items[i].GetItemIcon().texture;
             }
+            else
+            {
+                ItemIcons[i].color = EmptyIconColor;
+                ItemIcons[i].texture = null;
+            }
         }
     }
 
-    private void OnHeroSelectWrapper(SkillConfig[] SkillsData, int[] LevelsOfSkills, HeroAttributes currentHeroAttributes, 
-        HeroInventory heroInventory)
+    private void UpdateInventoryInfo(HeroEventsArgs HeroArgs)
     {
-        SetGold(heroInventory.GetGold());
+        SetGold(HeroArgs);
+        SetItemsIcons(HeroArgs);
     }
 
     private void OnEnable()
     {
-        HeroEvents.OnItemTakeHendler += SetItemsIcons;
+        HeroEvents.OnHeroSelectHandler += UpdateInventoryInfo;
 
-        HeroEvents.OnGoldGainHendler += SetGold;
+        HeroEvents.OnItemTakeHandler += SetItemsIcons;
+
+        HeroEvents.OnGoldGainHandler += SetGold;
+
+        HeroEvents.OnItemDropHandler += SetItemsIcons;
     }
 
     private void OnDisable()
     {
-        HeroEvents.OnItemTakeHendler -= SetItemsIcons;
+        HeroEvents.OnHeroSelectHandler -= UpdateInventoryInfo;
 
-        HeroEvents.OnGoldGainHendler -= SetGold;
+        HeroEvents.OnItemTakeHandler -= SetItemsIcons;
+
+        HeroEvents.OnGoldGainHandler -= SetGold;
+
+        HeroEvents.OnItemDropHandler -= SetItemsIcons;
     }
 }

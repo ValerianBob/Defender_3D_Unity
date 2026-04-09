@@ -9,6 +9,7 @@ TagManager:
   - Environment
   - Floor
   - Item
+  - ItemSlot
   layers:
   - Default
   - TransparentFX

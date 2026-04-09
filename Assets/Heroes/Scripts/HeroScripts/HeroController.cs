@@ -13,7 +13,9 @@ public class HeroController : MonoBehaviour
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
     private HeroSkills _heroSkills;
+    
     private HeroInventory _heroInventory;
+    public HeroInventory HeroInventory => _heroInventory;
 
     private Ray Ray;
     private RaycastHit _hit;
@@ -45,26 +47,10 @@ public class HeroController : MonoBehaviour
 
     private void Start()
     {
-        // Maybe change later :
-
         //Update UI
-        int[] heroLevelOfSkills = {
-            _heroSkills.GetSkillLevel(0),
-            _heroSkills.GetSkillLevel(1),
-            _heroSkills.GetSkillLevel(2),
-            _heroSkills.GetSkillLevel(3)
-        };
-
-        HeroEvents.OnHeroSelectHendler?.Invoke(_heroSkills.GetAllSkillsData(), heroLevelOfSkills, Hero_Attributes, _heroInventory);
-
-        //HeroEvents.OnLevelUpHendler?.Invoke(heroLevelOfSkills, Hero_Attributes);
-
-        //HeroEvents.OnXpGainHendler?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
-
-        //HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
-        //HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
-
-        //HeroEvents.OnHeroSpawnHendler?.Invoke(_heroSkills.GetAllSkillsData());
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroSkills.GetAllSkillsData(), Hero_Attributes, _heroInventory,
+            _heroSkills.GetAllSkillsLevels());
+        HeroEvents.OnHeroSelectHandler?.Invoke(HeroArgs);
     }
 
     private void Update()
@@ -104,7 +90,9 @@ public class HeroController : MonoBehaviour
         {
             _heroInventory.SetGold(true, 100);
 
-            HeroEvents.OnGoldGainHendler?.Invoke(_heroInventory.GetGold());
+            HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
+
+            HeroEvents.OnGoldGainHandler?.Invoke(HeroArgs);
         }
     }
 
@@ -217,7 +205,8 @@ public class HeroController : MonoBehaviour
             Hero_Attributes.CurrentHealth = Hero_Attributes.MaxHealth;
         }
 
-        HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(Hero_Attributes);
+        HeroEvents.OnHealthChangeHandler?.Invoke(HeroArgs);
     }
 
     public void ChagneMana(bool isGettingMana, float magaAmount)
@@ -240,7 +229,8 @@ public class HeroController : MonoBehaviour
             Hero_Attributes.CurrentMana = Hero_Attributes.MaxMana;
         }
 
-        HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(Hero_Attributes);
+        HeroEvents.OnManaChangeHandler?.Invoke(HeroArgs);
     }
 
     public void GainXp(float XpAmount)
@@ -257,7 +247,8 @@ public class HeroController : MonoBehaviour
             LevelUp();
         }
 
-        HeroEvents.OnXpGainHendler?.Invoke(Hero_Attributes.CurrentXP, Hero_Attributes.XPForLevelUP);
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(Hero_Attributes);
+        HeroEvents.OnXpGainHandler?.Invoke(HeroArgs);
     }
 
     public void LevelUp()
@@ -272,19 +263,94 @@ public class HeroController : MonoBehaviour
 
         Hero_Attributes.PointsForLevelUpSckills += 1;
 
-        int[] heroLevelOfSkills = {
-            _heroSkills.GetSkillLevel(0),
-            _heroSkills.GetSkillLevel(1),
-            _heroSkills.GetSkillLevel(2),
-            _heroSkills.GetSkillLevel(3)
-        };
-
-        HeroEvents.OnLevelUpHendler?.Invoke(heroLevelOfSkills, Hero_Attributes);
-
-        HeroEvents.OnHealthChangeHenlder?.Invoke(Hero_Attributes.CurrentHealth, Hero_Attributes.MaxHealth);
-        HeroEvents.OnManaChangeHendler?.Invoke(Hero_Attributes.CurrentMana, Hero_Attributes.MaxMana);
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroSkills.GetAllSkillsData(), Hero_Attributes, _heroInventory, 
+            _heroSkills.GetAllSkillsLevels());
+        HeroEvents.OnLevelUpHandler?.Invoke(HeroArgs);
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            ItemController item = other.GetComponent<ItemController>();
+
+            int ItemsCountInInventory = _heroInventory.GetItemsCount();
+
+            if (item != null && ItemsCountInInventory < _heroInventory.GetMaxItemsInInventory())
+            {
+                _heroInventory.AddItemInInventory(item.GetItemData());
+
+                item.DeleteItem();
+
+                HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
+                HeroEvents.OnItemTakeHandler?.Invoke(HeroArgs);
+            }
+            else
+            {
+                Debug.Log("Can't take item because Inventory is full");
+            }
+        }
+    }
+
+    //TODO make that items spawn on place it dropped
+    public void TryToDropItemFromInventory(int ItemIdToDrop)
+    {
+        if (Physics.Raycast(Ray, out _hit, 100f))
+        {
+            if (_hit.collider.gameObject.CompareTag("Environment"))
+            {
+                Debug.Log($"Can't drop item on :{_hit.collider.gameObject.tag}");
+            }
+            else if (_hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                Debug.Log($"Can't drop item on :{_hit.collider.gameObject.tag}");
+            }
+            else if (_hit.collider.gameObject.CompareTag("Item"))
+            {
+                Debug.Log($"Can't drop item on :{_hit.collider.gameObject.tag}");
+            }
+            else if (_hit.collider.gameObject.CompareTag("Hero"))
+            {
+                Debug.Log($"Can't drop item on :{_hit.collider.gameObject.tag}");
+            }
+            else if (_hit.collider.gameObject.CompareTag("Floor"))
+            {
+                GameObject ItemPrefab = _heroInventory.GetItemPrefabById(ItemIdToDrop);
+
+                Instantiate(ItemPrefab, _hit.point, ItemPrefab.transform.rotation);
+
+                _heroInventory.RemoveItemFromInventory(ItemIdToDrop);
+
+                HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
+                HeroEvents.OnItemDropHandler?.Invoke(HeroArgs);
+
+                Debug.Log($"Item droped on :{_hit.collider.gameObject.tag}");
+            }
+        }
+    }
+
+    public void TryToSwapItemsInInventory(int DraggedItemId, int DroppedOnItemId)
+    {
+        _heroInventory.SpawItemInInventory(DraggedItemId, DroppedOnItemId);
+
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
+        HeroEvents.OnItemDropHandler?.Invoke(HeroArgs);
+
+        Debug.Log($"Items swapped");
+    }
+
+    public void OnEnable()
+    {
+        UIEvents.OnItemDropUIHandler += TryToDropItemFromInventory;
+        UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
+    }
+
+    public void OnDisable()
+    {
+        UIEvents.OnItemDropUIHandler -= TryToDropItemFromInventory;
+        UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
+    }
+
     // NavMeshAgent :
     public float GetAgentMagnitude()
     {
@@ -353,28 +419,5 @@ public class HeroController : MonoBehaviour
     public Vector3 GetRayHitPoint()
     {
         return _hit.point;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Item"))
-        {
-            ItemController item = other.GetComponent<ItemController>();
-
-            int ItemsCountInInventory = _heroInventory.GetItemsCount();
-
-            if (item != null && ItemsCountInInventory < _heroInventory.GetMaxItemsInInventory())
-            {
-                _heroInventory.AddItemInInventory(item.GetItemData());
-
-                item.DeleteItem();
-
-                HeroEvents.OnItemTakeHendler?.Invoke(_heroInventory.GetItems());
-            }
-            else
-            {
-                Debug.Log("Can't take item because Inventory is full");
-            }
-        }
     }
 }

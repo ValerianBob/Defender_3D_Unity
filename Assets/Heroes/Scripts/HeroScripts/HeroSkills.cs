@@ -58,16 +58,10 @@ public class HeroSkills : MonoBehaviour
 
             _heroController.Hero_Attributes.PointsForLevelUpSckills -= 1;
 
-            int[] heroLevelOfSkills = {
-                GetSkillLevel(0),
-                GetSkillLevel(1),
-                GetSkillLevel(2),
-                GetSkillLevel(3)
-            };
+            HeroEventsArgs HeroArgs = new HeroEventsArgs(SkillId, LevelOfSkill, GetAllSkillsData(), _heroController.Hero_Attributes,
+                _heroController.HeroInventory, GetAllSkillsLevels());
 
-            HeroEvents.OnSkillLevelUpHendler?.Invoke(SkillId, LevelOfSkill,
-                _heroController.Hero_Attributes.PointsForLevelUpSckills,
-                heroLevelOfSkills);
+            HeroEvents.OnSkillLevelUpHandler?.Invoke(HeroArgs);
 
             Debug.Log($"Skill :{SkillSlots[SkillId].SkillData.SkillName} was improved to level : {SkillSlots[SkillId].Skill.CurrentSkillLevel}");
         }
@@ -80,6 +74,18 @@ public class HeroSkills : MonoBehaviour
     public int GetSkillLevel(int id)
     {
         return SkillSlots[id].Skill.CurrentSkillLevel;
+    }
+
+    public int[] GetAllSkillsLevels()
+    {
+        int[] heroLevelOfSkills = {
+            GetSkillLevel(0), 
+            GetSkillLevel(1), 
+            GetSkillLevel(2), 
+            GetSkillLevel(3)
+        };
+
+        return heroLevelOfSkills;
     }
 
     public SkillConfig[] GetAllSkillsData()
@@ -96,11 +102,11 @@ public class HeroSkills : MonoBehaviour
 
     private void OnEnable()
     {
-        UIEvents.OnLevelUpUIHenlder += LevelUpSkillById;
+        UIEvents.OnLevelUpUIHandler += LevelUpSkillById;
     }
 
     private void OnDisable()
     {
-        UIEvents.OnLevelUpUIHenlder -= LevelUpSkillById;
+        UIEvents.OnLevelUpUIHandler -= LevelUpSkillById;
     }
 }

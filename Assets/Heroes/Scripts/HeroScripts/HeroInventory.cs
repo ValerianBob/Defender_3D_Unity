@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class HeroInventory : MonoBehaviour
 {
@@ -20,12 +21,6 @@ public class HeroInventory : MonoBehaviour
         {
             Items = new ItemConfig[MaxItemInInventory];
         }
-    }
-
-    public void Start()
-    {
-        //Maybe Change Later
-        HeroEvents.OnGoldGainHendler?.Invoke(CurrentGold);
     }
 
     public bool AddItemInInventory(ItemConfig item)
@@ -52,9 +47,57 @@ public class HeroInventory : MonoBehaviour
         return false;
     }
 
+    public bool SpawItemInInventory(int SwapFromItemId_1, int SwapToItemId_2)
+    {
+        if (SwapFromItemId_1 < 0 || SwapFromItemId_1 >= Items.Length &&
+            SwapToItemId_2 < 0 || SwapToItemId_2 >= Items.Length)
+        {
+            Debug.Log("Idexes are incorrect");
+            return false;
+        }
+
+        ItemConfig tempItem = Items[SwapFromItemId_1];
+        Items[SwapFromItemId_1] = Items[SwapToItemId_2];
+        Items[SwapToItemId_2] = tempItem;
+
+        return true;
+    }
+
+    public bool RemoveItemFromInventory(int ItemIdForRemove)
+    {
+        int count = GetItemsCount();
+
+        if (count == 0)
+        {
+            Debug.Log("Inventory is empty");
+            return false;
+        }
+        else if (ItemIdForRemove < 0 || ItemIdForRemove >= Items.Length)
+        {
+            Debug.Log("Index is incorrect");
+            return false;
+        }
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (i == ItemIdForRemove)
+            {
+                Items[i] = null;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public ItemConfig[] GetItems()
     {
         return Items;
+    }
+
+    public GameObject GetItemPrefabById(int ItemId)
+    {
+        return Items[ItemId].GetItemPrefab();
     }
 
     public int GetItemsCount()

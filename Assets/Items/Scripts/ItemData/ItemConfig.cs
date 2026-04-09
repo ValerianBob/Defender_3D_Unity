@@ -34,4 +34,9 @@ public class ItemConfig : ScriptableObject
     {
         return itemIcon;
     }
+
+    public GameObject GetItemPrefab()
+    {
+        return itemPrefab;
+    }
 }

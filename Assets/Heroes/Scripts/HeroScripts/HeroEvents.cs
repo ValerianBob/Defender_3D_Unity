@@ -4,34 +4,31 @@ public static class HeroEvents
 {
     public static Action OnAttack;
 
-    public delegate void OnHeroSelect
-        (
-            SkillConfig[] SkillsData, 
-            int[] LevelsOfSkills, 
-            HeroAttributes HeroCurrentAttributes, 
-            HeroInventory heroInventory
-        );
+    public delegate void OnHeroSelect(HeroEventsArgs HeroArgs);
 
-    public static OnHeroSelect OnHeroSelectHendler;
+    public static OnHeroSelect OnHeroSelectHandler;
 
-    public delegate void OnHealthChange(float CurrentHealth, float MaxHealth);
-    public static OnHealthChange OnHealthChangeHenlder;
+    public delegate void OnHealthChange(HeroEventsArgs HeroArgs);
+    public static OnHealthChange OnHealthChangeHandler;
 
-    public delegate void OnManaChange(float CurrentMana, float MaxMana);
-    public static OnManaChange OnManaChangeHendler;
+    public delegate void OnManaChange(HeroEventsArgs HeroArgs);
+    public static OnManaChange OnManaChangeHandler;
 
-    public delegate void OnXpGain(float CurrentXP, float XpForLevelUp);
-    public static OnXpGain OnXpGainHendler;
+    public delegate void OnXpGain(HeroEventsArgs HeroArgs);
+    public static OnXpGain OnXpGainHandler;
 
-    public delegate void OnLevelUp(int[] HeroLevelOfSkills, HeroAttributes HeroCurrentAttributes);
-    public static OnLevelUp OnLevelUpHendler;
+    public delegate void OnLevelUp(HeroEventsArgs HeroArgs);
+    public static OnLevelUp OnLevelUpHandler;
 
-    public delegate void OnSkillLevelUp(int SkillId, int LevelOfSkill, int PointsForLevelUpSkill, int[] HeroLevelOfSkills);
-    public static OnSkillLevelUp OnSkillLevelUpHendler;
+    public delegate void OnSkillLevelUp(HeroEventsArgs HeroArgs);
+    public static OnSkillLevelUp OnSkillLevelUpHandler;
 
-    public delegate void OnItemTake(ItemConfig[] Items);
-    public static OnItemTake OnItemTakeHendler;
+    public delegate void OnItemTake(HeroEventsArgs HeroArgs);
+    public static OnItemTake OnItemTakeHandler;
 
-    public delegate void OnGoldGain(int gold);
-    public static OnGoldGain OnGoldGainHendler;
+    public delegate void OnGoldGain(HeroEventsArgs HeroArgs);
+    public static OnGoldGain OnGoldGainHandler;
+
+    public delegate void OnItemDrop(HeroEventsArgs HeroArgs);
+    public static OnItemDrop OnItemDropHandler;
 }

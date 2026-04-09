@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -13,41 +14,30 @@ public class UIAttributes : MonoBehaviour
     [SerializeField] private TMP_Text MoveSpeedText;
     [SerializeField] private TMP_Text AttackSpeedText;
 
-    public void UpdateAttributesInfo(HeroAttributes currentHeroAttributes)
+    private void UpdateAttributesInfo(HeroEventsArgs HeroArgs)
     {
-        HeroNameText.text = currentHeroAttributes.HeroName;
+        HeroNameText.text = HeroArgs.CurrentHeroAttributes.HeroName;
 
-        AttackDamgeText.text = currentHeroAttributes.CurrentDamage.ToString();
-        MagicDamgeText.text = currentHeroAttributes.CurrentMagicDamage.ToString();
+        AttackDamgeText.text = HeroArgs.CurrentHeroAttributes.CurrentDamage.ToString();
+        MagicDamgeText.text = HeroArgs.CurrentHeroAttributes.CurrentMagicDamage.ToString();
 
-        AttackRangeText.text = currentHeroAttributes.CurrentAttackRange.ToString();
+        AttackRangeText.text = HeroArgs.CurrentHeroAttributes.CurrentAttackRange.ToString();
 
-        MoveSpeedText.text = currentHeroAttributes.CurrentMoveSpeed.ToString();
-        AttackSpeedText.text = currentHeroAttributes.CurrentAttackSpeed.ToString();
-    }
-
-    private void OnHeroSelectWrapper(SkillConfig[] SkillsData, int[] LevelsOfSkills, HeroAttributes currentHeroAttributes,
-        HeroInventory heroInventory)
-    {
-        UpdateAttributesInfo(currentHeroAttributes);
-    }
-
-    private void OnLevelUpWrapper(int[] LevelsOfSkills, HeroAttributes currentHeroAttributes)
-    {
-        UpdateAttributesInfo(currentHeroAttributes);
+        MoveSpeedText.text = HeroArgs.CurrentHeroAttributes.CurrentMoveSpeed.ToString();
+        AttackSpeedText.text = HeroArgs.CurrentHeroAttributes.CurrentAttackSpeed.ToString();
     }
 
     private void OnEnable()
     {
-        HeroEvents.OnHeroSelectHendler += OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler += UpdateAttributesInfo;
 
-        HeroEvents.OnLevelUpHendler += OnLevelUpWrapper;
+        HeroEvents.OnLevelUpHandler += UpdateAttributesInfo;
     }
 
     private void OnDisable()
     {
-        HeroEvents.OnHeroSelectHendler -= OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler -= UpdateAttributesInfo;
 
-        HeroEvents.OnLevelUpHendler -= OnLevelUpWrapper;
+        HeroEvents.OnLevelUpHandler -= UpdateAttributesInfo;
     }
 }

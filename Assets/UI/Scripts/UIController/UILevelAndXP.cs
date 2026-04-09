@@ -9,37 +9,39 @@ public class UILevelAndXP : MonoBehaviour
 
     [SerializeField] private Slider XpSlider;
 
-    public void ChangeXpSliderAndText(float CurrentXp, float XpForLevelUp)
+    private void ChangeXpSliderAndText(HeroEventsArgs HeroArgs)
     {
-        XpSlider.value = CurrentXp / XpForLevelUp;
+        XpSlider.value = HeroArgs.CurrentHeroAttributes.CurrentXP / HeroArgs.CurrentHeroAttributes.XPForLevelUP;
 
-        XPText.text = $"{CurrentXp} / {XpForLevelUp}";
+        XPText.text = $"{HeroArgs.CurrentHeroAttributes.CurrentXP} / {HeroArgs.CurrentHeroAttributes.XPForLevelUP}";
     }
 
-    private void ChangeLvText(int CurrentLv)
+    private void ChangeLvText(HeroEventsArgs HeroArgs)
     {
-        LvText.text = $"Lv. {CurrentLv}";
+        LvText.text = $"Lv. {HeroArgs.CurrentHeroAttributes.Lv}";
     }
 
-    private void OnHeroSelectWrapper(SkillConfig[] SkillsData, int[] LevelsOfSkills, HeroAttributes currentHeroAttributes,
-        HeroInventory heroInventory)
+    private void UpdateXPandLevelInfo(HeroEventsArgs HeroArgs)
     {
-        ChangeXpSliderAndText(currentHeroAttributes.CurrentXP, currentHeroAttributes.XPForLevelUP);
-
-        ChangeLvText(currentHeroAttributes.Lv);
+        ChangeXpSliderAndText(HeroArgs);
+        ChangeLvText(HeroArgs);
     }
 
     private void OnEnable()
     {
-        HeroEvents.OnHeroSelectHendler += OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler += UpdateXPandLevelInfo;
 
-        HeroEvents.OnXpGainHendler += ChangeXpSliderAndText;
+        HeroEvents.OnXpGainHandler += ChangeXpSliderAndText;
+
+        HeroEvents.OnLevelUpHandler += ChangeLvText;
     }
 
     private void OnDisable()
     {
-        HeroEvents.OnHeroSelectHendler -= OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler -= UpdateXPandLevelInfo;
 
-        HeroEvents.OnXpGainHendler -= ChangeXpSliderAndText;
+        HeroEvents.OnXpGainHandler -= ChangeXpSliderAndText;
+
+        HeroEvents.OnLevelUpHandler -= ChangeLvText;
     }
 }

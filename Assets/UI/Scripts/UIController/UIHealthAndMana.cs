@@ -13,55 +13,55 @@ public class UIHealthAndMana : MonoBehaviour
     [SerializeField] private Slider HealthSlider;
     [SerializeField] private Slider ManaSlider;
 
-    public void ChangeHealthSliderAndText(float CurrentHealth, float maxHealth)
+    private void ChangeHealthSliderAndText(HeroEventsArgs HeroArgs)
     {
-        HealthSlider.value = CurrentHealth / maxHealth;
+        HealthSlider.value = HeroArgs.CurrentHeroAttributes.CurrentHealth / HeroArgs.CurrentHeroAttributes.MaxHealth;
 
-        HealthText.text = $"{CurrentHealth} / {maxHealth}";
+        HealthText.text = $"{HeroArgs.CurrentHeroAttributes.CurrentHealth} / {HeroArgs.CurrentHeroAttributes.MaxHealth}";
     }
 
-    public void ChangeManaSliderAndText(float CurrentMana, float MaxMana)
+    private void ChangeManaSliderAndText(HeroEventsArgs HeroArgs)
     {
-        ManaSlider.value = CurrentMana / MaxMana;
+        ManaSlider.value = HeroArgs.CurrentHeroAttributes.CurrentMana / HeroArgs.CurrentHeroAttributes.MaxMana;
 
-        ManaText.text = $"{CurrentMana} / {MaxMana}";
+        ManaText.text = $"{HeroArgs.CurrentHeroAttributes.CurrentMana} / {HeroArgs.CurrentHeroAttributes.MaxMana}";
     }
 
-    public void ChangeHealthGainText(float HealthGain)
+    private void ChangeHealthGainText(HeroEventsArgs HeroArgs)
     {
-        HealthGainText.text = $"+{HealthGain}";
+        HealthGainText.text = $"+{HeroArgs.CurrentHeroAttributes.HealthGain}";
     }
 
-    public void ChangeManaGainText(float ManaGain)
+    private void ChangeManaGainText(HeroEventsArgs HeroArgs)
     {
-        ManaGainText.text = $"+{ManaGain}";
+        ManaGainText.text = $"+{HeroArgs.CurrentHeroAttributes.ManaGain}";
     }
 
-    private void OnHeroSelectWrapper(SkillConfig[] SkillsData, int[] LevelsOfSkills, HeroAttributes currentHeroAttributes,
-        HeroInventory heroInventory)
+    private void UpdateHealthAndManaInfo(HeroEventsArgs HeroArgs)
     {
-        ChangeHealthSliderAndText(currentHeroAttributes.CurrentHealth, currentHeroAttributes.MaxHealth);
-        ChangeManaSliderAndText(currentHeroAttributes.CurrentMana, currentHeroAttributes.MaxMana);
-
-        ChangeHealthGainText(currentHeroAttributes.HealthGain);
-        ChangeManaGainText(currentHeroAttributes.ManaGain);
+        ChangeHealthSliderAndText(HeroArgs);
+        ChangeManaSliderAndText(HeroArgs);
+        ChangeHealthGainText(HeroArgs);
+        ChangeManaGainText(HeroArgs);
     }
 
     private void OnEnable()
     {
-        HeroEvents.OnHeroSelectHendler += OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler += UpdateHealthAndManaInfo;
 
-        HeroEvents.OnHealthChangeHenlder += ChangeHealthSliderAndText;
-        
-        HeroEvents.OnManaChangeHendler += ChangeManaSliderAndText;
+        HeroEvents.OnHealthChangeHandler += ChangeHealthSliderAndText;
+        HeroEvents.OnManaChangeHandler += ChangeManaSliderAndText;
+
+        HeroEvents.OnLevelUpHandler += UpdateHealthAndManaInfo;
     }
 
     private void OnDisable()
     {
-        HeroEvents.OnHeroSelectHendler += OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler -= UpdateHealthAndManaInfo;
 
-        HeroEvents.OnHealthChangeHenlder -= ChangeHealthSliderAndText;
+        HeroEvents.OnHealthChangeHandler -= ChangeHealthSliderAndText;
+        HeroEvents.OnManaChangeHandler -= ChangeManaSliderAndText;
 
-        HeroEvents.OnManaChangeHendler -= ChangeManaSliderAndText;
+        HeroEvents.OnLevelUpHandler -= UpdateHealthAndManaInfo;
     }
 }

@@ -51,11 +51,11 @@ public class UISkills : MonoBehaviour
         };
     }
 
-    public void ChangeSkillsLevelUp(int[] LevelsOfSkills)
+    private void ChangeSkillsLevelUp(HeroEventsArgs HeroArgs)
     {
         for (int i = 0; i < Skills_LevelUp_Icons.Length; i++)
         {
-            int level = LevelsOfSkills[i];
+            int level = HeroArgs.LevelsOfSkills[i];
 
             if (level < Skills_LevelUp_Icons[i].Length)
             {
@@ -65,11 +65,11 @@ public class UISkills : MonoBehaviour
         }
     }
 
-    public void ClearAllSkillsLevelUps(int[] HeroLevelsOfSkills)
+    private void ClearAllSkillsLevelUps(HeroEventsArgs HeroArgs)
     {
         for (int i = 0; i < Skills_LevelUp_Icons.Length; i++)
         {
-            for (int j = HeroLevelsOfSkills[i]; j < Skills_LevelUp_Icons[i].Length; j++)
+            for (int j = HeroArgs.LevelsOfSkills[i]; j < Skills_LevelUp_Icons[i].Length; j++)
             {
                 Skills_LevelUp_Icons[i][j].texture = null;
                 Skills_LevelUp_Icons[i][j].color = EmptyIconColor;
@@ -77,68 +77,59 @@ public class UISkills : MonoBehaviour
         }
     }
 
-    public void LevelUpSkill(int SkillId, int SkillLevelId, int PointsForLevelUpSkill, int[] HeroLevelsOfSkills)
+    private void LevelUpSkill(HeroEventsArgs HeroArgs)
     {
-        if (PointsForLevelUpSkill > 0)
+        if (HeroArgs.CurrentHeroAttributes.PointsForLevelUpSckills > 0 && HeroArgs.CurrentHeroAttributes.Lv > 1)
         {
-            ChangeSkillsLevelUp(HeroLevelsOfSkills);
+            ChangeSkillsLevelUp(HeroArgs);
         }
         else
         {
-            ClearAllSkillsLevelUps(HeroLevelsOfSkills);
+            ClearAllSkillsLevelUps(HeroArgs);
         }
 
-        Skills_LevelUp_Icons[SkillId][SkillLevelId].texture = null;
-        Skills_LevelUp_Icons[SkillId][SkillLevelId].color = LevelImprovedIconColor;
+        Skills_LevelUp_Icons[HeroArgs.SkillId][HeroArgs.SkillLevelId].texture = null;
+        Skills_LevelUp_Icons[HeroArgs.SkillId][HeroArgs.SkillLevelId].color = LevelImprovedIconColor;
     }
 
-    public void SetSkillsPanels(SkillConfig[] SkillsData)
+    private void SetSkillsPanels(HeroEventsArgs HeroArgs)
     {
         for (int i = 0; i < SkillsPanels.Length; i++)
         {
-            SkillsPanels[i].SkillTexture = SkillsData[i].SkillIcon.texture;
+            SkillsPanels[i].SkillTexture = HeroArgs.SkillsData[i].SkillIcon.texture;
 
-            if (SkillsData[i].Type == SkillType.Passive)
+            if (HeroArgs.SkillsData[i].Type == SkillType.Passive)
             {
                 SkillsPanels[i].SetKeyPanelActive(false);
             }
         }
     }
 
-    private void OnHeroSelectWrapper(SkillConfig[] SkillsData, int[] LevelsOfSkills, HeroAttributes currentHeroAttributes,
-        HeroInventory heroInventory)
+    private void UpdateSkillsInfo(HeroEventsArgs HeroArgs)
     {
-        if (currentHeroAttributes.Lv > 1)
+        if (HeroArgs.CurrentHeroAttributes.Lv > 1)
         {
-            ChangeSkillsLevelUp(LevelsOfSkills);
+            ChangeSkillsLevelUp(HeroArgs);
         }
 
-        SetSkillsPanels(SkillsData);
-    }
-
-    private void OnLevelUpWrapper(int[] LevelsOfSkills, HeroAttributes heroAttributes)
-    {
-        if (heroAttributes.Lv > 1)
-        {
-            ChangeSkillsLevelUp(LevelsOfSkills);
-        }
+        SetSkillsPanels(HeroArgs);
     }
 
     private void OnEnable()
     {
-        HeroEvents.OnHeroSelectHendler += OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler += UpdateSkillsInfo;
 
-        HeroEvents.OnLevelUpHendler += OnLevelUpWrapper;
+        HeroEvents.OnLevelUpHandler += ChangeSkillsLevelUp;
 
-        HeroEvents.OnSkillLevelUpHendler += LevelUpSkill;
+        HeroEvents.OnSkillLevelUpHandler += LevelUpSkill;
     }
 
     private void OnDisable()
     {
-        HeroEvents.OnHeroSelectHendler -= OnHeroSelectWrapper;
+        HeroEvents.OnHeroSelectHandler -= UpdateSkillsInfo;
 
-        HeroEvents.OnLevelUpHendler -= OnLevelUpWrapper;
+        HeroEvents.OnLevelUpHandler -= ChangeSkillsLevelUp;
 
-        HeroEvents.OnSkillLevelUpHendler -= LevelUpSkill;
+        HeroEvents.OnSkillLevelUpHandler -= LevelUpSkill;
     }
 }
