@@ -16,12 +16,13 @@ MonoBehaviour:
   itemDescription: Can make thunder
   itemIcon: {fileID: 21300000, guid: 6ea5aad651f1413449201d63b0efaceb, type: 3}
   itemPrefab: {fileID: 3874791960232956384, guid: a07ac5f8140739341888c1201965968c, type: 3}
-  AttackDamage: 20
-  MagicDamage: 10
-  AttackRange: 0
-  MoveSpeed: 0
-  AttackSpeed: 0
-  Health: 0
-  Mana: 0
-  HealthGain: 0
-  ManaGain: 0
+  AttackDamage: 10
+  MagicDamage: 5
+  AttackRange: 1
+  MoveSpeed: 2
+  AttackSpeed: 0.1
+  Health: 20
+  Mana: 10
+  HealthGain: 5
+  ManaGain: 5
+  Skill: {fileID: 11400000, guid: a8079108d2d3e3240ae618dcdabeb761, type: 2}

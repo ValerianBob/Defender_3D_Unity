@@ -15,14 +15,30 @@ public class UIHealthAndMana : MonoBehaviour
 
     private void ChangeHealthSliderAndText(HeroEventsArgs HeroArgs)
     {
-        HealthSlider.value = HeroArgs.CurrentHeroAttributes.CurrentHealth / HeroArgs.CurrentHeroAttributes.MaxHealth;
+        if (HeroArgs.CurrentHeroAttributes.MaxHealth <= 0)
+        {
+            return;
+        }
+
+        float current = HeroArgs.CurrentHeroAttributes.CurrentHealth;
+        float max = HeroArgs.CurrentHeroAttributes.MaxHealth;
+
+        HealthSlider.value = current / max;
 
         HealthText.text = $"{HeroArgs.CurrentHeroAttributes.CurrentHealth} / {HeroArgs.CurrentHeroAttributes.MaxHealth}";
     }
 
     private void ChangeManaSliderAndText(HeroEventsArgs HeroArgs)
     {
-        ManaSlider.value = HeroArgs.CurrentHeroAttributes.CurrentMana / HeroArgs.CurrentHeroAttributes.MaxMana;
+        if (HeroArgs.CurrentHeroAttributes.MaxMana <= 0)
+        {
+            return;
+        }
+
+        float current = HeroArgs.CurrentHeroAttributes.CurrentMana;
+        float max = HeroArgs.CurrentHeroAttributes.MaxMana;
+
+        ManaSlider.value = current / max;
 
         ManaText.text = $"{HeroArgs.CurrentHeroAttributes.CurrentMana} / {HeroArgs.CurrentHeroAttributes.MaxMana}";
     }
@@ -53,6 +69,10 @@ public class UIHealthAndMana : MonoBehaviour
         HeroEvents.OnManaChangeHandler += ChangeManaSliderAndText;
 
         HeroEvents.OnLevelUpHandler += UpdateHealthAndManaInfo;
+
+        HeroEvents.OnItemTakeHandler += UpdateHealthAndManaInfo;
+
+        HeroEvents.OnItemDropHandler += UpdateHealthAndManaInfo;
     }
 
     private void OnDisable()
@@ -63,5 +83,9 @@ public class UIHealthAndMana : MonoBehaviour
         HeroEvents.OnManaChangeHandler -= ChangeManaSliderAndText;
 
         HeroEvents.OnLevelUpHandler -= UpdateHealthAndManaInfo;
+
+        HeroEvents.OnItemTakeHandler -= UpdateHealthAndManaInfo;
+
+        HeroEvents.OnItemDropHandler -= UpdateHealthAndManaInfo;
     }
 }

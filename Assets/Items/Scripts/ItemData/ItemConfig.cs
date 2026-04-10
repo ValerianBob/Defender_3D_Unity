@@ -11,19 +11,21 @@ public class ItemConfig : ScriptableObject
 
     [SerializeField] private GameObject itemPrefab;
 
-    [SerializeField] private float AttackDamage;
-    [SerializeField] private float MagicDamage;
+    [SerializeField] private int AttackDamage;
+    [SerializeField] private int MagicDamage;
 
-    [SerializeField] private float AttackRange;
+    [SerializeField] private int AttackRange;
 
-    [SerializeField] private float MoveSpeed;
+    [SerializeField] private int MoveSpeed;
     [SerializeField] private float AttackSpeed;
 
-    [SerializeField] private float Health;
-    [SerializeField] private float Mana;
+    [SerializeField] private int Health;
+    [SerializeField] private int Mana;
 
-    [SerializeField] private float HealthGain;
-    [SerializeField] private float ManaGain;
+    [SerializeField] private int HealthGain;
+    [SerializeField] private int ManaGain;
+
+    [SerializeField] private ItemSkill Skill;
 
     public string GetItemName()
     {
@@ -38,5 +40,55 @@ public class ItemConfig : ScriptableObject
     public GameObject GetItemPrefab()
     {
         return itemPrefab;
+    }
+
+    public int GetItemDamage()
+    {
+        return AttackDamage;
+    }
+
+    public int GetItemMagicDamage()
+    {
+        return MagicDamage;
+    }
+
+    public int GetItemAttackRange()
+    {
+        return AttackRange;
+    }
+
+    public int GetItemMoveSpeed()
+    {
+        return MoveSpeed;
+    }
+
+    public float GetItemAttackSpeed()
+    {
+        return AttackSpeed;
+    }
+
+    public int GetItemHealth()
+    {
+        return Health;
+    }
+
+    public int GetItemMana()
+    {
+        return Mana;
+    }
+
+    public int GetItemHealthGain()
+    {
+        return HealthGain;
+    }
+
+    public int GetItemManaGain()
+    {
+        return ManaGain;
+    }
+
+    public ItemSkill GetSkill()
+    {
+        return Skill;
     }
 }

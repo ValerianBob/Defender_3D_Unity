@@ -5,19 +5,19 @@ public class HeroConfig : ScriptableObject
 {
     [SerializeField] private string HeroName;
 
-    [SerializeField] private float AttackDamage;
-    [SerializeField] private float MagicDamage;
+    [SerializeField] private int AttackDamage;
+    [SerializeField] private int MagicDamage;
 
-    [SerializeField] private float AttackRange;
+    [SerializeField] private int AttackRange;
 
-    [SerializeField] private float MoveSpeed;
+    [SerializeField] private int MoveSpeed;
     [SerializeField] private float AttackSpeed;
 
-    [SerializeField] private float MaxHealth;
-    [SerializeField] private float MaxMana;
+    [SerializeField] private int MaxHealth;
+    [SerializeField] private int MaxMana;
 
-    [SerializeField] private float HealthGain;
-    [SerializeField] private float ManaGain;
+    [SerializeField] private int HealthGain;
+    [SerializeField] private int ManaGain;
 
     [SerializeField] private int Lv;
     [SerializeField] private float CurrentXP;
@@ -28,22 +28,22 @@ public class HeroConfig : ScriptableObject
         get => HeroName;
     }
 
-    public float attackDamage
+    public int attackDamage
     {
         get => AttackDamage;
     }
 
-    public float magicDamage
+    public int magicDamage
     {
         get => MagicDamage;
     }
 
-    public float attackRange
+    public int attackRange
     {
         get => AttackRange;
     }
 
-    public float moveSpeed
+    public int moveSpeed
     {
         get => MoveSpeed;
     }
@@ -53,22 +53,22 @@ public class HeroConfig : ScriptableObject
         get => AttackSpeed;
     }
 
-    public float maxHealth
+    public int maxHealth
     {
         get => MaxHealth;
     }
 
-    public float maxMana
+    public int maxMana
     {
         get => MaxMana;
     }
 
-    public float healthGain
+    public int healthGain
     {
         get => HealthGain;
     }
 
-    public float manaGain
+    public int manaGain
     {
         get => ManaGain;
     }

@@ -3,22 +3,22 @@ public class HeroAttributes
 {
     public string HeroName;
 
-    public float CurrentDamage;
-    public float CurrentMagicDamage;
+    public int CurrentDamage;
+    public int CurrentMagicDamage;
 
-    public float CurrentAttackRange;
+    public int CurrentAttackRange;
 
-    public float CurrentMoveSpeed;
+    public int CurrentMoveSpeed;
     public float CurrentAttackSpeed;
 
-    public float MaxHealth;
-    public float MaxMana;
+    public int MaxHealth;
+    public int MaxMana;
 
-    public float CurrentHealth;
-    public float CurrentMana;
+    public int CurrentHealth;
+    public int CurrentMana;
 
-    public float HealthGain;
-    public float ManaGain;
+    public int HealthGain;
+    public int ManaGain;
 
     public int Lv;
     public float CurrentXP;

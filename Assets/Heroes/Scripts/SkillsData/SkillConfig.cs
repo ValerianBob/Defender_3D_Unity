@@ -13,9 +13,9 @@ public class SkillConfig : ScriptableObject
     [SerializeField] private SkillType type;
     [SerializeField] private Sprite skillIcon;
 
-    [SerializeField] private float baseCoolDown;
-    [SerializeField] private float baseManaCost;
-    [SerializeField] private float baseDamage;
+    [SerializeField] private int baseCoolDown;
+    [SerializeField] private int baseManaCost;
+    [SerializeField] private int baseDamage;
 
     // Public read access
     public string SkillName
@@ -33,17 +33,17 @@ public class SkillConfig : ScriptableObject
         get => skillIcon;
     }
     
-    public float BaseCoolDown
+    public int BaseCoolDown
     {
         get => baseCoolDown;
     }
    
-    public float BaseManaCost
+    public int BaseManaCost
     {
         get => baseManaCost;
     }
 
-    public float BaseDamage
+    public int BaseDamage
     {
         get => baseDamage;
     }

@@ -7,8 +7,14 @@ public class HeroController : MonoBehaviour
     [SerializeField] private Camera MainCamera;
     [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
-
     [SerializeField] private GameObject Marker;
+
+    private Ray Ray;
+    private RaycastHit _hit;
+
+    private NavMeshAgent _agent;
+
+    public HeroAttributes Hero_Attributes;
 
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
@@ -16,13 +22,6 @@ public class HeroController : MonoBehaviour
     
     private HeroInventory _heroInventory;
     public HeroInventory HeroInventory => _heroInventory;
-
-    private Ray Ray;
-    private RaycastHit _hit;
-
-    public HeroAttributes Hero_Attributes;
-
-    private NavMeshAgent _agent;
 
     public GameObject CurrentTarget;
 
@@ -64,20 +63,20 @@ public class HeroController : MonoBehaviour
         //Test delete later :
         if (Keyboard.current.dKey.wasPressedThisFrame)
         {
-            ChangeHealth(true, 20f);
+            ChangeHealth(true, 20);
         }
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {
-            ChangeHealth(false, 20f);
+            ChangeHealth(false, 20);
         }
 
         if (Keyboard.current.xKey.wasPressedThisFrame)
         {
-            ChagneMana(false, 20f);
+            ChagneMana(false, 20);
         }
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
-            ChagneMana(true, 20f);
+            ChagneMana(true, 20);
         }
 
         if (Keyboard.current.vKey.wasPressedThisFrame)
@@ -141,6 +140,7 @@ public class HeroController : MonoBehaviour
         }
     }
 
+    //TODO :
     private void HandleHeroSkills()
     {
         if (InputReader.Instance.QButton)
@@ -184,8 +184,24 @@ public class HeroController : MonoBehaviour
             _heroSkills.ExecuteSkillById(3);
         }
     }
-    
-    public void ChangeHealth(bool isGettingDamage, float damage)
+
+    //TODO :
+    private void HandleItemsSkills(HeroEventsArgs HeroArgs)
+    {
+        int ItemCount = _heroInventory.GetItemsCount();
+
+        for (int i = 0; i < ItemCount; i++)
+        {
+            if (_heroInventory.GetItemSkillTypeById(i) == HeroArgs.ItemExecuteType)
+            {
+                HeroEventsArgs NewHeroArgs = new HeroEventsArgs(this);
+
+                _heroInventory.ExecuteItemSkillById(i, NewHeroArgs);
+            }
+        }
+    }
+
+    public void ChangeHealth(bool isGettingDamage, int damage)
     {
         if (isGettingDamage)
         {
@@ -209,7 +225,7 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnHealthChangeHandler?.Invoke(HeroArgs);
     }
 
-    public void ChagneMana(bool isGettingMana, float magaAmount)
+    public void ChagneMana(bool isGettingMana, int magaAmount)
     {
         if (isGettingMana)
         {
@@ -256,10 +272,10 @@ public class HeroController : MonoBehaviour
         Hero_Attributes.Lv += 1;
 
         // Change Later : 
-        Hero_Attributes.MaxHealth += 50f;
-        Hero_Attributes.MaxMana += 10f;
-        Hero_Attributes.CurrentDamage += 20f;
-        Hero_Attributes.CurrentMagicDamage += 20f;
+        Hero_Attributes.MaxHealth += 50;
+        Hero_Attributes.MaxMana += 10;
+        Hero_Attributes.CurrentDamage += 20;
+        Hero_Attributes.CurrentMagicDamage += 20;
 
         Hero_Attributes.PointsForLevelUpSckills += 1;
 
@@ -278,11 +294,26 @@ public class HeroController : MonoBehaviour
 
             if (item != null && ItemsCountInInventory < _heroInventory.GetMaxItemsInInventory())
             {
+                ItemConfig ItemsAttributes = item.GetItemData();
+
+                int ItemAttackDamage = ItemsAttributes.GetItemDamage();
+                int ItemMagicDamage = ItemsAttributes.GetItemMagicDamage();
+                int ItemAttackRange = ItemsAttributes.GetItemAttackRange();
+                int ItemMoveSpeed = ItemsAttributes.GetItemMoveSpeed();
+                float ItemAttackSpeed = ItemsAttributes.GetItemAttackSpeed();
+                int ItemHealth = ItemsAttributes.GetItemHealth();
+                int ItemMana = ItemsAttributes.GetItemMana();
+                int ItemHealthGain = ItemsAttributes.GetItemHealthGain();
+                int ItemManaGain = ItemsAttributes.GetItemManaGain();
+
+                AddHeroAttributes(ItemAttackDamage, ItemMagicDamage, ItemAttackRange, ItemMoveSpeed, ItemAttackSpeed,
+                    ItemHealth, ItemMana, ItemHealthGain, ItemManaGain);
+
                 _heroInventory.AddItemInInventory(item.GetItemData());
 
                 item.DeleteItem();
 
-                HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
+                HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory, Hero_Attributes);
                 HeroEvents.OnItemTakeHandler?.Invoke(HeroArgs);
             }
             else
@@ -317,14 +348,32 @@ public class HeroController : MonoBehaviour
             {
                 GameObject ItemPrefab = _heroInventory.GetItemPrefabById(ItemIdToDrop);
 
-                Instantiate(ItemPrefab, _hit.point, ItemPrefab.transform.rotation);
+                if (ItemPrefab != null)
+                {
+                    Instantiate(ItemPrefab, _hit.point, ItemPrefab.transform.rotation);
 
-                _heroInventory.RemoveItemFromInventory(ItemIdToDrop);
+                    ItemConfig ItemsAttributes = _heroInventory.GetItemById(ItemIdToDrop);
 
-                HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
-                HeroEvents.OnItemDropHandler?.Invoke(HeroArgs);
+                    int ItemAttackDamage = ItemsAttributes.GetItemDamage();
+                    int ItemMagicDamage = ItemsAttributes.GetItemMagicDamage();
+                    int ItemAttackRange = ItemsAttributes.GetItemAttackRange();
+                    int ItemMoveSpeed = ItemsAttributes.GetItemMoveSpeed();
+                    float ItemAttackSpeed = ItemsAttributes.GetItemAttackSpeed();
+                    int ItemHealth = ItemsAttributes.GetItemHealth();
+                    int ItemMana = ItemsAttributes.GetItemMana();
+                    int ItemHealthGain = ItemsAttributes.GetItemHealthGain();
+                    int ItemManaGain = ItemsAttributes.GetItemManaGain();
 
-                Debug.Log($"Item droped on :{_hit.collider.gameObject.tag}");
+                    RemoveHeroAttributes(ItemAttackDamage, ItemMagicDamage, ItemAttackRange, ItemMoveSpeed, ItemAttackSpeed,
+                        ItemHealth, ItemMana, ItemHealthGain, ItemManaGain);
+
+                    _heroInventory.RemoveItemFromInventory(ItemIdToDrop);
+
+                    HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory, Hero_Attributes);
+                    HeroEvents.OnItemDropHandler?.Invoke(HeroArgs);
+
+                    Debug.Log($"Item droped on :{_hit.collider.gameObject.tag}");
+                }
             }
         }
     }
@@ -334,7 +383,7 @@ public class HeroController : MonoBehaviour
         _heroInventory.SpawItemInInventory(DraggedItemId, DroppedOnItemId);
 
         HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
-        HeroEvents.OnItemDropHandler?.Invoke(HeroArgs);
+        HeroEvents.OnItemSwapHandler?.Invoke(HeroArgs);
 
         Debug.Log($"Items swapped");
     }
@@ -343,12 +392,50 @@ public class HeroController : MonoBehaviour
     {
         UIEvents.OnItemDropUIHandler += TryToDropItemFromInventory;
         UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
+
+        HeroEvents.OnHeroAttackHandler += HandleItemsSkills;
     }
 
     public void OnDisable()
     {
         UIEvents.OnItemDropUIHandler -= TryToDropItemFromInventory;
         UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
+
+        HeroEvents.OnHeroAttackHandler -= HandleItemsSkills;
+    }
+
+    public void AddHeroAttributes(int AttackDamage, int MagicDamage, int AttackRange, int MoveSpeed, float AttackSpeed,
+        int Health, int Mana, int HealthGain, int ManaGain)
+    {
+        Hero_Attributes.CurrentDamage += AttackDamage;
+        Hero_Attributes.CurrentMagicDamage += MagicDamage;
+        Hero_Attributes.CurrentAttackRange += AttackRange;
+        Hero_Attributes.CurrentMoveSpeed += MoveSpeed;
+
+        Hero_Attributes.CurrentAttackSpeed -= AttackSpeed;
+        Hero_Attributes.CurrentAttackSpeed = Mathf.Round(Hero_Attributes.CurrentAttackSpeed * 10f) / 10f;
+
+        Hero_Attributes.MaxHealth += Health;
+        Hero_Attributes.MaxMana += Mana;
+        Hero_Attributes.HealthGain += HealthGain;
+        Hero_Attributes.ManaGain += ManaGain;
+    }
+
+    public void RemoveHeroAttributes(int AttackDamage, int MagicDamage, int AttackRange, int MoveSpeed, float AttackSpeed,
+        int Health, int Mana, int HealthGain, int ManaGain)
+    {
+        Hero_Attributes.CurrentDamage -= AttackDamage;
+        Hero_Attributes.CurrentMagicDamage -= MagicDamage;
+        Hero_Attributes.CurrentAttackRange -= AttackRange;
+        Hero_Attributes.CurrentMoveSpeed -= MoveSpeed;
+
+        Hero_Attributes.CurrentAttackSpeed += AttackSpeed;
+        Hero_Attributes.CurrentAttackSpeed = Mathf.Round(Hero_Attributes.CurrentAttackSpeed * 10f) / 10f;
+
+        Hero_Attributes.MaxHealth -= Health;
+        Hero_Attributes.MaxMana -= Mana;
+        Hero_Attributes.HealthGain -= HealthGain;
+        Hero_Attributes.ManaGain -= ManaGain;
     }
 
     // NavMeshAgent :

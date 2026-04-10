@@ -25,9 +25,9 @@ public class HeroSkills : MonoBehaviour
 
         for (int i = 0; i < SkillSlots.Length; i++)
         {
-            float Damage = SkillSlots[i].SkillData.BaseDamage;
-            float CoolDown = SkillSlots[i].SkillData.BaseCoolDown;
-            float ManaCost = SkillSlots[i].SkillData.BaseManaCost;
+            int Damage = SkillSlots[i].SkillData.BaseDamage;
+            int CoolDown = SkillSlots[i].SkillData.BaseCoolDown;
+            int ManaCost = SkillSlots[i].SkillData.BaseManaCost;
 
             SkillSlots[i].Skill.Damage = Damage;
             SkillSlots[i].Skill.CoolDown = CoolDown;

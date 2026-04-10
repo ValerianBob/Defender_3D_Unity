@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class HeroInventory : MonoBehaviour
 {
@@ -95,8 +94,23 @@ public class HeroInventory : MonoBehaviour
         return Items;
     }
 
+    public ItemConfig GetItemById(int ItemId)
+    {
+        if (Items[ItemId] == null)
+        {
+            return null;
+        }
+
+        return Items[ItemId];
+    }
+
     public GameObject GetItemPrefabById(int ItemId)
     {
+        if (Items[ItemId] == null)
+        {
+            return null;
+        }
+
         return Items[ItemId].GetItemPrefab();
     }
 
@@ -118,6 +132,26 @@ public class HeroInventory : MonoBehaviour
     public int GetMaxItemsInInventory()
     {
         return MaxItemInInventory;
+    }
+
+    public ItemExecuteType GetItemSkillTypeById(int ItemId)
+    {
+        if (Items[ItemId] == null)
+        {
+            return ItemExecuteType.None;
+        }
+
+        return Items[ItemId].GetSkill().GetItemSkillType();
+    }
+
+    public void ExecuteItemSkillById(int ItemId, HeroEventsArgs HeroArgs)
+    {
+        if (Items[ItemId] == null)
+        {
+            return;
+        }
+
+        Items[ItemId].GetSkill().Execute(HeroArgs);
     }
 
     public int GetGold()

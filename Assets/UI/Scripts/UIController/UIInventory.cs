@@ -50,6 +50,8 @@ public class UIInventory : MonoBehaviour
         HeroEvents.OnGoldGainHandler += SetGold;
 
         HeroEvents.OnItemDropHandler += SetItemsIcons;
+
+        HeroEvents.OnItemSwapHandler += SetItemsIcons;
     }
 
     private void OnDisable()
@@ -61,5 +63,7 @@ public class UIInventory : MonoBehaviour
         HeroEvents.OnGoldGainHandler -= SetGold;
 
         HeroEvents.OnItemDropHandler -= SetItemsIcons;
+
+        HeroEvents.OnItemSwapHandler -= SetItemsIcons;
     }
 }

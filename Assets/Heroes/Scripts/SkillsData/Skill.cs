@@ -3,9 +3,9 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Skill : ScriptableObject
 {
-    public float CoolDown;
-    public float ManaCost;
-    public float Damage;
+    public int CoolDown;
+    public int ManaCost;
+    public int Damage;
 
     public static readonly int MaxSkillLevel = 4;
     public int CurrentSkillLevel;

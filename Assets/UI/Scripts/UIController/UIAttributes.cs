@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -32,6 +31,10 @@ public class UIAttributes : MonoBehaviour
         HeroEvents.OnHeroSelectHandler += UpdateAttributesInfo;
 
         HeroEvents.OnLevelUpHandler += UpdateAttributesInfo;
+
+        HeroEvents.OnItemTakeHandler += UpdateAttributesInfo;
+
+        HeroEvents.OnItemDropHandler += UpdateAttributesInfo;
     }
 
     private void OnDisable()
@@ -39,5 +42,9 @@ public class UIAttributes : MonoBehaviour
         HeroEvents.OnHeroSelectHandler -= UpdateAttributesInfo;
 
         HeroEvents.OnLevelUpHandler -= UpdateAttributesInfo;
+
+        HeroEvents.OnItemTakeHandler -= UpdateAttributesInfo;
+
+        HeroEvents.OnItemDropHandler -= UpdateAttributesInfo;
     }
 }
