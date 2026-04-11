@@ -6,8 +6,14 @@ public class CameraMovement : MonoBehaviour
     private Rigidbody _rb;
 
     private float _screenEdgeBorder = 10f;
+
     private float _scrollTopBorder = 25f;
     private float _scrollDownBorder = 5f;
+
+    private int _cameraLeftBorder = -35;
+    private int _cameraRightBorder = 145;
+    private int _cameraTopBorder = 130;
+    private int _cameraDownBorder = 5;
 
     public float MoveSpeed;
 
@@ -23,6 +29,8 @@ public class CameraMovement : MonoBehaviour
         MoveCamera();
 
         ScrollCamera();
+
+        CameraMovementBorder();
     }
 
     private void MoveCamera()
@@ -68,5 +76,15 @@ public class CameraMovement : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, _scrollDownBorder, transform.position.z);
         }
+    }
+
+    private void CameraMovementBorder()
+    {
+        Vector3 pos = transform.position;
+
+        pos.x = Mathf.Clamp(pos.x, _cameraLeftBorder, _cameraRightBorder);
+        pos.z = Mathf.Clamp(pos.z, _cameraDownBorder, _cameraTopBorder);
+
+        transform.position = pos;
     }
 }
