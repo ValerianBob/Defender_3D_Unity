@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PatriotConfig
   m_EditorClassIdentifier: Assembly-CSharp::HeroConfig
   HeroName: Patriot
-  AttackDamage: 5
-  MagicDamage: 0
+  AttackDamage: 10
+  MagicDamage: 5
   AttackRange: 2
   MoveSpeed: 4
   AttackSpeed: 1

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HeroSkills : MonoBehaviour
@@ -25,21 +26,45 @@ public class HeroSkills : MonoBehaviour
 
         for (int i = 0; i < SkillSlots.Length; i++)
         {
-            int Damage = SkillSlots[i].SkillData.BaseDamage;
             int CoolDown = SkillSlots[i].SkillData.BaseCoolDown;
             int ManaCost = SkillSlots[i].SkillData.BaseManaCost;
+            int SkillDuration = SkillSlots[i].SkillData.BaseSkillDuration;
 
-            SkillSlots[i].Skill.Damage = Damage;
             SkillSlots[i].Skill.CoolDown = CoolDown;
             SkillSlots[i].Skill.ManaCost = ManaCost;
+            SkillSlots[i].Skill.SkillDuration = SkillDuration;
+            SkillSlots[i].Skill.isReloading = false;
 
             SkillSlots[i].Skill.CurrentSkillLevel = 0;
         }
     }
 
-    public void ExecuteSkillById(int id)
+    public void ExecuteSkillById(int id, HeroController CurrentHeroController)
     {
-        SkillSlots[id].Skill.Execute();
+        if (SkillSlots[id].Skill.ManaCost > CurrentHeroController.Hero_Attributes.CurrentMana)
+        {
+            Debug.Log($"Not enough mana");
+
+            return;
+        }
+
+        if (SkillSlots[id].SkillData.Type == SkillType.Passive)
+        {
+            SkillSlots[id].Skill.Execute(CurrentHeroController);
+        }
+        else
+        {
+            if (!SkillSlots[id].Skill.isReloading)
+            {
+                SkillSlots[id].Skill.Execute(CurrentHeroController);
+                SkillSlots[id].Skill.isReloading = true;
+                StartCoroutine(ReloadSkillById(id));
+            }
+            else
+            {
+                Debug.Log($"Skill :{SkillSlots[id].SkillData.SkillName} is reloading");
+            }
+        }
     }
 
     public void LevelUpSkillById(int SkillId, int LevelOfSkill)
@@ -57,6 +82,15 @@ public class HeroSkills : MonoBehaviour
             SkillSlots[SkillId].Skill.CurrentSkillLevel += 1;
 
             _heroController.Hero_Attributes.PointsForLevelUpSckills -= 1;
+
+            //Change Later :
+            if (SkillSlots[SkillId].Skill.CurrentSkillLevel > 1)
+            {
+                SkillSlots[SkillId].Skill.SkillDuration += 1;
+                SkillSlots[SkillId].Skill.ManaCost -= 2;
+                SkillSlots[SkillId].Skill.CoolDown -= 1;
+            }
+            
 
             HeroEventsArgs HeroArgs = new HeroEventsArgs(SkillId, LevelOfSkill, GetAllSkillsData(), _heroController.Hero_Attributes,
                 _heroController.HeroInventory, GetAllSkillsLevels());
@@ -98,6 +132,20 @@ public class HeroSkills : MonoBehaviour
         }
 
         return SkillDataToSend;
+    }
+
+    public SkillType GetSkillTypeById(int id)
+    {
+        return SkillSlots[id].SkillData.Type;
+    }
+
+    private IEnumerator ReloadSkillById(int id)
+    {
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(id, SkillSlots[id].Skill.CoolDown);
+        HeroEvents.OnSkillReloadHandler?.Invoke(HeroArgs);
+
+        yield return new WaitForSeconds(SkillSlots[id].Skill.CoolDown);
+        SkillSlots[id].Skill.isReloading = false;
     }
 
     private void OnEnable()

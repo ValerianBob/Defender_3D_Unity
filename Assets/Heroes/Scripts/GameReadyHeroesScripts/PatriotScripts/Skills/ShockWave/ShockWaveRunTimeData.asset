@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShockWave
   CoolDown: 0
   ManaCost: 0
-  Damage: 0
+  SkillDuration: 0
+  CurrentSkillLevel: 0
+  isReloading: 0
+  DetectRange: 10
+  NearbyEnemies: []

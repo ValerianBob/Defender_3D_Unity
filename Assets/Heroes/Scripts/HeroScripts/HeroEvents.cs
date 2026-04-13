@@ -36,4 +36,10 @@ public static class HeroEvents
 
     public delegate void OnGoldGain(HeroEventsArgs HeroArgs);
     public static OnGoldGain OnGoldGainHandler;
+
+    public delegate void OnSkillUse(HeroEventsArgs HeroArgs);
+    public static OnSkillUse OnSkillUseHandler;
+
+    public delegate void OnSkillReload(HeroEventsArgs HeroArgs);
+    public static OnSkillReload OnSkillReloadHandler;
 }

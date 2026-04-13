@@ -1,3 +1,6 @@
+using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +11,7 @@ public class UISkills : MonoBehaviour
     {
         [SerializeField] private RawImage skillIcon;
         [SerializeField] private GameObject keyPanel;
+        [SerializeField] private TMP_Text coolDownText;
 
         public Texture SkillTexture
         {
@@ -18,6 +22,16 @@ public class UISkills : MonoBehaviour
                     skillIcon.texture = value;
                 }
             }
+        }
+
+        public RawImage SkillIcon
+        {
+            get => skillIcon;
+        }
+
+        public TMP_Text CoolDownText
+        {
+            get => coolDownText;
         }
 
         public void SetKeyPanelActive(bool isEnable)
@@ -39,6 +53,9 @@ public class UISkills : MonoBehaviour
 
     private Color LevelImprovedIconColor = new Color(255, 255, 0, 255);
     private Color EmptyIconColor = new Color(0, 0, 0, 0);
+
+    private Color ReloadingColor = new Color(0.4f, 0.4f, 0.4f, 1f);
+    private Color ReadyColor = new Color(1f, 1f, 1f, 1f);
 
     private void Awake()
     {
@@ -98,7 +115,7 @@ public class UISkills : MonoBehaviour
         {
             SkillsPanels[i].SkillTexture = HeroArgs.SkillsData[i].SkillIcon.texture;
 
-            if (HeroArgs.SkillsData[i].Type == SkillType.Passive)
+            if (HeroArgs.SkillsData[i].Type == SkillType.Passive || HeroArgs.SkillsData[i].Type == SkillType.OnAttackPassive)
             {
                 SkillsPanels[i].SetKeyPanelActive(false);
             }
@@ -115,6 +132,31 @@ public class UISkills : MonoBehaviour
         SetSkillsPanels(HeroArgs);
     }
 
+    private void StartReloadSkill(HeroEventsArgs HeroArgs)
+    {
+        StartCoroutine(TimeToReloadSkill(HeroArgs.SkillId, HeroArgs.SkillCoolDown));
+    }
+
+    private IEnumerator TimeToReloadSkill(int SkillId, int CoolDown)
+    {
+        SkillsPanels[SkillId].CoolDownText.gameObject.SetActive(true);
+        SkillsPanels[SkillId].SkillIcon.color = ReloadingColor;
+
+        float count = CoolDown;
+
+        while (count > 0)
+        {
+            SkillsPanels[SkillId].CoolDownText.text = count.ToString();
+
+            yield return new WaitForSeconds(1f);
+            
+            count -= 1;
+        }
+
+        SkillsPanels[SkillId].CoolDownText.gameObject.SetActive(false);
+        SkillsPanels[SkillId].SkillIcon.color = ReadyColor;
+    }
+
     private void OnEnable()
     {
         HeroEvents.OnHeroSelectHandler += UpdateSkillsInfo;
@@ -122,6 +164,8 @@ public class UISkills : MonoBehaviour
         HeroEvents.OnLevelUpHandler += ChangeSkillsLevelUp;
 
         HeroEvents.OnSkillLevelUpHandler += LevelUpSkill;
+
+        HeroEvents.OnSkillReloadHandler += StartReloadSkill;
     }
 
     private void OnDisable()
@@ -131,5 +175,7 @@ public class UISkills : MonoBehaviour
         HeroEvents.OnLevelUpHandler -= ChangeSkillsLevelUp;
 
         HeroEvents.OnSkillLevelUpHandler -= LevelUpSkill;
+
+        HeroEvents.OnSkillReloadHandler -= StartReloadSkill;
     }
 }

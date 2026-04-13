@@ -3,6 +3,7 @@ using UnityEngine;
 public enum SkillType
 {
     Active,
+    OnAttackPassive,
     Passive
 }
 
@@ -15,7 +16,7 @@ public class SkillConfig : ScriptableObject
 
     [SerializeField] private int baseCoolDown;
     [SerializeField] private int baseManaCost;
-    [SerializeField] private int baseDamage;
+    [SerializeField] private int baseSkillDuration;
 
     // Public read access
     public string SkillName
@@ -43,8 +44,8 @@ public class SkillConfig : ScriptableObject
         get => baseManaCost;
     }
 
-    public int BaseDamage
+    public int BaseSkillDuration
     {
-        get => baseDamage;
+        get => baseSkillDuration;
     }
 }

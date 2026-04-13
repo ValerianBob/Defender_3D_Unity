@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RageSkill
   CoolDown: 10
   ManaCost: 10
-  Damage: 0
+  SkillDuration: 4
   CurrentSkillLevel: 1
+  isReloading: 1
+  IncreaseAttackSpeed: 0.2

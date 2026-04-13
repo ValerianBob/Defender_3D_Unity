@@ -3,12 +3,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="EnergySteal", menuName = "Skills/EnergySteal")]
 public class EnergySteal : Skill
 {
+    public int HealAmount;
+
     public EnergySteal(SkillConfig config) : base(config)
     {
     }
 
-    public override void Execute()
+    public override void Execute(HeroController CurrentHeroController)
     {
-        Debug.Log($"Stealing energy {Damage} {ManaCost} {CoolDown}");
+        CurrentHeroController.ChangeHealth(false, HealAmount);
+
+        Debug.Log("Life steal triggered!");
     }
 }

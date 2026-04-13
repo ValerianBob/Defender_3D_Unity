@@ -42,6 +42,18 @@ public class HeroAttack : MonoBehaviour
     int count = 0;
     public void DealDamage()
     {
+        if (_heroController.CurrentTarget == null)
+        {
+            return;
+        }
+
+        EnemyController TargetEnemyController = _heroController.CurrentTarget.GetComponent<EnemyController>();
+
+        if (TargetEnemyController != null)
+        {
+            TargetEnemyController.ChangeHealth(true, _heroController.Hero_Attributes.CurrentDamage);
+        }
+
         count += 1;
         
         text.text = count.ToString();

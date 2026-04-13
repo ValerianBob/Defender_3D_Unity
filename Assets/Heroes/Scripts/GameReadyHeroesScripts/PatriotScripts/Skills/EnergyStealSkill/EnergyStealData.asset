@@ -17,4 +17,4 @@ MonoBehaviour:
   skillIcon: {fileID: 21300000, guid: 60a62efa93909014da256aded5636534, type: 3}
   baseCoolDown: 0
   baseManaCost: 0
-  baseDamage: 0
+  baseSkillDuration: 0

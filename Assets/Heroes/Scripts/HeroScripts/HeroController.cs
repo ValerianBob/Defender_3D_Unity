@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -50,6 +52,8 @@ public class HeroController : MonoBehaviour
         HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroSkills.GetAllSkillsData(), Hero_Attributes, _heroInventory,
             _heroSkills.GetAllSkillsLevels());
         HeroEvents.OnHeroSelectHandler?.Invoke(HeroArgs);
+
+        StartCoroutine(GainAttributesLoop());
     }
 
     private void Update()
@@ -58,7 +62,8 @@ public class HeroController : MonoBehaviour
 
         HandleMovementAndTargeting();
 
-        HandleHeroSkills();
+        HandleActiveSkills();
+        HandlePassiveSkills();
 
         //Test delete later :
         if (Keyboard.current.dKey.wasPressedThisFrame)
@@ -140,8 +145,7 @@ public class HeroController : MonoBehaviour
         }
     }
 
-    //TODO :
-    private void HandleHeroSkills()
+    private void HandleActiveSkills()
     {
         if (InputReader.Instance.QButton)
         {
@@ -150,8 +154,10 @@ public class HeroController : MonoBehaviour
                 Debug.Log("Skill not studied");
                 return;
             }
-
-            _heroSkills.ExecuteSkillById(0);
+            if (_heroSkills.GetSkillTypeById(0) == SkillType.Active)
+            {
+                _heroSkills.ExecuteSkillById(0, this);
+            }
         }
         if (InputReader.Instance.WButton)
         {
@@ -160,8 +166,10 @@ public class HeroController : MonoBehaviour
                 Debug.Log("Skill not studied");
                 return;
             }
-
-            _heroSkills.ExecuteSkillById(1);
+            if (_heroSkills.GetSkillTypeById(1) == SkillType.Active)
+            {
+                _heroSkills.ExecuteSkillById(1, this);
+            }
         }
         if (InputReader.Instance.EButton)
         {
@@ -170,8 +178,10 @@ public class HeroController : MonoBehaviour
                 Debug.Log("Skill not studied");
                 return;
             }
-
-            _heroSkills.ExecuteSkillById(2);
+            if (_heroSkills.GetSkillTypeById(2) == SkillType.Active)
+            {
+                _heroSkills.ExecuteSkillById(2, this);
+            }
         }
         if (InputReader.Instance.RButton)
         {
@@ -180,8 +190,42 @@ public class HeroController : MonoBehaviour
                 Debug.Log("Skill not studied");
                 return;
             }
+            if (_heroSkills.GetSkillTypeById(3) == SkillType.Active)
+            {
+                _heroSkills.ExecuteSkillById(3, this);
+            }
+        }
+    }
 
-            _heroSkills.ExecuteSkillById(3);
+    private void HandlePassiveSkills()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (_heroSkills.GetSkillTypeById(i) == SkillType.Passive)
+            {
+                if (_heroSkills.GetSkillLevel(i) == 0)
+                {
+                    Debug.Log("Skill not studied");
+                    continue;
+                }
+                _heroSkills.ExecuteSkillById(i, this);
+            }
+        }
+    }
+
+    private void HandleOnAttackPassiveSkills(HeroEventsArgs HeroArgs)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (_heroSkills.GetSkillTypeById(i) == SkillType.OnAttackPassive)
+            {
+                if (_heroSkills.GetSkillLevel(i) == 0)
+                {
+                    Debug.Log("Skill not studied");
+                    continue;
+                }
+                _heroSkills.ExecuteSkillById(i, this);
+            }
         }
     }
 
@@ -198,6 +242,17 @@ public class HeroController : MonoBehaviour
 
                 _heroInventory.ExecuteItemSkillById(i, NewHeroArgs);
             }
+        }
+    }
+
+    private IEnumerator GainAttributesLoop()
+    {
+        while (true)
+        {
+            ChangeHealth(false, Hero_Attributes.HealthGain);
+            ChagneMana(true, Hero_Attributes.ManaGain);
+
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -284,7 +339,7 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnLevelUpHandler?.Invoke(HeroArgs);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void HandleItemPickup(Collider other)
     {
         if (other.CompareTag("Item"))
         {
@@ -386,22 +441,6 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnItemSwapHandler?.Invoke(HeroArgs);
 
         Debug.Log($"Items swapped");
-    }
-
-    public void OnEnable()
-    {
-        UIEvents.OnItemDropUIHandler += TryToDropItemFromInventory;
-        UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
-
-        HeroEvents.OnHeroAttackHandler += HandleItemsSkills;
-    }
-
-    public void OnDisable()
-    {
-        UIEvents.OnItemDropUIHandler -= TryToDropItemFromInventory;
-        UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
-
-        HeroEvents.OnHeroAttackHandler -= HandleItemsSkills;
     }
 
     public void AddHeroAttributes(int AttackDamage, int MagicDamage, int AttackRange, int MoveSpeed, float AttackSpeed,
@@ -506,5 +545,30 @@ public class HeroController : MonoBehaviour
     public Vector3 GetRayHitPoint()
     {
         return _hit.point;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        HandleItemPickup(other);
+    }
+
+    public void OnEnable()
+    {
+        UIEvents.OnItemDropUIHandler += TryToDropItemFromInventory;
+        UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
+
+        HeroEvents.OnHeroAttackHandler += HandleItemsSkills;
+
+        HeroEvents.OnHeroAttackHandler += HandleOnAttackPassiveSkills;
+    }
+
+    public void OnDisable()
+    {
+        UIEvents.OnItemDropUIHandler -= TryToDropItemFromInventory;
+        UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
+
+        HeroEvents.OnHeroAttackHandler -= HandleItemsSkills;
+
+        HeroEvents.OnHeroAttackHandler -= HandleOnAttackPassiveSkills;
     }
 }

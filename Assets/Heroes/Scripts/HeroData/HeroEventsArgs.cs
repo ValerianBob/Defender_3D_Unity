@@ -14,6 +14,8 @@ public class HeroEventsArgs
 
     public int SkillLevelId {  get; private set; }
 
+    public int SkillCoolDown {  get; private set; }
+
     public ItemExecuteType ItemExecuteType { get; private set; }
 
     public HeroEventsArgs() 
@@ -49,6 +51,12 @@ public class HeroEventsArgs
     public HeroEventsArgs(ItemExecuteType type)
     {
         ItemExecuteType = type;
+    }
+
+    public HeroEventsArgs(int SkillId, int SkillCoolDown)
+    {
+        this.SkillId = SkillId;
+        this.SkillCoolDown = SkillCoolDown;
     }
 
     public HeroEventsArgs(HeroInventory currentHeroInventory, HeroAttributes currentHeroAttributes)

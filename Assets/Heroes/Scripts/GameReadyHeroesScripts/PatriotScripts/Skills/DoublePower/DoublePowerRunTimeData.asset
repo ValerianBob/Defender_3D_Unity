@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98f6cf9fdca44645a3de5909b83561b, type: 3}
   m_Name: DoublePowerRunTimeData
   m_EditorClassIdentifier: Assembly-CSharp::DoublePower
-  CoolDown: 0
-  ManaCost: 0
-  Damage: 0
+  CoolDown: 20
+  ManaCost: 20
+  SkillDuration: 4
+  CurrentSkillLevel: 1
+  isReloading: 1
+  IncreaseAttackDamage: 20

@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnergySteal
   CoolDown: 0
   ManaCost: 0
-  Damage: 0
+  SkillDuration: 0
+  CurrentSkillLevel: 1
+  isReloading: 0
+  HealAmount: 10

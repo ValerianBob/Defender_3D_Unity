@@ -35,6 +35,8 @@ public class UIAttributes : MonoBehaviour
         HeroEvents.OnItemTakeHandler += UpdateAttributesInfo;
 
         HeroEvents.OnItemDropHandler += UpdateAttributesInfo;
+
+        HeroEvents.OnSkillUseHandler += UpdateAttributesInfo;
     }
 
     private void OnDisable()
@@ -46,5 +48,7 @@ public class UIAttributes : MonoBehaviour
         HeroEvents.OnItemTakeHandler -= UpdateAttributesInfo;
 
         HeroEvents.OnItemDropHandler -= UpdateAttributesInfo;
+
+        HeroEvents.OnSkillUseHandler -= UpdateAttributesInfo;
     }
 }
