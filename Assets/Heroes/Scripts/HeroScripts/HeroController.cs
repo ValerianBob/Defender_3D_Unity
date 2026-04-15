@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class HeroController : MonoBehaviour
 {
+    public static List<HeroController> AllHeroes = new List<HeroController>();
+
     [SerializeField] private Camera MainCamera;
     [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
@@ -21,6 +23,7 @@ public class HeroController : MonoBehaviour
     private HeroMovement _heroMovement;
     private HeroAttack _heroAttack;
     private HeroSkills _heroSkills;
+    private AnimationController _animationController;
     
     private HeroInventory _heroInventory;
     public HeroInventory HeroInventory => _heroInventory;
@@ -39,11 +42,13 @@ public class HeroController : MonoBehaviour
         _heroAttack = GetComponent<HeroAttack>();
         _heroSkills = GetComponent<HeroSkills>();
         _heroInventory = GetComponent<HeroInventory>();
+        _animationController = GetComponent<AnimationController>();
 
         _heroMovement.Init(this);
         _heroAttack.Init(this);
         _heroSkills.Init(this);
         _heroInventory.Init(this);
+        _animationController.Init(this);
     }
 
     private void Start()
@@ -144,7 +149,7 @@ public class HeroController : MonoBehaviour
             _heroAttack.GetRangeToAttack(isInRange, CurrentTarget);
         }
     }
-
+   
     private void HandleActiveSkills()
     {
         if (InputReader.Instance.QButton)
@@ -554,6 +559,8 @@ public class HeroController : MonoBehaviour
 
     public void OnEnable()
     {
+        AllHeroes.Add(this);
+
         UIEvents.OnItemDropUIHandler += TryToDropItemFromInventory;
         UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
 
@@ -564,6 +571,8 @@ public class HeroController : MonoBehaviour
 
     public void OnDisable()
     {
+        AllHeroes.Remove(this);
+
         UIEvents.OnItemDropUIHandler -= TryToDropItemFromInventory;
         UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
 

@@ -4,9 +4,9 @@ public class AnimationController : MonoBehaviour
 {
     private HeroController _heroController;
 
-    private void Start()
+    public void Init(HeroController heroController)
     {
-        _heroController = GetComponent<HeroController>();
+        _heroController = heroController;
     }
 
     private void Update()
