@@ -7,28 +7,41 @@ public class EnemyController : MonoBehaviour
     public static List<EnemyController> AllEnemies = new List<EnemyController>();
 
     private EnemyMovement _enemyMovement;
+    private EnemyAttack _enemyAttack;
     private EnemyAnimationsController _enemyAnimationsContoller;
+    private EnemyHealthBarUI _healthBarUI;
+
+    private CapsuleCollider _capsuleCollider;
 
     [SerializeField] private EnemyConfig _baseEnemyAttributes;
     [SerializeField] private EnemyAttributes _currentEnemyAttributes;
 
-    public bool isDead = false;
+    public HeroController CurrentTarget;
 
+    public bool isDead = false;
+    
     private void Awake()
     {
         _currentEnemyAttributes = new EnemyAttributes(_baseEnemyAttributes);
 
+        _capsuleCollider = GetComponent<CapsuleCollider>();
+
         _enemyMovement = GetComponent<EnemyMovement>();
+        _enemyAttack = GetComponent<EnemyAttack>();
         _enemyAnimationsContoller = GetComponent<EnemyAnimationsController>();
+        _healthBarUI = GetComponent<EnemyHealthBarUI>();
 
         _enemyMovement.Init(this);
+        _enemyAttack.Init(this);
         _enemyAnimationsContoller.Init(this);
+        _healthBarUI.Init(this);
     }
 
     private void Update()
     {
         if (!isDead)
         {
+            FindClosestTarget();
             HandleEnemyMovement();
         }
 
@@ -40,10 +53,12 @@ public class EnemyController : MonoBehaviour
         if (isGettingDamage)
         {
             _currentEnemyAttributes.CurrentHealth -= damage;
+            _healthBarUI.SetHealthBarInfo(_currentEnemyAttributes.CurrentHealth, _currentEnemyAttributes.CurrentMaxHealth);
         }
         else
         {
             _currentEnemyAttributes.CurrentHealth += damage;
+            _healthBarUI.SetHealthBarInfo(_currentEnemyAttributes.CurrentHealth, _currentEnemyAttributes.CurrentMaxHealth);
         }
 
         if (_currentEnemyAttributes.CurrentHealth < 0)
@@ -58,33 +73,74 @@ public class EnemyController : MonoBehaviour
 
     private void HandleEnemyMovement()
     {
+        if (CurrentTarget != null)
+        {
+            _enemyMovement.PursuingTarget(CurrentTarget.transform.position);
+        }
+        else
+        {
+            //TODO Use basic movement direction
+            _enemyMovement.Stop();
+        }
+    }
+
+    private void FindClosestTarget()
+    {
         foreach (var hero in HeroController.AllHeroes)
         {
             float distance = Vector3.Distance(transform.position, hero.transform.position);
 
             if (distance <= _currentEnemyAttributes.CurrentDetectionDistance)
             {
-                _enemyMovement.PursuingTarget(hero.transform.position);
-                return;
+                CurrentTarget = hero;
             }
+            else
+            {
+                CurrentTarget = null;
+            }
+        }
+    }
+
+    public bool IsInAttackRange()
+    {
+        if (CurrentTarget != null)
+        {
+            float distance = Vector3.Distance(transform.position, CurrentTarget.transform.position);
+
+            if (_currentEnemyAttributes.CurrentAttackRange >= distance)
+            {
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            return false;
         }
     }
 
     private void EnemyDied()
     {
-        if (_currentEnemyAttributes.CurrentHealth <= 0)
+        if (_currentEnemyAttributes.CurrentHealth <= 0 && !isDead)
         {
             isDead = true;
 
+            _capsuleCollider.isTrigger = true;
+
             StartCoroutine(PlayDead());
-            
+
+            _enemyAnimationsContoller.SetAnimatorRootMotion();
+
+            _healthBarUI.HideHealthBarSlider();
+
+            EnemyEvents.OnEnemyDeathHandler?.Invoke();
         }
     }
     private IEnumerator PlayDead()
     {
         _enemyAnimationsContoller.SetTrigger("Dead");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         
         Destroy(gameObject);
     }

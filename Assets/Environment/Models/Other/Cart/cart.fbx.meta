@@ -13,7 +13,7 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Cart3
-    second: {fileID: 2800000, guid: 84c8f8eabe5898844a902c736d3c7231, type: 3}
+    second: {fileID: 2800000, guid: 42e441ef66d4b3d4c93eafddde9e1c1c, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

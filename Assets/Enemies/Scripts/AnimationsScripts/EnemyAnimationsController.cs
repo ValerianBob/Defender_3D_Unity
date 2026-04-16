@@ -30,6 +30,15 @@ public class EnemyAnimationsController : MonoBehaviour
         SetFloat("MoveSpeedMultiplier", _enemyController.GetEnemyCurrentAttributes().CurrentMoveSpeed / 5f);
     }
 
+    public void PlayAttackAnimation(EnemyEventArgs EnemyArgs)
+    {
+        if (_enemyController == EnemyArgs.CurrentEnemyController)
+        {
+            SetTrigger("Attack");
+            SetFloat("AttackSpeedMultiplier", 1f / _enemyController.GetEnemyCurrentAttributes().CurrentAttackSpeed);
+        }
+    }
+
     public void Play(string animationName)
     {
         _animator.Play(animationName);
@@ -48,5 +57,21 @@ public class EnemyAnimationsController : MonoBehaviour
     public void SetTrigger(string paramName)
     {
         _animator.SetTrigger(paramName);
+    }
+
+    public void SetAnimatorRootMotion()
+    {
+        _animator.applyRootMotion = true;
+    }
+
+
+    private void OnEnable()
+    {
+        EnemyEvents.OnEnemyAttackHandler += PlayAttackAnimation;
+    }
+
+    private void OnDisable()
+    {
+        EnemyEvents.OnEnemyAttackHandler -= PlayAttackAnimation;
     }
 }
