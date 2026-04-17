@@ -133,7 +133,8 @@ public class EnemyController : MonoBehaviour
 
             _healthBarUI.HideHealthBarSlider();
 
-            EnemyEvents.OnEnemyDeathHandler?.Invoke();
+            EnemyEventArgs EnemyArgs = new EnemyEventArgs(this);
+            EnemyEvents.OnEnemyDeathHandler?.Invoke(EnemyArgs);
         }
     }
     private IEnumerator PlayDead()

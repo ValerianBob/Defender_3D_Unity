@@ -7,15 +7,16 @@ public class CameraMovement : MonoBehaviour
 
     private float _screenEdgeBorder = 10f;
 
-    private float _scrollTopBorder = 25f;
+    private float _scrollTopBorder = 35f;
     private float _scrollDownBorder = 5f;
 
-    private int _cameraLeftBorder = -35;
-    private int _cameraRightBorder = 145;
+    private int _cameraLeftBorder = -45;
+    private int _cameraRightBorder = 175;
     private int _cameraTopBorder = 130;
-    private int _cameraDownBorder = 5;
+    private int _cameraDownBorder = -45;
 
     public float MoveSpeed;
+    public float ScrollSpeed;
 
     private void Start()
     {
@@ -60,11 +61,11 @@ public class CameraMovement : MonoBehaviour
     {
         if (InputReader.Instance.MouseScroll.y < 0 && transform.position.y < _scrollTopBorder)
         {
-            _rb.AddForce(Vector3.up * MoveSpeed * Time.deltaTime);
+            _rb.AddForce(Vector3.up * ScrollSpeed * Time.deltaTime);
         }
         if (InputReader.Instance.MouseScroll.y > 0 && transform.position.y > _scrollDownBorder)
         {
-            _rb.AddForce(Vector3.down * MoveSpeed * Time.deltaTime);
+            _rb.AddForce(Vector3.down * ScrollSpeed * Time.deltaTime);
         }
 
         if (transform.position.y > _scrollTopBorder)

@@ -41,12 +41,20 @@ public class EnemyMovement : MonoBehaviour
         _agent.isStopped = true;
     }
 
-    private void StopCauseDead()
+    private void StopCauseDead(EnemyEventArgs EnemyArgs)
     {
-        _agent.ResetPath();
-        _agent.isStopped = true;
+        if (EnemyArgs == null)
+        {
+            return;
+        }
 
-        _agent.enabled = false;
+        if (EnemyArgs.CurrentEnemyController == _enemyController)
+        {
+            _agent.ResetPath();
+            _agent.isStopped = true;
+
+            _agent.enabled = false;
+        }
     }
 
     private void Update()
