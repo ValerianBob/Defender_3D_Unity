@@ -19,5 +19,9 @@ public abstract class Skill : ScriptableObject
         SkillDuration = config.BaseSkillDuration;
     }
 
+    public abstract void InitSkill(int CoolDown, int ManaCost, int SkillDuration);
+
     public abstract void Execute(HeroController CurrentHeroController);
+
+    public abstract void UpdateSkill();
 }

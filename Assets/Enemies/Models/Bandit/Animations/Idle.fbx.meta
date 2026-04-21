@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3e9e58b6cafb51d4e8e964569155e4d0
+guid: 031b0c2b3310fdf4382705b208c6f966
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -22,7 +22,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -35,7 +35,7 @@ ModelImporter:
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -529,23 +529,23 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: BanditModel(Clone)
+    - name: Cowboy(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Alpha_Surface
-      parentName: BanditModel(Clone)
+      parentName: Cowboy(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Alpha_Joints
-      parentName: BanditModel(Clone)
+      parentName: Cowboy(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:Hips
-      parentName: BanditModel(Clone)
+      parentName: Cowboy(Clone)
       position: {x: 0.00000033015945, y: 0.99791867, z: 0.00000051621345}
       rotation: {x: 7.537291e-11, y: 0.0000017531268, z: -0.000043883512, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -881,7 +881,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: c0645817ba5fe1244b856862a3911128, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 6d52d6a2fbda6e64b88c942cdd5d7afe, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1

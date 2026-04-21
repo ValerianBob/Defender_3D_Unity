@@ -41,5 +41,4 @@ public class EnemyAttributes
 
         CurrentDetectionDistance = BaseEnemyData.DetectionDistance;
     }
-
 }

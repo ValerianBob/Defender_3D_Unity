@@ -9,6 +9,18 @@ public class DoublePower : Skill
     {
     }
 
+    public override void InitSkill(int CoolDown, int ManaCost, int SkillDuration)
+    {
+        CurrentSkillLevel = 0;
+
+        this.CoolDown = CoolDown;
+        this.ManaCost = ManaCost;
+        this.SkillDuration = SkillDuration;
+        isReloading = false;
+
+        IncreaseAttackDamage = 20;
+    }
+
     public override void Execute(HeroController CurrentHeroController)
     {
         CurrentHeroController.ChagneMana(false, ManaCost);
@@ -16,6 +28,15 @@ public class DoublePower : Skill
         CurrentHeroController.StartCoroutine(Duration(CurrentHeroController));
 
         Debug.Log($"I used Double Power skill {ManaCost} {CoolDown}");
+    }
+
+    public override void UpdateSkill()
+    {
+        SkillDuration += 1;
+        ManaCost -= 2;
+        CoolDown -= 1;
+
+        IncreaseAttackDamage += 20;
     }
 
     private IEnumerator Duration(HeroController CurrentHeroController)

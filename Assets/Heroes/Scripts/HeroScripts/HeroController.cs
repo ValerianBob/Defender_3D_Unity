@@ -327,6 +327,13 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnXpGainHandler?.Invoke(HeroArgs);
     }
 
+    public void GainXpWrapper(EnemyEventArgs EnemyArgs)
+    {
+        float XpAmount = EnemyArgs.CurrentEnemyController.GetEnemyCurrentAttributes().CurrentLevel * 10;
+
+        GainXp(XpAmount);
+    }
+
     public void LevelUp()
     {
         Hero_Attributes.Lv += 1;
@@ -567,6 +574,8 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnHeroAttackHandler += HandleItemsSkills;
 
         HeroEvents.OnHeroAttackHandler += HandleOnAttackPassiveSkills;
+
+        EnemyEvents.OnEnemyDeathHandler += GainXpWrapper;
     }
 
     public void OnDisable()
@@ -579,5 +588,7 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnHeroAttackHandler -= HandleItemsSkills;
 
         HeroEvents.OnHeroAttackHandler -= HandleOnAttackPassiveSkills;
+
+        EnemyEvents.OnEnemyDeathHandler -= GainXpWrapper; 
     }
 }

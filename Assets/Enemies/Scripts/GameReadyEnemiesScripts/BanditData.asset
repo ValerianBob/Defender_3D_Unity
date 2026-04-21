@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb4c90e68ab1de44925df0dba53ff4a, type: 3}
   m_Name: BanditData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  enemyType: 0
+  enemyType: 1
   enemyName: Bandit
   attackDamage: 10
   attackRange: 2
-  attackSpeed: 1
+  attackSpeed: 0.7
   moveSpeed: 3
-  maxHealth: 300
-  healthGain: 5
+  maxHealth: 100
+  healthGain: 3
   level: 1
   detectionDistance: 10

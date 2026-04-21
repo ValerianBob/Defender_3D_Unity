@@ -37,6 +37,11 @@ public class EnemyController : MonoBehaviour
         _healthBarUI.Init(this);
     }
 
+    private void Start()
+    {
+        StartCoroutine(GainAttributesLoop());
+    }
+
     private void Update()
     {
         if (!isDead)
@@ -53,21 +58,34 @@ public class EnemyController : MonoBehaviour
         if (isGettingDamage)
         {
             _currentEnemyAttributes.CurrentHealth -= damage;
+
+            if (_currentEnemyAttributes.CurrentHealth < 0)
+            {
+                _currentEnemyAttributes.CurrentHealth = 0;
+            }
+
             _healthBarUI.SetHealthBarInfo(_currentEnemyAttributes.CurrentHealth, _currentEnemyAttributes.CurrentMaxHealth);
         }
         else
         {
             _currentEnemyAttributes.CurrentHealth += damage;
+
+            if (_currentEnemyAttributes.CurrentHealth > _currentEnemyAttributes.CurrentMaxHealth)
+            {
+                _currentEnemyAttributes.CurrentHealth = _currentEnemyAttributes.CurrentMaxHealth;
+            }
+
             _healthBarUI.SetHealthBarInfo(_currentEnemyAttributes.CurrentHealth, _currentEnemyAttributes.CurrentMaxHealth);
         }
+    }
 
-        if (_currentEnemyAttributes.CurrentHealth < 0)
+    private IEnumerator GainAttributesLoop()
+    {
+        while (true)
         {
-            _currentEnemyAttributes.CurrentHealth = 0;
-        }
-        else if (_currentEnemyAttributes.CurrentHealth > _currentEnemyAttributes.CurrentMaxHealth)
-        {
-            _currentEnemyAttributes.CurrentHealth = _currentEnemyAttributes.CurrentMaxHealth;
+            ChangeHealth(false, _currentEnemyAttributes.CurrentHealthGain);
+
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -79,7 +97,6 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            //TODO Use basic movement direction
             _enemyMovement.Stop();
         }
     }
@@ -133,7 +150,7 @@ public class EnemyController : MonoBehaviour
 
             _healthBarUI.HideHealthBarSlider();
 
-            EnemyEventArgs EnemyArgs = new EnemyEventArgs(this);
+            EnemyEventArgs EnemyArgs = new EnemyEventArgs(this, gameObject);
             EnemyEvents.OnEnemyDeathHandler?.Invoke(EnemyArgs);
         }
     }

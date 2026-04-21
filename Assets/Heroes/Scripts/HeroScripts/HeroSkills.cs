@@ -17,7 +17,6 @@ public class HeroSkills : MonoBehaviour
         public SkillConfig SkillData => skillData;
     }
 
-    // Maybe change Skills arhitecture later :
     [SerializeField] private SkillSlot[] SkillSlots = new SkillSlot[MaxSkillsQuantity];
 
     public void Init(HeroController heroController)
@@ -30,12 +29,7 @@ public class HeroSkills : MonoBehaviour
             int ManaCost = SkillSlots[i].SkillData.BaseManaCost;
             int SkillDuration = SkillSlots[i].SkillData.BaseSkillDuration;
 
-            SkillSlots[i].Skill.CoolDown = CoolDown;
-            SkillSlots[i].Skill.ManaCost = ManaCost;
-            SkillSlots[i].Skill.SkillDuration = SkillDuration;
-            SkillSlots[i].Skill.isReloading = false;
-
-            SkillSlots[i].Skill.CurrentSkillLevel = 0;
+            SkillSlots[i].Skill.InitSkill(CoolDown, ManaCost, SkillDuration);
         }
     }
 
@@ -83,14 +77,10 @@ public class HeroSkills : MonoBehaviour
 
             _heroController.Hero_Attributes.PointsForLevelUpSckills -= 1;
 
-            //Change Later :
             if (SkillSlots[SkillId].Skill.CurrentSkillLevel > 1)
             {
-                SkillSlots[SkillId].Skill.SkillDuration += 1;
-                SkillSlots[SkillId].Skill.ManaCost -= 2;
-                SkillSlots[SkillId].Skill.CoolDown -= 1;
+                SkillSlots[SkillId].Skill.UpdateSkill();
             }
-            
 
             HeroEventsArgs HeroArgs = new HeroEventsArgs(SkillId, LevelOfSkill, GetAllSkillsData(), _heroController.Hero_Attributes,
                 _heroController.HeroInventory, GetAllSkillsLevels());
