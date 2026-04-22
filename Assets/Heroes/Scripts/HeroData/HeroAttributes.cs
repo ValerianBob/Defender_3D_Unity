@@ -26,6 +26,8 @@ public class HeroAttributes
 
     public int PointsForLevelUpSckills;
 
+    public int RespawnTime;
+
     public HeroAttributes(HeroConfig heroConfig)
     {
         HeroName = heroConfig.heroName;
@@ -50,5 +52,9 @@ public class HeroAttributes
         Lv = heroConfig.lv;
         CurrentXP = heroConfig.currentXP;
         XPForLevelUP = heroConfig.xPForLevelUP;
+
+        PointsForLevelUpSckills = 0;
+
+        RespawnTime = 5;
     }
 }

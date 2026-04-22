@@ -169,5 +169,9 @@ public class HeroInventory : MonoBehaviour
         {
             CurrentGold -= gold;
         }
+
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(this);
+
+        HeroEvents.OnGoldGainHandler?.Invoke(HeroArgs);
     }
 }

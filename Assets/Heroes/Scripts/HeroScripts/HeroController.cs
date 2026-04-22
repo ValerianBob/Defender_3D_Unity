@@ -9,7 +9,6 @@ public class HeroController : MonoBehaviour
     public static List<HeroController> AllHeroes = new List<HeroController>();
 
     [SerializeField] private Camera MainCamera;
-    [SerializeField] private Animator CharacterAnimator;
     [SerializeField] private HeroConfig Hero_Config;
     [SerializeField] private GameObject Marker;
 
@@ -29,6 +28,10 @@ public class HeroController : MonoBehaviour
     public HeroInventory HeroInventory => _heroInventory;
 
     public GameObject CurrentTarget;
+
+    private Coroutine HealthAndManaGain;
+
+    public bool isDead = false;
 
     private void Awake()
     {
@@ -58,17 +61,25 @@ public class HeroController : MonoBehaviour
             _heroSkills.GetAllSkillsLevels());
         HeroEvents.OnHeroSelectHandler?.Invoke(HeroArgs);
 
-        StartCoroutine(GainAttributesLoop());
+        HealthAndManaGain = StartCoroutine(GainAttributesLoop());
     }
 
     private void Update()
     {
         Ray = MainCamera.ScreenPointToRay(InputReader.Instance.MousePosition);
 
-        HandleMovementAndTargeting();
+        if (!isDead)
+        {
+            HandleMovementAndTargeting();
 
-        HandleActiveSkills();
-        HandlePassiveSkills();
+            HandleActiveSkills();
+            HandlePassiveSkills();
+        }
+
+        if (Hero_Attributes.CurrentHealth <= 0 && !isDead)
+        {
+            StartCoroutine(RespawnHero());
+        }
 
         //Test delete later :
         if (Keyboard.current.dKey.wasPressedThisFrame)
@@ -98,10 +109,6 @@ public class HeroController : MonoBehaviour
         if (Keyboard.current.zKey.wasPressedThisFrame)
         {
             _heroInventory.SetGold(true, 100);
-
-            HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory);
-
-            HeroEvents.OnGoldGainHandler?.Invoke(HeroArgs);
         }
     }
 
@@ -327,11 +334,18 @@ public class HeroController : MonoBehaviour
         HeroEvents.OnXpGainHandler?.Invoke(HeroArgs);
     }
 
+    //Balance later :
     public void GainXpWrapper(EnemyEventArgs EnemyArgs)
     {
         float XpAmount = EnemyArgs.CurrentEnemyController.GetEnemyCurrentAttributes().CurrentLevel * 10;
 
         GainXp(XpAmount);
+    }
+
+    //Balance later :
+    public void GainGoldWrapper(EnemyEventArgs EnemyArgs)
+    {
+        _heroInventory.SetGold(true, 10);
     }
 
     public void LevelUp()
@@ -489,6 +503,43 @@ public class HeroController : MonoBehaviour
         Hero_Attributes.ManaGain -= ManaGain;
     }
 
+    public IEnumerator RespawnHero()
+    {
+        isDead = true;
+
+        CurrentTarget = null;
+
+        _heroMovement.Stop();
+
+        _animationController.SetBool("IsDead", true);
+        _animationController.ApplyRootMotion(true);
+
+        StopCoroutine(HealthAndManaGain);
+
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(Hero_Attributes);
+        HeroEvents.OnHeroDeathHandler?.Invoke(HeroArgs);
+
+        yield return new WaitForSeconds(Hero_Attributes.RespawnTime);
+
+        _animationController.SetBool("IsDead", false);
+        _animationController.ApplyRootMotion(false);
+
+        Transform HeroModel = transform.GetChild(0);
+
+        HeroModel.localPosition = Vector3.zero;
+        HeroModel.localRotation = Quaternion.identity;
+
+        HealthAndManaGain = StartCoroutine(GainAttributesLoop());
+
+        ChangeHealth(false, Hero_Attributes.MaxHealth);
+        ChagneMana(true, Hero_Attributes.MaxMana);
+
+        HeroEventsArgs HeroArgs1 = new HeroEventsArgs(Hero_Attributes);
+        HeroEvents.OnHeroRespawnHandler?.Invoke(HeroArgs1);
+
+        isDead = false;
+    }
+
     // NavMeshAgent :
     public float GetAgentMagnitude()
     {
@@ -522,27 +573,6 @@ public class HeroController : MonoBehaviour
         _agent.ResetPath();
     }
 
-    // Animations :
-    public void Play(string animationName)
-    {
-        CharacterAnimator.Play(animationName);
-    }
-
-    public void SetBool(string paramName, bool value)
-    {
-        CharacterAnimator.SetBool(paramName, value);
-    }
-
-    public void SetFloat(string paramName, float value)
-    {
-        CharacterAnimator.SetFloat(paramName, value);
-    }
-
-    public void SetTrigger(string paramName)
-    {
-        CharacterAnimator.SetTrigger(paramName);
-    }
-
     // Ray :
     public Vector3 GetRayOrigin()
     {
@@ -572,10 +602,10 @@ public class HeroController : MonoBehaviour
         UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
 
         HeroEvents.OnHeroAttackHandler += HandleItemsSkills;
-
         HeroEvents.OnHeroAttackHandler += HandleOnAttackPassiveSkills;
 
         EnemyEvents.OnEnemyDeathHandler += GainXpWrapper;
+        EnemyEvents.OnEnemyDeathHandler += GainGoldWrapper;
     }
 
     public void OnDisable()
@@ -586,9 +616,9 @@ public class HeroController : MonoBehaviour
         UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
 
         HeroEvents.OnHeroAttackHandler -= HandleItemsSkills;
-
         HeroEvents.OnHeroAttackHandler -= HandleOnAttackPassiveSkills;
 
-        EnemyEvents.OnEnemyDeathHandler -= GainXpWrapper; 
+        EnemyEvents.OnEnemyDeathHandler -= GainXpWrapper;
+        EnemyEvents.OnEnemyDeathHandler -= GainGoldWrapper;
     }
 }

@@ -98,7 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroController
   MainCamera: {fileID: 0}
-  CharacterAnimator: {fileID: 5643677658943807902}
   Hero_Config: {fileID: 11400000, guid: a3fd3a5d87a60f34d96b138f4afb5bbc, type: 2}
   Marker: {fileID: 1914391704676004670, guid: 4d528421a9a12fe449ff9530ccae48c2, type: 3}
   Hero_Attributes:
@@ -118,7 +117,9 @@ MonoBehaviour:
     CurrentXP: 0
     XPForLevelUP: 0
     PointsForLevelUpSckills: 0
+    RespawnTime: 0
   CurrentTarget: {fileID: 0}
+  isDead: 0
 --- !u!114 &5888186909063317742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,8 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ff0263503b5e1b4a9250cb6d3128580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroInventory
-  CurrentGold: 0
-  items: []
+  Items: []
 --- !u!114 &7079763918870904872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3e1cf11aed8db44b720fd312e6c209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationController
+  CharacterAnimator: {fileID: 5643677658943807902}
 --- !u!1001 &671234077875087971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202,7 +203,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.009124756
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -210,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0044784546
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36b15872668aec41928b6c8ec60e6c4, type: 3}
       propertyPath: m_LocalRotation.w

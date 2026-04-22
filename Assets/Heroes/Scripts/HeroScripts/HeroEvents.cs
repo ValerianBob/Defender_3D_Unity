@@ -42,4 +42,10 @@ public static class HeroEvents
 
     public delegate void OnSkillReload(HeroEventsArgs HeroArgs);
     public static OnSkillReload OnSkillReloadHandler;
+
+    public delegate void OnHeroDeath(HeroEventsArgs HeroArgs);
+    public static OnHeroDeath OnHeroDeathHandler;
+
+    public delegate void OnHeroRespawn(HeroEventsArgs HeroArgs);
+    public static OnHeroRespawn OnHeroRespawnHandler;
 }

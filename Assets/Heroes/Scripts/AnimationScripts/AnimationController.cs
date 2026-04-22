@@ -2,36 +2,75 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
+    [SerializeField] private Animator CharacterAnimator;
+
     private HeroController _heroController;
 
     public void Init(HeroController heroController)
     {
         _heroController = heroController;
     }
-
+    
     private void Update()
     {
+        if (_heroController.isDead)
+        {
+            return;
+        }
+
         if (_heroController.GetAgentMagnitude() > 0.1f)
         {
-            _heroController.SetBool("IsWalking", true);
+            SetBool("IsWalking", true);
 
             ChangeWalkingSpeedAnimation();
         }
         else
         {
-            _heroController.SetBool("IsWalking", false);
+            SetBool("IsWalking", false);
         }
     }
 
     public void ChangeWalkingSpeedAnimation()
     {
-        _heroController.SetFloat("MoveSpeedMultiplier", _heroController.Hero_Attributes.CurrentMoveSpeed / 5f);
+        SetFloat("MoveSpeedMultiplier", _heroController.Hero_Attributes.CurrentMoveSpeed / 5f);
     }
 
     public void ChangeAttackSpeedAnimation()
     {
-        _heroController.SetTrigger("Attack");
-        _heroController.SetFloat("AttackSpeedMultiplier", 1f / _heroController.Hero_Attributes.CurrentAttackSpeed);
+        SetTrigger("Attack");
+        SetFloat("AttackSpeedMultiplier", 1f / _heroController.Hero_Attributes.CurrentAttackSpeed);
+    }
+
+    public void Play(string animationName)
+    {
+        CharacterAnimator.Play(animationName);
+    }
+
+    public void SetBool(string paramName, bool value)
+    {
+        CharacterAnimator.SetBool(paramName, value);
+    }
+
+    public void SetFloat(string paramName, float value)
+    {
+        CharacterAnimator.SetFloat(paramName, value);
+    }
+
+    public void SetTrigger(string paramName)
+    {
+        CharacterAnimator.SetTrigger(paramName);
+    }
+
+    public void ApplyRootMotion(bool isApplying)
+    {
+        if (isApplying)
+        {
+            CharacterAnimator.applyRootMotion = true;
+        }
+        else
+        {
+            CharacterAnimator.applyRootMotion = false;
+        }
     }
 
     private void OnEnable()
