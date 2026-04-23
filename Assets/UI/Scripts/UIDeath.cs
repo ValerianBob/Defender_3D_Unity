@@ -13,16 +13,27 @@ public class UIDeath : MonoBehaviour
 
     [SerializeField] private Button BuyBackButton;
 
+    private Coroutine CountRespawnTimerCoroutine;
+
+    private void Start()
+    {
+        BuyBackButton.onClick.AddListener(TryToBuyBack);
+    }
+
     private void ShowDeathWindow(HeroEventsArgs HeroArgs)
     {
         DeathWindow.gameObject.SetActive(true);
 
-        StartCoroutine(CountRespawnTimer(HeroArgs.CurrentHeroAttributes.RespawnTime));
+        CountRespawnTimerCoroutine = StartCoroutine(CountRespawnTimer(HeroArgs.CurrentHeroAttributes.RespawnTime));
+
+        BuyBackCostText.text = $"Buy back cost : {HeroArgs.CurrentHeroAttributes.BuyBackCost}";
     }
 
     private void HideDeathWindow(HeroEventsArgs HeroArgs)
     {
         DeathWindow.gameObject.SetActive(false);
+
+        StopCoroutine(CountRespawnTimerCoroutine);
     }
 
     private IEnumerator CountRespawnTimer(int RespawnTime)
@@ -34,6 +45,11 @@ public class UIDeath : MonoBehaviour
         }
 
         RespawnTimeText.text = "0";
+    }
+
+    private void TryToBuyBack()
+    {
+        UIEvents.OnBuyBackUIHandler?.Invoke();
     }
 
     private void OnEnable()

@@ -16,7 +16,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyConfig _baseEnemyAttributes;
     [SerializeField] private EnemyAttributes _currentEnemyAttributes;
 
-    public HeroController CurrentTarget;
+    public GameObject DestinationPosition;
+
+    public GameObject CurrentTarget;
 
     public bool isDead = false;
     
@@ -35,6 +37,11 @@ public class EnemyController : MonoBehaviour
         _enemyAttack.Init(this);
         _enemyAnimationsContoller.Init(this);
         _healthBarUI.Init(this);
+
+        if (_currentEnemyAttributes.EnemyType == EnemyType.BaseRaider)
+        {
+            DestinationPosition = GameObject.FindGameObjectWithTag("Base");
+        }
     }
 
     private void Start()
@@ -46,7 +53,7 @@ public class EnemyController : MonoBehaviour
     {
         if (!isDead)
         {
-            FindClosestTarget();
+            FindTarget();
             HandleEnemyMovement();
         }
 
@@ -97,24 +104,41 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            _enemyMovement.Stop();
+            _enemyMovement.PursuingTarget(DestinationPosition.transform.position);
         }
     }
 
-    private void FindClosestTarget()
+    private void FindTarget()
     {
+        GameObject closestTarget = null;
+
         foreach (var hero in HeroController.AllHeroes)
         {
+            if (hero == null)
+            {
+                continue;
+            }
+
+            if (hero.Hero_Attributes.CurrentHealth <= 0)
+            {
+                continue;
+            }
+            
             float distance = Vector3.Distance(transform.position, hero.transform.position);
 
             if (distance <= _currentEnemyAttributes.CurrentDetectionDistance)
             {
-                CurrentTarget = hero;
+                closestTarget = hero.gameObject;
             }
-            else
-            {
-                CurrentTarget = null;
-            }
+        }
+
+        if (closestTarget != null)
+        {
+            CurrentTarget = closestTarget;
+        }
+        else
+        {
+            CurrentTarget = (_currentEnemyAttributes.EnemyType == EnemyType.BaseRaider) ? DestinationPosition : null;
         }
     }
 

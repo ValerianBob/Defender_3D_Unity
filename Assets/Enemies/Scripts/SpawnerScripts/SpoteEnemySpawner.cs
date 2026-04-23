@@ -28,6 +28,8 @@ public class SpoteEnemySpawner : MonoBehaviour
                 new Vector3(transform.position.x + NextSpawnSpot, transform.position.y, transform.position.z), 
                 item.transform.rotation);
 
+            enemy.GetComponent<EnemyController>().DestinationPosition = gameObject;
+
             _spawnedEnemies.Add(enemy);
 
             NextSpawnSpot += 1;

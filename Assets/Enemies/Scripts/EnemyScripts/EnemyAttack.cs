@@ -41,7 +41,12 @@ public class EnemyAttack : MonoBehaviour
     {
         if (_enemyController.CurrentTarget != null)
         {
-            _enemyController.CurrentTarget.ChangeHealth(true, _enemyController.GetEnemyCurrentAttributes().CurrentAttackDamage);
+            HeroController CurrentHero = _enemyController.CurrentTarget.GetComponent<HeroController>();
+
+            if (CurrentHero != null)
+            {
+                CurrentHero.ChangeHealth(true, _enemyController.GetEnemyCurrentAttributes().CurrentAttackDamage);
+            }
         }
     }
 }

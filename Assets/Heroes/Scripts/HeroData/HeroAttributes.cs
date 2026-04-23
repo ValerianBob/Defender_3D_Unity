@@ -28,6 +28,8 @@ public class HeroAttributes
 
     public int RespawnTime;
 
+    public int BuyBackCost;
+
     public HeroAttributes(HeroConfig heroConfig)
     {
         HeroName = heroConfig.heroName;
@@ -56,5 +58,7 @@ public class HeroAttributes
         PointsForLevelUpSckills = 0;
 
         RespawnTime = 5;
+
+        BuyBackCost = 100;
     }
 }

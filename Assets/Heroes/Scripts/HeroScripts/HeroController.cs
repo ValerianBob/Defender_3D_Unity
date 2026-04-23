@@ -31,6 +31,8 @@ public class HeroController : MonoBehaviour
 
     private Coroutine HealthAndManaGain;
 
+    private Coroutine Respawn;
+
     public bool isDead = false;
 
     private void Awake()
@@ -78,7 +80,7 @@ public class HeroController : MonoBehaviour
 
         if (Hero_Attributes.CurrentHealth <= 0 && !isDead)
         {
-            StartCoroutine(RespawnHero());
+            Respawn = StartCoroutine(RespawnHero());
         }
 
         //Test delete later :
@@ -355,10 +357,11 @@ public class HeroController : MonoBehaviour
         // Change Later : 
         Hero_Attributes.MaxHealth += 50;
         Hero_Attributes.MaxMana += 10;
-        Hero_Attributes.CurrentDamage += 20;
-        Hero_Attributes.CurrentMagicDamage += 20;
-
+        Hero_Attributes.CurrentDamage += 10;
+        Hero_Attributes.CurrentMagicDamage += 5;
         Hero_Attributes.PointsForLevelUpSckills += 1;
+        Hero_Attributes.RespawnTime += 2;
+        Hero_Attributes.BuyBackCost += 50;
 
         HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroSkills.GetAllSkillsData(), Hero_Attributes, _heroInventory, 
             _heroSkills.GetAllSkillsLevels());
@@ -540,6 +543,34 @@ public class HeroController : MonoBehaviour
         isDead = false;
     }
 
+    public void BuyBack()
+    {
+        if (HeroInventory.GetGold() >= Hero_Attributes.BuyBackCost)
+        {
+            StopCoroutine(Respawn);
+
+            _animationController.SetBool("IsDead", false);
+            _animationController.ApplyRootMotion(false);
+
+            Transform HeroModel = transform.GetChild(0);
+
+            HeroModel.localPosition = Vector3.zero;
+            HeroModel.localRotation = Quaternion.identity;
+
+            HealthAndManaGain = StartCoroutine(GainAttributesLoop());
+
+            ChangeHealth(false, Hero_Attributes.MaxHealth);
+            ChagneMana(true, Hero_Attributes.MaxMana);
+
+            HeroEventsArgs HeroArgs1 = new HeroEventsArgs(Hero_Attributes);
+            HeroEvents.OnHeroRespawnHandler?.Invoke(HeroArgs1);
+
+            isDead = false;
+
+            HeroInventory.SetGold(false, Hero_Attributes.BuyBackCost);
+        }
+    }
+
     // NavMeshAgent :
     public float GetAgentMagnitude()
     {
@@ -606,6 +637,8 @@ public class HeroController : MonoBehaviour
 
         EnemyEvents.OnEnemyDeathHandler += GainXpWrapper;
         EnemyEvents.OnEnemyDeathHandler += GainGoldWrapper;
+
+        UIEvents.OnBuyBackUIHandler += BuyBack;
     }
 
     public void OnDisable()
@@ -620,5 +653,7 @@ public class HeroController : MonoBehaviour
 
         EnemyEvents.OnEnemyDeathHandler -= GainXpWrapper;
         EnemyEvents.OnEnemyDeathHandler -= GainGoldWrapper;
+
+        UIEvents.OnBuyBackUIHandler -= BuyBack;
     }
 }
