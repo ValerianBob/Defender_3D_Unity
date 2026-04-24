@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +9,29 @@ public class UIShop : MonoBehaviour
 
     [SerializeField] private Button ShopButtonToggle;
 
+    [Serializable]
+    private struct ItemShopSlot
+    {
+        public RawImage ItemIcon;
+        public TMP_Text ItemCostText;
+        public ItemConfig Item;
+        public Button BuyButton;
+    }
+
+    [SerializeField] private ItemShopSlot[] ItemShopSlots;
+
     private bool isOpened = false;
 
     private void Start()
     {
         ShopButtonToggle.onClick.AddListener(ToggleShopWindow);
+
+        foreach (ItemShopSlot slot in ItemShopSlots)
+        {
+            slot.ItemIcon.texture = slot.Item.GetItemIcon().texture;
+            slot.ItemCostText.text = slot.Item.GetItemCost().ToString();
+            slot.BuyButton.onClick.AddListener(() => BuyItem(slot.Item));
+        }
     }
 
     private void ToggleShopWindow()
@@ -19,5 +39,10 @@ public class UIShop : MonoBehaviour
         isOpened = !isOpened;
 
         ShopWindow.SetActive(isOpened);
+    }
+
+    private void BuyItem(ItemConfig Item)
+    {
+        UIEvents.OnItemBuyUIHandler?.Invoke(Item);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class HeroController : MonoBehaviour
 {
@@ -339,7 +340,7 @@ public class HeroController : MonoBehaviour
     //Balance later :
     public void GainXpWrapper(EnemyEventArgs EnemyArgs)
     {
-        float XpAmount = EnemyArgs.CurrentEnemyController.GetEnemyCurrentAttributes().CurrentLevel * 10;
+        float XpAmount = EnemyArgs.CurrentEnemyController.GetEnemyCurrentAttributes().CurrentLevel * 50;
 
         GainXp(XpAmount);
     }
@@ -347,7 +348,7 @@ public class HeroController : MonoBehaviour
     //Balance later :
     public void GainGoldWrapper(EnemyEventArgs EnemyArgs)
     {
-        _heroInventory.SetGold(true, 10);
+        _heroInventory.SetGold(true, 25);
     }
 
     public void LevelUp()
@@ -407,7 +408,39 @@ public class HeroController : MonoBehaviour
         }
     }
 
-    //TODO make that items spawn on place it dropped
+    private void HandleItemBuy(ItemConfig Item)
+    {
+        if (_heroInventory.GetGold() < Item.GetItemCost())
+        {
+            Debug.Log("Not enough money to buy item");
+
+            return;
+        }
+
+        if (Item != null)
+        {
+            _heroInventory.SetGold(false, Item.GetItemCost());
+
+            int ItemAttackDamage = Item.GetItemDamage();
+            int ItemMagicDamage = Item.GetItemMagicDamage();
+            int ItemAttackRange = Item.GetItemAttackRange();
+            int ItemMoveSpeed = Item.GetItemMoveSpeed();
+            float ItemAttackSpeed = Item.GetItemAttackSpeed();
+            int ItemHealth = Item.GetItemHealth();
+            int ItemMana = Item.GetItemMana();
+            int ItemHealthGain = Item.GetItemHealthGain();
+            int ItemManaGain = Item.GetItemManaGain();
+
+            AddHeroAttributes(ItemAttackDamage, ItemMagicDamage, ItemAttackRange, ItemMoveSpeed, ItemAttackSpeed,
+                    ItemHealth, ItemMana, ItemHealthGain, ItemManaGain);
+
+            _heroInventory.AddItemInInventory(Item);
+
+            HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroInventory, Hero_Attributes);
+            HeroEvents.OnItemTakeHandler?.Invoke(HeroArgs);
+        }
+    }
+
     public void TryToDropItemFromInventory(int ItemIdToDrop)
     {
         if (Physics.Raycast(Ray, out _hit, 100f))
@@ -639,6 +672,8 @@ public class HeroController : MonoBehaviour
         EnemyEvents.OnEnemyDeathHandler += GainGoldWrapper;
 
         UIEvents.OnBuyBackUIHandler += BuyBack;
+
+        UIEvents.OnItemBuyUIHandler += HandleItemBuy;
     }
 
     public void OnDisable()
@@ -655,5 +690,7 @@ public class HeroController : MonoBehaviour
         EnemyEvents.OnEnemyDeathHandler -= GainGoldWrapper;
 
         UIEvents.OnBuyBackUIHandler -= BuyBack;
+
+        UIEvents.OnItemBuyUIHandler -= HandleItemBuy;
     }
 }

@@ -9,6 +9,9 @@ public class UIEvents
     public delegate void OnItemSwapUI(int DraggedItemId, int DroppedOnItemId);
     public static OnItemSwapUI OnItemSwapUIHandler;
 
+    public delegate void OnItemBuyUI(ItemConfig itemConfig);
+    public static OnItemBuyUI OnItemBuyUIHandler;
+
     public delegate void OnBuyBackUI();
     public static OnBuyBackUI OnBuyBackUIHandler;
 }

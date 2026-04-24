@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 014954c45d50e854ca93932eb8d75f06
+guid: 8e280b78ee75407479e7cfac92ed72d0
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,13 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: b99a9c66be3ebf0478171d76d9de483d, type: 2}
+      name: Material.001
+    second: {fileID: 2100000, guid: dfd1ccae2287ad9459d191d358b0e281, type: 2}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: bank
-    second: {fileID: 2800000, guid: da5c5d5c90102664b84483516a8ea9a6, type: 3}
+    second: {fileID: 2800000, guid: 125fe1ad4496c574ba717142bcb2d26e, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

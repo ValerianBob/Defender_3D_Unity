@@ -7,13 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: de6dcf5f56740f84fb9ec5e4dc270361, type: 2}
+      name: Material.001
+    second: {fileID: 2100000, guid: 0569ef7c56b1c1b47bc69fa8eadf2f04, type: 2}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Tower
-    second: {fileID: 2800000, guid: 069d507a18af58145b9a9badec88ec34, type: 3}
+    second: {fileID: 2800000, guid: 673590910cd1081499b182a7090255b7, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

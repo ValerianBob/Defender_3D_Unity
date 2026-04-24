@@ -25,6 +25,8 @@ public class ItemConfig : ScriptableObject
     [SerializeField] private int HealthGain;
     [SerializeField] private int ManaGain;
 
+    [SerializeField] private int ItemCost;
+
     [SerializeField] private ItemSkill Skill;
 
     public string GetItemName()
@@ -85,6 +87,11 @@ public class ItemConfig : ScriptableObject
     public int GetItemManaGain()
     {
         return ManaGain;
+    }
+
+    public int GetItemCost()
+    {
+        return ItemCost;
     }
 
     public ItemSkill GetSkill()

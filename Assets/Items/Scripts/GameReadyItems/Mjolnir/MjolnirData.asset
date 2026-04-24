@@ -25,4 +25,5 @@ MonoBehaviour:
   Mana: 10
   HealthGain: 5
   ManaGain: 5
+  ItemCost: 500
   Skill: {fileID: 11400000, guid: a8079108d2d3e3240ae618dcdabeb761, type: 2}
