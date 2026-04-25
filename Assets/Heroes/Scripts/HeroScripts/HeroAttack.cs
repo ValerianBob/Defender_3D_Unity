@@ -58,7 +58,7 @@ public class HeroAttack : MonoBehaviour
         
         text.text = count.ToString();
 
-        HeroEventsArgs HeroArgs = new HeroEventsArgs(ItemExecuteType.OnAttack);
+        HeroEventsArgs HeroArgs = new HeroEventsArgs();
         HeroEvents.OnHeroAttackHandler?.Invoke(HeroArgs);
 
         Debug.Log("Damage dealt!");

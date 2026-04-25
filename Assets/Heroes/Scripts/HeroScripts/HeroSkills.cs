@@ -25,11 +25,14 @@ public class HeroSkills : MonoBehaviour
 
         for (int i = 0; i < SkillSlots.Length; i++)
         {
+            string Name = SkillSlots[i].SkillData.name;
+            string Description = SkillSlots[i].SkillData.Description;
+
             int CoolDown = SkillSlots[i].SkillData.BaseCoolDown;
             int ManaCost = SkillSlots[i].SkillData.BaseManaCost;
             int SkillDuration = SkillSlots[i].SkillData.BaseSkillDuration;
 
-            SkillSlots[i].Skill.InitSkill(CoolDown, ManaCost, SkillDuration);
+            SkillSlots[i].Skill.InitSkill(Name, Description, CoolDown, ManaCost, SkillDuration);
         }
     }
 
@@ -119,6 +122,18 @@ public class HeroSkills : MonoBehaviour
         for (int i = 0; i < MaxSkillsQuantity; i++)
         {
             SkillDataToSend[i] = SkillSlots[i].SkillData;
+        }
+
+        return SkillDataToSend;
+    }
+
+    public SkillSlot[] GetAllSkills()
+    {
+        SkillSlot[] SkillDataToSend = new SkillSlot[MaxSkillsQuantity];
+
+        for (int i = 0; i < MaxSkillsQuantity; i++)
+        {
+            SkillDataToSend[i] = SkillSlots[i];
         }
 
         return SkillDataToSend;

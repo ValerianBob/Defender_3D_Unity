@@ -16,6 +16,8 @@ public class UIShop : MonoBehaviour
         public TMP_Text ItemCostText;
         public ItemConfig Item;
         public Button BuyButton;
+
+        public InfoWindowTriggerUI InfoWindowTrigger;
     }
 
     [SerializeField] private ItemShopSlot[] ItemShopSlots;
@@ -31,7 +33,11 @@ public class UIShop : MonoBehaviour
             slot.ItemIcon.texture = slot.Item.GetItemIcon().texture;
             slot.ItemCostText.text = slot.Item.GetItemCost().ToString();
             slot.BuyButton.onClick.AddListener(() => BuyItem(slot.Item));
+
+            slot.InfoWindowTrigger.Initialize(slot.Item);
         }
+
+        ShopWindow.SetActive(false);
     }
 
     private void ToggleShopWindow()

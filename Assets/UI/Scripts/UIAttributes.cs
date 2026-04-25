@@ -13,6 +13,8 @@ public class UIAttributes : MonoBehaviour
     [SerializeField] private TMP_Text MoveSpeedText;
     [SerializeField] private TMP_Text AttackSpeedText;
 
+    [SerializeField] private InfoWindowTriggerUI[] InfoWindowTrigger;
+
     private void UpdateAttributesInfo(HeroEventsArgs HeroArgs)
     {
         HeroNameText.text = HeroArgs.CurrentHeroAttributes.HeroName;
@@ -24,6 +26,11 @@ public class UIAttributes : MonoBehaviour
 
         MoveSpeedText.text = HeroArgs.CurrentHeroAttributes.CurrentMoveSpeed.ToString();
         AttackSpeedText.text = HeroArgs.CurrentHeroAttributes.CurrentAttackSpeed.ToString();
+
+        foreach(var item in InfoWindowTrigger)
+        {
+            item.Initialize(HeroArgs.CurrentHeroAttributes);
+        }
     }
 
     private void OnEnable()

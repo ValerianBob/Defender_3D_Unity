@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 public class HeroController : MonoBehaviour
 {
@@ -60,7 +59,7 @@ public class HeroController : MonoBehaviour
     private void Start()
     {
         //Update UI
-        HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroSkills.GetAllSkillsData(), Hero_Attributes, _heroInventory,
+        HeroEventsArgs HeroArgs = new HeroEventsArgs(_heroSkills.GetAllSkills(), Hero_Attributes, _heroInventory,
             _heroSkills.GetAllSkillsLevels());
         HeroEvents.OnHeroSelectHandler?.Invoke(HeroArgs);
 
@@ -240,22 +239,6 @@ public class HeroController : MonoBehaviour
                     continue;
                 }
                 _heroSkills.ExecuteSkillById(i, this);
-            }
-        }
-    }
-
-    //TODO :
-    private void HandleItemsSkills(HeroEventsArgs HeroArgs)
-    {
-        int ItemCount = _heroInventory.GetItemsCount();
-
-        for (int i = 0; i < ItemCount; i++)
-        {
-            if (_heroInventory.GetItemSkillTypeById(i) == HeroArgs.ItemExecuteType)
-            {
-                HeroEventsArgs NewHeroArgs = new HeroEventsArgs(this);
-
-                _heroInventory.ExecuteItemSkillById(i, NewHeroArgs);
             }
         }
     }
@@ -665,7 +648,6 @@ public class HeroController : MonoBehaviour
         UIEvents.OnItemDropUIHandler += TryToDropItemFromInventory;
         UIEvents.OnItemSwapUIHandler += TryToSwapItemsInInventory;
 
-        HeroEvents.OnHeroAttackHandler += HandleItemsSkills;
         HeroEvents.OnHeroAttackHandler += HandleOnAttackPassiveSkills;
 
         EnemyEvents.OnEnemyDeathHandler += GainXpWrapper;
@@ -683,7 +665,6 @@ public class HeroController : MonoBehaviour
         UIEvents.OnItemDropUIHandler -= TryToDropItemFromInventory;
         UIEvents.OnItemSwapUIHandler -= TryToSwapItemsInInventory;
 
-        HeroEvents.OnHeroAttackHandler -= HandleItemsSkills;
         HeroEvents.OnHeroAttackHandler -= HandleOnAttackPassiveSkills;
 
         EnemyEvents.OnEnemyDeathHandler -= GainXpWrapper;

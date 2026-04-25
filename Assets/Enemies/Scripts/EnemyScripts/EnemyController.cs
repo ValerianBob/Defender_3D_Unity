@@ -104,7 +104,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            _enemyMovement.PursuingTarget(DestinationPosition.transform.position);
+            _enemyMovement.Move(DestinationPosition.transform.position);
         }
     }
 

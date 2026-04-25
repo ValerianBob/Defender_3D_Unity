@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class SpoteEnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] EnemiesToSpawn;
 
     [SerializeField] private int _spawnDelay;
+
+    [SerializeField] private GameObject[] SpawnerSpots;
 
     private List<GameObject> _spawnedEnemies = new List<GameObject>();
 
@@ -21,14 +24,13 @@ public class SpoteEnemySpawner : MonoBehaviour
 
         float NextSpawnSpot = 0;
 
-        foreach (var item in EnemiesToSpawn)
+        for (int i = 0; i < EnemiesToSpawn.Length; i++)
         {
-            GameObject enemy = Instantiate(
-                item, 
-                new Vector3(transform.position.x + NextSpawnSpot, transform.position.y, transform.position.z), 
-                item.transform.rotation);
+            GameObject enemy = Instantiate(EnemiesToSpawn[i],
+                new Vector3(transform.position.x + NextSpawnSpot, transform.position.y, transform.position.z),
+                EnemiesToSpawn[i].transform.rotation);
 
-            enemy.GetComponent<EnemyController>().DestinationPosition = gameObject;
+            enemy.GetComponent<EnemyController>().DestinationPosition = SpawnerSpots[i];
 
             _spawnedEnemies.Add(enemy);
 

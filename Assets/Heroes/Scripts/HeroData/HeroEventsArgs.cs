@@ -1,6 +1,10 @@
+using static HeroSkills;
+
 public class HeroEventsArgs
 {
     public SkillConfig[] SkillsData { get; private set; }
+
+    public SkillSlot[] Skills { get; private set; }
 
     public HeroAttributes CurrentHeroAttributes { get; private set; }
 
@@ -16,8 +20,6 @@ public class HeroEventsArgs
 
     public int SkillCoolDown {  get; private set; }
 
-    public ItemExecuteType ItemExecuteType { get; private set; }
-
     public HeroEventsArgs() 
     {
     }
@@ -25,6 +27,11 @@ public class HeroEventsArgs
     public HeroEventsArgs(SkillConfig[] skillsData)
     {
         SkillsData = skillsData;
+    }
+
+    public HeroEventsArgs(SkillSlot[] Skills)
+    {
+        this.Skills = Skills;
     }
 
     public HeroEventsArgs(HeroAttributes currentHeroAttributes)
@@ -47,12 +54,6 @@ public class HeroEventsArgs
         LevelsOfSkills = levelsOfSkills;
     }
 
-
-    public HeroEventsArgs(ItemExecuteType type)
-    {
-        ItemExecuteType = type;
-    }
-
     public HeroEventsArgs(int SkillId, int SkillCoolDown)
     {
         this.SkillId = SkillId;
@@ -68,6 +69,14 @@ public class HeroEventsArgs
     public HeroEventsArgs(SkillConfig[] skillsData, HeroAttributes currentHeroAttributes, HeroInventory currentHeroInventory, int[] levelsOfSkills)
     {
         SkillsData = skillsData;
+        CurrentHeroAttributes = currentHeroAttributes;
+        CurrentHeroInventory = currentHeroInventory;
+        LevelsOfSkills = levelsOfSkills;
+    }
+
+    public HeroEventsArgs(SkillSlot[] skillsData, HeroAttributes currentHeroAttributes, HeroInventory currentHeroInventory, int[] levelsOfSkills)
+    {
+        Skills = skillsData;
         CurrentHeroAttributes = currentHeroAttributes;
         CurrentHeroInventory = currentHeroInventory;
         LevelsOfSkills = levelsOfSkills;

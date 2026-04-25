@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName ="Items/NewItem")]
-public class ItemConfig : ScriptableObject
+public class ItemConfig : ScriptableObject, IShowInfo
 {
     [SerializeField] private string itemName;
 
@@ -26,8 +26,6 @@ public class ItemConfig : ScriptableObject
     [SerializeField] private int ManaGain;
 
     [SerializeField] private int ItemCost;
-
-    [SerializeField] private ItemSkill Skill;
 
     public string GetItemName()
     {
@@ -94,8 +92,18 @@ public class ItemConfig : ScriptableObject
         return ItemCost;
     }
 
-    public ItemSkill GetSkill()
+    public string GetTitle()
     {
-        return Skill;
+        return itemName;
+    }
+
+    public string GetDescription()
+    {
+        return $"{itemDescription}\n" +
+            $"Attack Damage: +{AttackDamage}\n" +
+       $"Magic Damage: +{MagicDamage}\n" +
+       $"Attack Range: +{AttackRange}\n" +
+       $"Move Speed: +{MoveSpeed}\n" +
+       $"Attack Speed: -{AttackSpeed}";
     }
 }

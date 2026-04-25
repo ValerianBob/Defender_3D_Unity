@@ -1,5 +1,5 @@
 [System.Serializable]
-public class HeroAttributes
+public class HeroAttributes : IShowInfo
 {
     public string HeroName;
 
@@ -60,5 +60,18 @@ public class HeroAttributes
         RespawnTime = 5;
 
         BuyBackCost = 100;
+    }
+    public string GetTitle()
+    {
+        return "Hero Attributes";
+    }
+
+    public string GetDescription()
+    {
+        return $"Attack Damage: {CurrentDamage}\n" +
+       $"Magic Damage: {CurrentMagicDamage}\n" +
+       $"Attack Range: {CurrentAttackRange}\n" +
+       $"Move Speed: {CurrentMoveSpeed}\n" +
+       $"Attack Speed: {CurrentAttackSpeed}";
     }
 }

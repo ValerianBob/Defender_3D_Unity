@@ -13,12 +13,12 @@ public class SkillConfig : ScriptableObject
     [SerializeField] private string skillName;
     [SerializeField] private SkillType type;
     [SerializeField] private Sprite skillIcon;
+    [SerializeField] private string description;
 
     [SerializeField] private int baseCoolDown;
     [SerializeField] private int baseManaCost;
     [SerializeField] private int baseSkillDuration;
 
-    // Public read access
     public string SkillName
     {
         get => skillName;
@@ -32,6 +32,11 @@ public class SkillConfig : ScriptableObject
     public Sprite SkillIcon
     {
         get => skillIcon;
+    }
+
+    public string Description
+    {
+        get => description;
     }
     
     public int BaseCoolDown

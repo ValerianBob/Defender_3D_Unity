@@ -15,6 +15,7 @@ MonoBehaviour:
   skillName: Energy Steal
   type: 1
   skillIcon: {fileID: 21300000, guid: 60a62efa93909014da256aded5636534, type: 3}
+  description: Steal health from enemies by attack
   baseCoolDown: 0
   baseManaCost: 0
   baseSkillDuration: 0

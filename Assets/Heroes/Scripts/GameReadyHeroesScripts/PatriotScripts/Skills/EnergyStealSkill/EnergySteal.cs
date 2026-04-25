@@ -9,9 +9,12 @@ public class EnergySteal : Skill
     {
     }
 
-    public override void InitSkill(int CoolDown, int ManaCost, int SkillDuration)
+    public override void InitSkill(string name, string description, int CoolDown, int ManaCost, int SkillDuration)
     {
         CurrentSkillLevel = 0;
+
+        this.SkillName = name;
+        this.SkillDescription = description;
 
         this.CoolDown = CoolDown;
         this.ManaCost = ManaCost;

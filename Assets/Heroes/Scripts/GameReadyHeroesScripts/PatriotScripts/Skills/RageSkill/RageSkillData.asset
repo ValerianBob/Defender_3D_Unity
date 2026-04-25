@@ -15,6 +15,7 @@ MonoBehaviour:
   skillName: Rage
   type: 0
   skillIcon: {fileID: 21300000, guid: f02732406a0ae6e4d9aea7769d7e0dba, type: 3}
+  description: Add more attack speed
   baseCoolDown: 10
   baseManaCost: 10
   baseSkillDuration: 4
