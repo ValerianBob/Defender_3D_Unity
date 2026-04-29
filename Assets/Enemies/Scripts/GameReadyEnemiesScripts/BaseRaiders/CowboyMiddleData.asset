@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfb4c90e68ab1de44925df0dba53ff4a, type: 3}
-  m_Name: CowboyData
+  m_Name: CowboyMiddleData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   enemyType: 0
-  enemyName: Cowboy
+  enemyName: CowboyMiddle
   attackDamage: 10
   attackRange: 2
-  attackSpeed: 1
+  attackSpeed: 0.8
   moveSpeed: 3
-  maxHealth: 300
-  healthGain: 5
+  maxHealth: 200
+  healthGain: 10
   level: 3
   detectionDistance: 10
