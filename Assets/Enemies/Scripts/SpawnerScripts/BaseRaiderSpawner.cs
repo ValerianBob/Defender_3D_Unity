@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseRaiderSpawner : MonoBehaviour
@@ -16,21 +17,54 @@ public class BaseRaiderSpawner : MonoBehaviour
 
     [SerializeField] private int TimeToSpawnEnemies;
 
+    [SerializeField] private List<GameObject> CurrentSpawnedEnemies;
+
     public int WaveCount;
 
-    public int CountTimeToNextWave;
+    public bool IsRespawnEnemies = false;
 
     private void Start()
     {
-        CountTimeToNextWave = TimeToSpawnEnemies;
         WaveCount = 0;
 
         StartCoroutine(CountNextWave());
     }
 
+    private void Update()
+    {
+        if (WaveCount == 10 && CheckAliveEnemies() && !GameStateController.Instance.GameOver && !IsRespawnEnemies)
+        {
+            GameStateController.Instance.GameOver = true;
+
+            GameStateController.OnGameWin?.Invoke();
+        }
+
+        if (!GameStateController.Instance.GameOver)
+        {
+            if (!IsRespawnEnemies && CheckAliveEnemies())
+            {
+                StartCoroutine(CountNextWave());
+            }
+        }
+    }
+
+    private bool CheckAliveEnemies()
+    {
+        foreach (var enemy in CurrentSpawnedEnemies)
+        {
+            if (enemy != null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private IEnumerator SpawnEnemies()
     {
-        for (int i = 0; i < Enemies[WaveCount].EnemiesPrefabs.Length; i++)
+        CurrentSpawnedEnemies.Clear();
+
+        for (int i = 0; i < Enemies[WaveCount - 1].EnemiesPrefabs.Length; i++)
         {
             int SpawnPointId = 0;
 
@@ -43,19 +77,28 @@ public class BaseRaiderSpawner : MonoBehaviour
                 SpawnPointId = 1;
             }
 
-            Instantiate(Enemies[WaveCount].EnemiesPrefabs[i], 
+            GameObject tempEnemy = Instantiate(Enemies[WaveCount - 1].EnemiesPrefabs[i], 
                 SpotsToSpawn[SpawnPointId].transform.position, 
-                Enemies[WaveCount].EnemiesPrefabs[i].transform.rotation);
+                Enemies[WaveCount - 1].EnemiesPrefabs[i].transform.rotation);
+
+            CurrentSpawnedEnemies.Add(tempEnemy);
 
             yield return new WaitForSeconds(1f);
         }
+
+        IsRespawnEnemies = false;
     }
 
     private IEnumerator CountNextWave()
     {
+        IsRespawnEnemies = true;
+
         WaveCount += 1;
 
-        yield return new WaitForSeconds(WaveCount);
+        EnemyEventArgs EnemyArgs = new EnemyEventArgs(WaveCount, TimeToSpawnEnemies);
+        EnemyEvents.OnNextWaveSpawnHandler?.Invoke(EnemyArgs);
+
+        yield return new WaitForSeconds(TimeToSpawnEnemies);
 
         StartCoroutine(SpawnEnemies());
     }

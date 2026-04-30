@@ -28,7 +28,7 @@ public class UITimer : MonoBehaviour
                 Minutes += 1;
             }
 
-            TimerText.text = $"{Minutes:00}:{Seconds:00}"; ;
+            TimerText.text = $"{Minutes:00}:{Seconds:00}";
         }
     }
 }

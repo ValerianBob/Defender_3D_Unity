@@ -6,6 +6,10 @@ public class EnemyEventArgs
 
     public EnemyController CurrentEnemyController { get; private set; }
 
+    public int NumberOfWave;
+
+    public int TimeForNextWave;
+
     public EnemyEventArgs(GameObject currentEnemyObject)
     {
         CurrentEnemyObject = currentEnemyObject;
@@ -20,5 +24,11 @@ public class EnemyEventArgs
     {
         CurrentEnemyObject = currentEnemyObject;
         CurrentEnemyController = currentEnemyController;
+    }
+
+    public EnemyEventArgs(int Wave, int Time)
+    {
+        NumberOfWave = Wave;
+        TimeForNextWave = Time;
     }
 }
