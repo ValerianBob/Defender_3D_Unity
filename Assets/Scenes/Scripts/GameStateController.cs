@@ -6,6 +6,7 @@ public class GameStateController : MonoBehaviour
     public static GameStateController Instance { get; private set; }
 
     public static Action OnGameWin;
+    public static Action OnGameLose;
 
     public bool GameOver = false;
 

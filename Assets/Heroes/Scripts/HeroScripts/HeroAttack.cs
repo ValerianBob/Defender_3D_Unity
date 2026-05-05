@@ -61,6 +61,8 @@ public class HeroAttack : MonoBehaviour
         HeroEventsArgs HeroArgs = new HeroEventsArgs();
         HeroEvents.OnHeroAttackHandler?.Invoke(HeroArgs);
 
+        Results.Instance.DamageDealt += _heroController.Hero_Attributes.CurrentDamage;
+
         Debug.Log("Damage dealt!");
     }
 }

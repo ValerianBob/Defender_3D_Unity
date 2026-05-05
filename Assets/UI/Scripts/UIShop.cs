@@ -22,7 +22,7 @@ public class UIShop : MonoBehaviour
 
     [SerializeField] private ItemShopSlot[] ItemShopSlots;
 
-    private bool isOpened = false;
+    public bool isOpened = false;
 
     private void Start()
     {

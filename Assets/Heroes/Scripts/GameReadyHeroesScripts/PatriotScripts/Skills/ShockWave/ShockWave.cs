@@ -62,6 +62,8 @@ public class ShockWave : Skill
             int finalDamage = Mathf.RoundToInt(damage);
 
             enemy.ChangeHealth(true, finalDamage);
+
+            Results.Instance.DamageDealt += finalDamage;
         }
 
         Debug.Log($"ShockWave hit");

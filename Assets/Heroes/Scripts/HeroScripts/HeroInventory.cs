@@ -144,6 +144,8 @@ public class HeroInventory : MonoBehaviour
         if (isAdding)
         {
             CurrentGold += gold;
+
+            Results.Instance.GoldEarned += gold;
         }
         else
         {

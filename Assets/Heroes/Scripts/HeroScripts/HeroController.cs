@@ -259,6 +259,8 @@ public class HeroController : MonoBehaviour
         if (isGettingDamage)
         {
             Hero_Attributes.CurrentHealth -= damage;
+
+            Results.Instance.HealthLose += damage;
         }
         else
         {

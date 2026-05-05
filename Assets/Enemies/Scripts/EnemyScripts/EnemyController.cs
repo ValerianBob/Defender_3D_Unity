@@ -176,6 +176,8 @@ public class EnemyController : MonoBehaviour
 
             EnemyEventArgs EnemyArgs = new EnemyEventArgs(this, gameObject);
             EnemyEvents.OnEnemyDeathHandler?.Invoke(EnemyArgs);
+
+            Results.Instance.Kills += 1;
         }
     }
     private IEnumerator PlayDead()

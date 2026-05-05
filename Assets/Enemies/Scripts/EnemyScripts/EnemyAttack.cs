@@ -43,9 +43,15 @@ public class EnemyAttack : MonoBehaviour
         {
             HeroController CurrentHero = _enemyController.CurrentTarget.GetComponent<HeroController>();
 
+            MainBaseController CurrentBase = _enemyController.DestinationPosition.GetComponent<MainBaseController>();
+
             if (CurrentHero != null)
             {
                 CurrentHero.ChangeHealth(true, _enemyController.GetEnemyCurrentAttributes().CurrentAttackDamage);
+            }
+            else if (CurrentBase != null)
+            {
+                CurrentBase.GetDamage(_enemyController.GetEnemyCurrentAttributes().CurrentAttackDamage);
             }
         }
     }

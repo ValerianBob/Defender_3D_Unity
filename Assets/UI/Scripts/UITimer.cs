@@ -29,6 +29,8 @@ public class UITimer : MonoBehaviour
             }
 
             TimerText.text = $"{Minutes:00}:{Seconds:00}";
+
+            Results.Instance.TimePlayed = TimerText.text;
         }
     }
 }
