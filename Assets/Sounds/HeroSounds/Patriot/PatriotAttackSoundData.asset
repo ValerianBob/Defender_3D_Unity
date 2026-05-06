@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64bd3be447d7324d95fc7c0fff390aa, type: 3}
+  m_Name: PatriotAttackSoundData
+  m_EditorClassIdentifier: Assembly-CSharp::SoundData
+  Type: 0
+  Channel: 1
+  Clips:
+  - {fileID: 8300000, guid: 348e6879faad8e7438ee91a4441771bb, type: 3}
+  - {fileID: 8300000, guid: cd363b7a4888f51498c5cc8de578cdd7, type: 3}
+  - {fileID: 8300000, guid: 78c7e3b89d7e0f24fb054ea40a75f892, type: 3}
+  Volume: 1
+  Pitch: 1
+  Loop: 0

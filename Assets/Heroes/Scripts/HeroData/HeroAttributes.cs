@@ -30,6 +30,8 @@ public class HeroAttributes : IShowInfo
 
     public int BuyBackCost;
 
+    public SoundData AttackSounds {  get; private set; }
+
     public HeroAttributes(HeroConfig heroConfig)
     {
         HeroName = heroConfig.heroName;
@@ -60,6 +62,8 @@ public class HeroAttributes : IShowInfo
         RespawnTime = 5;
 
         BuyBackCost = 100;
+
+        AttackSounds = heroConfig.AttackSounds;
     }
     public string GetTitle()
     {

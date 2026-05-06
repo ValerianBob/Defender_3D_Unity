@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "HeroConfig", menuName = "Game/Hero Config")]
@@ -22,6 +23,8 @@ public class HeroConfig : ScriptableObject
     [SerializeField] private int Lv;
     [SerializeField] private float CurrentXP;
     [SerializeField] private float XPForLevelUP;
+
+    [SerializeField] private SoundData attackSounds;
 
     public string heroName
     {
@@ -86,5 +89,10 @@ public class HeroConfig : ScriptableObject
     public float xPForLevelUP
     {
         get => XPForLevelUP;
+    }
+
+    public SoundData AttackSounds
+    {
+        get => attackSounds;
     }
 }

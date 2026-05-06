@@ -63,6 +63,8 @@ public class HeroAttack : MonoBehaviour
 
         Results.Instance.DamageDealt += _heroController.Hero_Attributes.CurrentDamage;
 
+        SoundManager.instance.PlaySound(_heroController.Hero_Attributes.AttackSounds, transform.position);
+
         Debug.Log("Damage dealt!");
     }
 }

@@ -5,9 +5,11 @@ using UnityEngine.UI;
 public class InGameMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _inGameMenuWindow;
+    [SerializeField] private GameObject _inGameMenuSettings;
 
     [SerializeField] private Button Resume;
     [SerializeField] private Button Settings;
+    [SerializeField] private Button Back;
     [SerializeField] private Button Quit;
 
     [SerializeField] private GameObject Timer;
@@ -21,10 +23,14 @@ public class InGameMenu : MonoBehaviour
     private bool deathPanelWasOppened = false;
 
     private bool isOppened = false;
+    private bool settingsIsOppened = false;
 
     private void Start()
     {
         Resume.onClick.AddListener(ToggleMenuWindow);
+
+        Settings.onClick.AddListener(ToggleSettings);
+        Back.onClick.AddListener(ToggleSettings);
     }
 
     private void Update()
@@ -51,6 +57,19 @@ public class InGameMenu : MonoBehaviour
         }
 
         TogglePlayerUI(!isOppened);
+    }
+
+    private void ToggleSettings()
+    {
+        settingsIsOppened = !settingsIsOppened;
+
+        _inGameMenuSettings.SetActive(settingsIsOppened);
+
+        Back.gameObject.SetActive(settingsIsOppened);
+
+        Resume.gameObject.SetActive(!settingsIsOppened);
+        Settings.gameObject.SetActive(!settingsIsOppened);
+        Quit.gameObject.SetActive(!settingsIsOppened);
     }
 
     private void TogglePlayerUI(bool toggle)

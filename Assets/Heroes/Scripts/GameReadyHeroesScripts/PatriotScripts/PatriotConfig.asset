@@ -25,3 +25,4 @@ MonoBehaviour:
   Lv: 1
   CurrentXP: 0
   XPForLevelUP: 100
+  attackSounds: {fileID: 11400000, guid: 83c7c56c19fd6aa4fab9075f56ce6673, type: 2}
